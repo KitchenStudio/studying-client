@@ -22,6 +22,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TabHost;
@@ -30,7 +32,7 @@ import android.widget.TabWidget;
 import com.example.xiner.R;
 import com.example.xiner.fragment.CollectionFragment;
 import com.example.xiner.fragment.PersonFragment;
-import com.example.xiner.fragment.ReleaseFragment;
+import com.example.xiner.fragment.ShareFragment;
 
 import java.util.ArrayList;
 
@@ -49,6 +51,8 @@ public class FragmentTabsPager extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.fragment_tabs_pager);
+
+        LayoutInflater inflater = LayoutInflater.from(this);
         mTabHost = (TabHost)findViewById(android.R.id.tabhost);
         mTabHost.setup();
 
@@ -56,17 +60,27 @@ public class FragmentTabsPager extends ActionBarActivity {
 
         mTabsAdapter = new TabsAdapter(this, mTabHost, mViewPager);
 
-        mTabsAdapter.addTab(mTabHost.newTabSpec("simple").setIndicator("共享资料"),
-                ReleaseFragment.class, null);
-        mTabsAdapter.addTab(mTabHost.newTabSpec("contacts").setIndicator("我的收藏"),
+        View share = inflater.inflate(R.layout.tab_share,null);
+        View collection = inflater.inflate(R.layout.tab_collection,null);
+        View person = inflater.inflate(R.layout.tab_person,null);
+
+        mTabsAdapter.addTab(mTabHost.newTabSpec("simple").setIndicator(share),
+                ShareFragment.class, null);
+        mTabsAdapter.addTab(mTabHost.newTabSpec("contacts").setIndicator(collection),
                 CollectionFragment.class, null);
-        mTabsAdapter.addTab(mTabHost.newTabSpec("custom").setIndicator("个人信息"),
+        mTabsAdapter.addTab(mTabHost.newTabSpec("custom").setIndicator(person),
                 PersonFragment.class, null);
 
 
         if (savedInstanceState != null) {
             mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
     @Override

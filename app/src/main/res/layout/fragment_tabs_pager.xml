@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0"
 
-            android:background="@drawable/tab_widget_background"
+            android:background="@drawable/tab_bg_n"
             android:orientation="horizontal" >
         </TabWidget>
     </LinearLayout>

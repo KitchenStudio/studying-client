@@ -1,13 +1,12 @@
 package com.example.xiner.fragment;
 
-import android.app.LoaderManager;
-import android.content.Loader;
-import android.database.Cursor;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SearchViewCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -17,47 +16,70 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.xiner.R;
-import com.example.xiner.adapter.CollectionAdapter;
+import com.example.xiner.activity.PublicDocActivity;
+import com.example.xiner.adapter.ShareAdapter;
+import com.example.xiner.view.RefreshLayout;
 
 /**
  * Created by xiner on 14-12-20.
  */
-public class CollectionFragment extends Fragment{
+public class ShareFragment extends Fragment{
     LinearLayoutManager mLayoutManager;
+    RefreshLayout swipeRefreshLayout;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_collection,null);
-        RecyclerView recyclerView =(RecyclerView)view.findViewById(R.id.recyclerView_collection);
-        recyclerView.setHasFixedSize(true);
+        View view = inflater.inflate(R.layout.fragment_share,null);
+        RecyclerView mRecyclerView = (RecyclerView)view.findViewById(R.id.recyclerView_share);
+        swipeRefreshLayout = (RefreshLayout)view.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(new RefreshListener());
+        swipeRefreshLayout.setOnLoadListener(new mLoadListener());
+
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_red_light, android.R.color.holo_green_light,
+                android.R.color.holo_blue_bright, android.R.color.holo_orange_light);
+        mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(mLayoutManager);
-        CollectionAdapter collectionAdapter = new CollectionAdapter();
-        recyclerView.setAdapter(collectionAdapter);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mRecyclerView.setAdapter(new ShareAdapter());
+
         return view;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-       // getLoaderManager().initLoader(0,null,this);
-
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
     }
 
+    private class RefreshListener implements SwipeRefreshLayout.OnRefreshListener{
+
+        @Override
+        public void onRefresh() {
+            Toast.makeText(getActivity(),"refresh",Toast.LENGTH_SHORT).show();
+
+        }
+    }
+    class mLoadListener implements RefreshLayout.OnLoadListener{
+
+
+        @Override
+        public void onLoad() {
+            Toast.makeText(getActivity(),"load",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        MenuItem item = menu.add("Search");
-        item.setIcon(android.R.drawable.ic_menu_search);
-        MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS
+
+
+        MenuItem item1 = menu.add("Search");
+        item1.setIcon(android.R.drawable.ic_menu_search);
+        MenuItemCompat.setShowAsAction(item1, MenuItemCompat.SHOW_AS_ACTION_ALWAYS
                 | MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
         final View searchView = SearchViewCompat.newSearchView(getActivity());
         if (searchView != null) {
@@ -93,10 +115,23 @@ public class CollectionFragment extends Fragment{
                         }
 
                     });
-            MenuItemCompat.setActionView(item, searchView);
+            MenuItemCompat.setActionView(item1, searchView);
+
+
+            MenuItem item = menu.add("发布资料");
+            item.setIcon(R.drawable.publicshare);
+            MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS
+                    | MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    Intent intent = new Intent();
+                    intent.setClass(getActivity(),PublicDocActivity.class);
+                    getActivity().startActivity(intent);
+                    return false;
+                }
+            });
         }
-
+        super.onCreateOptionsMenu(menu, inflater);
     }
-
-
 }
