@@ -1,6 +1,6 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/card_view"
+    android:id="@+id/card_view_share"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="5dp"
@@ -23,7 +23,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-
                 android:text="科目"
                 android:textSize="7pt" />
 
@@ -51,6 +50,7 @@
             android:layout_margin="4dp">
 
             <TextView
+                android:id="@+id/detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="详细信息详细信息详细信息详细信息详细信息详细信息详细信息"
@@ -69,6 +69,7 @@
                 android:src="@drawable/tupian" />
         </RelativeLayout>
         <TextView
+            android:id="@+id/filename"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/filename"
@@ -95,6 +96,7 @@
                     android:src="@drawable/collection" />
 
                 <TextView
+                    android:id="@+id/collection_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignRight="@+id/idima_collection"
@@ -112,11 +114,11 @@
                     android:id="@+id/idima_praise"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:layout_margin="4dp"
                     android:src="@drawable/image_praise" />
 
                 <TextView
+                    android:id="@+id/praise_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignRight="@+id/idima_praise"
@@ -139,6 +141,7 @@
                     android:src="@drawable/image_comment" />
 
                 <TextView
+                    android:id="@+id/comment_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignRight="@+id/idima_comment"

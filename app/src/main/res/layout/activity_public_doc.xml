@@ -18,7 +18,7 @@
 
                 android:id="@+id/public_select_card"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="2dp"
@@ -40,23 +40,85 @@
 
                 android:id="@+id/public_card_upload"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="150dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 card_view:cardCornerRadius="4dp">
 
+                <ViewSwitcher
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/viewSwitcher"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+
+                    >
+                    <GridView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/gridGallery"
+                        android:layout_gravity="top"
+                        android:layout_marginBottom="-10dp"
+                        android:layout_marginLeft="-10dp"
+                        android:layout_marginRight="-10dp"
+                        android:layout_marginTop="-10dp"
+                        android:horizontalSpacing="-15dp"
+                        android:numColumns="3"
+                        android:padding="0dp"
+                        android:verticalSpacing="-15dp"
+                        ></GridView>
+                    <ImageView
+                        android:id="@+id/imgSinglePick"
+                        android:layout_width="270px"
+                        android:layout_height="270px"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/app_name"
+                         />
+                    </ViewSwitcher>
+
                 <ImageView
                     android:id="@+id/image_upload"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center_horizontal|center_vertical"
                     android:layout_marginBottom="30dp"
                     android:layout_marginTop="30dp"
                     android:src="@drawable/camera" />
 
             </android.support.v7.widget.CardView>
+
+            <ViewSwitcher
+                android:id="@+id/file_uploadswitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView_uploadfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="200px"
+                    />
+                <android.support.v7.widget.CardView
+
+                    android:id="@+id/public_filecard_upload"
+                    android:layout_width="match_parent"
+                    android:layout_height="200px"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    card_view:cardCornerRadius="4dp">
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="7pt"
+                    android:layout_gravity="center"
+                    android:text="还没有上传文件哦～"
+                    />
+                </android.support.v7.widget.CardView>
+            </ViewSwitcher>
 
             <android.support.v7.widget.CardView
 
@@ -81,6 +143,7 @@
 
             </android.support.v7.widget.CardView>
             <Button
+                android:id="@+id/upserver_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/public_detail"

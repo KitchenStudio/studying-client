@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/person_scroll"
     tools:context="com.example.kdxbgrzx.Activity_IndividualCenter">
 
     <LinearLayout
@@ -32,7 +33,7 @@
                 android:orientation="vertical">
 
                 <com.example.xiner.view.CircularImage
-                    android:id="@+id/individual_center_iv_head"
+                    android:id="@+id/person_iv_head"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
@@ -61,7 +62,7 @@
                         android:background="@null"
                         android:focusable="false"
                         android:gravity="center"
-                        android:nextFocusDown="@id/individual_center_iv_head"
+                        android:nextFocusDown="@id/person_iv_head"
                         android:text="昵称"
                         android:textColor="#6666FF"
                         android:textSize="19sp" />
@@ -72,7 +73,7 @@
                         android:layout_height="30dp"
                         android:layout_toRightOf="@id/individual_center_et_name"
                         android:paddingLeft="10dp"
-                        android:src="@drawable/man" />
+                         />
                 </RelativeLayout>
 
                 <LinearLayout
@@ -94,7 +95,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/individual_center_et_id"
+                    android:id="@+id/individual_center_et_grade"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

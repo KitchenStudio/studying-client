@@ -19,5 +19,22 @@
     <string name="subject_detail">科目</string>
     <string name="answernum">2个回答</string>
     <string name="time_comment">12-01 23：01</string>
+    <string name="takepicture">拍照</string>
+    <string name="selectpicture">选择本地图片</string>
+    <string name="uploadfile">上传文件</string>
+    <string name="select_file">选择文件</string>
+    <string name="crop_save_text">保存</string>
+    <string name="crop_discard_text">放弃</string>
+    <string name="runningFaceDetection">runningFaceDetection</string>
+    <string name="wallpaper">壁纸</string>
+    <string name="savingImage">保存图片</string>
+    <string name="multiface_crop_help">多裁剪帮助</string>
+    <string name="btn_ok">确定</string>
+    <string name="title_activity_edit_info">EditInfoActivity</string>
+    <string name="edit_name_text">昵称</string>
+    <string name="edit_academy_text">专业</string>
+    <string name="edit_grade_text">年级</string>
+    <string name="saveedit">保存</string>
+    <string name="edit_sex_text">性别</string>
 
 </resources>

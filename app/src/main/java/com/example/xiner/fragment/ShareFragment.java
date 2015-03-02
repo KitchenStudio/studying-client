@@ -44,7 +44,7 @@ public class ShareFragment extends Fragment{
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mRecyclerView.setAdapter(new ShareAdapter());
+        mRecyclerView.setAdapter(new ShareAdapter(getActivity()));
 
         return view;
     }
