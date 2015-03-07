@@ -10,7 +10,7 @@
     <string name="num_praise">(0)</string>
     <string name="num_comment">(0)</string>
     <string name="filename">文件名</string>
-    <string name="title_activity_public_doc">PublicDoc</string>
+    <string name="title_activity_public_doc">上传文件</string>
     <string name="public_detail">发布</string>
     <string name="load">正在加载....</string>
     <string name="title_activity_detail_share">共享详情</string>

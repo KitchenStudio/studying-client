@@ -21,6 +21,8 @@ import android.widget.Toast;
 import com.example.xiner.R;
 import com.example.xiner.activity.PublicDocActivity;
 import com.example.xiner.adapter.ShareAdapter;
+import com.example.xiner.net.Network;
+import com.example.xiner.util.UploadUtil;
 import com.example.xiner.view.RefreshLayout;
 
 /**
@@ -29,6 +31,8 @@ import com.example.xiner.view.RefreshLayout;
 public class ShareFragment extends Fragment{
     LinearLayoutManager mLayoutManager;
     RefreshLayout swipeRefreshLayout;
+    Network network;
+    UploadUtil uploadUtil;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -46,9 +50,20 @@ public class ShareFragment extends Fragment{
 
         mRecyclerView.setAdapter(new ShareAdapter(getActivity()));
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                network.getSharelist();
+            }
+        }).start();
+//
         return view;
     }
 
+    public ShareFragment (){
+        network = new Network(getActivity());
+//        uploadUtil = new UploadUtil(getActivity());
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
