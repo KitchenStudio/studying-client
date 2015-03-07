@@ -79,7 +79,7 @@ public class PublicDocActivity extends ActionBarActivity {
 
     public PublicDocActivity() {
         mFileName = Environment.getExternalStorageDirectory().getAbsolutePath() + "/audiorecordxueyou.3gp";
-        network = new Network(this);
+        network = new Network();
 
     }
 

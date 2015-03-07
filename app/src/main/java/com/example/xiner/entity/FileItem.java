@@ -16,15 +16,9 @@ public class FileItem implements Serializable{
 
 	private Item item;
 
-	protected FileItem() {
-		
-	}
+
 	
-	public FileItem(String filename, String url, String type) {
-		this.filename = filename;
-		this.url = url;
-		this.type = type;
-	}
+
 	
 	public Long getId() {
 		return id;

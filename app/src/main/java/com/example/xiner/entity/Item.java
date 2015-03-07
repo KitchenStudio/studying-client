@@ -50,13 +50,9 @@ public class Item implements Serializable{
 		createdTime = new Date();
 	}
 
-	protected Item() {
 
-	}
 
-	public Item(String content) {
-		this.content = content;
-	}
+
 
 	public Long getId() {
 		return id;
