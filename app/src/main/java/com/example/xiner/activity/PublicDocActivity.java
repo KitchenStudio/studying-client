@@ -1,8 +1,6 @@
 package com.example.xiner.activity;
 
-import android.app.Dialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -16,24 +14,20 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
 
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.example.xiner.R;
 import com.example.xiner.adapter.GalleryAdapter;
 import com.example.xiner.adapter.UploadfileAdapter;
-import com.example.xiner.net.Network;
+import com.example.xiner.net.PublicDocNetwork;
 import com.example.xiner.util.Action;
 import com.example.xiner.entity.CustomGallery;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
@@ -69,7 +63,7 @@ public class PublicDocActivity extends ActionBarActivity {
     private String mFileName;
     MediaPlayer mediaPlayer;
     boolean mStartRecording = true;
-    Network network;
+    PublicDocNetwork publicDocNetwork;
     ArrayList<CustomGallery> dataT;
     EditText shareContentedit;
     ArrayList<String> allPictures = new ArrayList<>();
@@ -79,7 +73,7 @@ public class PublicDocActivity extends ActionBarActivity {
 
     public PublicDocActivity() {
         mFileName = Environment.getExternalStorageDirectory().getAbsolutePath() + "/audiorecordxueyou.3gp";
-        network = new Network();
+        publicDocNetwork = new PublicDocNetwork();
 
     }
 
@@ -101,7 +95,7 @@ public class PublicDocActivity extends ActionBarActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
-                network.uploadshare(getAlllist(), shareContentedit.getText().toString(), "大一年级", "数据结构");
+                publicDocNetwork.uploadshare(getAlllist(), shareContentedit.getText().toString(), "大一年级", "数据结构");
                 return false;
             }
         });

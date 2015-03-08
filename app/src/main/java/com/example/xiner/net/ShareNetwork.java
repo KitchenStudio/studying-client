@@ -1,25 +1,21 @@
 package com.example.xiner.net;
 
 import android.content.Context;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 
+import com.example.xiner.adapter.ShareAdapter;
 import com.example.xiner.entity.FileItem;
 import com.example.xiner.entity.Item;
 import com.example.xiner.entity.User;
 import com.example.xiner.util.HttpUtil;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -27,56 +23,29 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * Created by xiner on 15-1-27.
+ * Created by xiner on 15-3-8.
  */
-public class Network {
-
-    Context context;
-
-    public static final String TAG = "Network";
-    public static final String uploadFile = "http://211.87.226.208:8080/api/v1/item/files";
+public class ShareNetwork  {
     public static final String getshareList = "http://211.87.226.208:8080/api/v1/item";
-    HttpUtil httpUtil;
 
+    private static String TAG = "ShareNetwork";
+    Context context;
+    ShareAdapter adapter;
+    ArrayList<Item> items = new ArrayList<>();
 
-    public static void uploadshare(ArrayList<String> file, String content, String grade, String subject) {
+    ArrayList<Item> adpterlist;
+    SwipeRefreshLayout layout;
 
-        RequestParams params = new RequestParams();
-        params.put("content", content);
-        params.put("grade", grade);
-        params.put("subject", subject);
-
-
-        for (int i = 0; i < file.size(); i++) {
-            try {
-
-                params.put("file" + i, new File(new URI(file.get(i))), "multipart/form-data");
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-        HttpUtil.post(uploadFile, params, new AsyncHttpResponseHandler() {
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Log.v("PublicDocA", statusCode + "codesuccess");
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Log.v("PublicDocAf", statusCode + "codefailed");
-                error.printStackTrace(System.out);
-            }
-        });
+    public ShareNetwork(Context context,ShareAdapter shareAdapter,ArrayList<Item>list,SwipeRefreshLayout layout){
+        this.context = context;
+        this.adapter = shareAdapter;
+         this.adpterlist = list;
+        this.layout = layout;
     }
 
+    public  void getSharelist() {
 
-    public static void getSharelist() {
+        Log.v(TAG,"mothed excu");
 
         HttpUtil.get(getshareList, new JsonHttpResponseHandler() {
             @Override
@@ -85,24 +54,25 @@ public class Network {
                 super.onSuccess(statusCode, headers, response);
 
                 for (int i = 0; i < response.length(); i++) {
+                    Item shareItem = new Item();
                     try {
                         JSONObject item = response.getJSONObject(i);
                         for (Iterator iter = item.keys(); iter.hasNext(); ) {
-                            Item item1 = new Item();
+
                             String key = (String) iter.next();
-                            System.out.println(item.getString(key));
+                            System.out.println(key + "key" + item.getString(key));
 
                             if (key.equals("content")) {
                                 String content = item.getString("content");
-                                item1.setContent(content);
+                                shareItem.setContent(content);
 
                             } else if (key.equals("createdTime")) {
                                 String time = item.getString("createdTime");
 
-                                item1.setCreatedTime(new Date(Long.parseLong(time)));
+                                shareItem.setCreatedTime(new Date(Long.parseLong(time)));
                             } else if (key.equals("starNumber")) {
                                 Long starNumber = item.getLong("starNumber");
-                                item1.setStarNumber(starNumber);
+                                shareItem.setStarNumber(starNumber);
 
                             } else if (key.equals("owner")) {
                                 JSONObject jsonObject = new JSONObject(item.getString("owner"));
@@ -119,6 +89,7 @@ public class Network {
                                     }
 
                                 }
+                                shareItem.setOwner(user);
                             } else if (key.equals("fileItem")) {
                                 Set<FileItem> fileItems = new HashSet<FileItem>();
                                 JSONArray fileArray = item.getJSONArray("fileItem");
@@ -132,7 +103,7 @@ public class Network {
                                         } else if (iterator.equals("url")) {
                                             String url = fileObject.getString("url");
                                             fileItem.setUrl(url);
-                                            Log.v(TAG,fileItem.getUrl()+"url");
+                                            Log.v(TAG, fileItem.getUrl() + "url");
                                         } else if (iterator.equals("type")) {
                                             String type = fileObject.getString("type");
                                             fileItem.setType(type);
@@ -140,36 +111,28 @@ public class Network {
                                         fileItems.add(fileItem);
                                     }
                                 }
+                                shareItem.setFileItems(fileItems);
+                            } else if (key.equals("praiseNumber")) {
 
+                                shareItem.setPraiseNumber(item.getLong("praiseNumber"));
+                            } else if (key.equals("subject")) {
+                                shareItem.setSubject(item.getString("subject"));
                             }
-//                            String content = item.getString("content");
-//                            Log.v(TAG,content+"content");
-//                            Date date = new Date(item.getString("createdTime"));
-//                            Long starNumber = item.getLong("starNumber");
-                            System.out.println(item.getString(key));
                         }
-
-
-//
-//                            String content = item.getString("content");
-//                        Date date = new Date(item.getString("createdTime"));
-//                        Long starNumber = item.getLong("starNumber");
-
-//                        Log.v(TAG,content+"content");
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    items.add(shareItem);
                 }
-                Log.v(TAG, statusCode + "codesuccess");
+                adpterlist.addAll(items);
+                adapter.notifyDataSetChanged();
+                layout.setRefreshing(false);
 
-//                Log.v(TAG, response.toString());
             }
 
-            private Item parseItem(JSONObject itemObject) {
 
-                return null;
-            }
+
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
@@ -181,5 +144,7 @@ public class Network {
 
     }
 
-
+    public ArrayList<Item> list() {
+        return adpterlist;
+    }
 }

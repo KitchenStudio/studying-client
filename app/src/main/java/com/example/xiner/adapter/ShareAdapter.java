@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.xiner.R;
 import com.example.xiner.activity.DetailShareActivity;
+import com.example.xiner.entity.Item;
 
 
 import java.util.ArrayList;
@@ -22,17 +23,22 @@ import java.util.zip.CRC32;
  * Created by xiner on 14-12-21.
  */
 public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> {
+    private static final String TAG = "ShareAdapter";
     Context mContext;
-    public ShareAdapter(Context context){
+    ArrayList<Item>shareitems;
+    int i;
+    public ShareAdapter(Context context, ArrayList<Item> shareitems){
         this.mContext=context;
+        this.shareitems = shareitems;
+        Log.v(TAG,shareitems.size()+"sharesize");
     }
 
-//ArrayList<DetailShareEntity> shareList = new ArrayList<DetailShareEntity>();
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        this.i = i;
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.list_share, viewGroup, false);
-        ViewHolder vh = new ViewHolder(view);
+        ViewHolder vh = new ViewHolder(view,i);
         return vh;
 
     }
@@ -65,23 +71,30 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return 10;
+        return shareitems.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         public CardView mCardview;
-        private static String TAG = "ViewHolder";
-        TextView subject,time,grade,detail,collection,praise,comment;
+        private  String TAG = "ViewHolder";
+        TextView subject,time,nickname,detail,collection,praise,comment;
 
 
-        public ViewHolder(View v) {
+
+        public ViewHolder(View v,int i) {
             super(v);
             subject=(TextView)v.findViewById(R.id.subject);
+            subject.setText(shareitems.get(i).getSubject());
             time=(TextView)v.findViewById(R.id.time);
-            grade=(TextView)v.findViewById(R.id.grade);
+            time.setText(shareitems.get(i).getCreatedTime().toString());
+            nickname=(TextView)v.findViewById(R.id.nickname);
+            nickname.setText(shareitems.get(i).getOwner().getNickname());
             detail=(TextView)v.findViewById(R.id.detail);
+            detail.setText(shareitems.get(i).getContent());
             collection=(TextView)v.findViewById(R.id.collection_num);
+            collection.setText(shareitems.get(i).getStarNumber().toString());
             praise=(TextView)v.findViewById(R.id.praise_num);
+            praise.setText(shareitems.get(i).getPraiseNumber().toString());
             comment=(TextView)v.findViewById(R.id.comment_num);
             mCardview=(CardView)v.findViewById(R.id.card_view_share);
 

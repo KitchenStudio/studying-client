@@ -38,6 +38,17 @@ public class Item implements Serializable{
 
 	private Long starNumber;
 
+    public Long getPraiseNumber() {
+        return praiseNumber;
+    }
+
+    public void setPraiseNumber(Long praiseNumber) {
+        this.praiseNumber = praiseNumber;
+    }
+
+    private Long praiseNumber;
+
+
 
 	private User owner;
 
@@ -50,7 +61,15 @@ public class Item implements Serializable{
 		createdTime = new Date();
 	}
 
+    private String subject;
 
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
 
 
 

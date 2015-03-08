@@ -16,14 +16,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.xiner.R;
 import com.example.xiner.activity.PublicDocActivity;
 import com.example.xiner.adapter.ShareAdapter;
-import com.example.xiner.net.Network;
-import com.example.xiner.util.HttpUtil;
+import com.example.xiner.entity.Item;
+import com.example.xiner.net.ShareNetwork;
 import com.example.xiner.view.RefreshLayout;
+
+import java.util.ArrayList;
 
 /**
  * Created by xiner on 14-12-20.
@@ -31,25 +32,29 @@ import com.example.xiner.view.RefreshLayout;
 public class ShareFragment extends Fragment{
     LinearLayoutManager mLayoutManager;
     RefreshLayout swipeRefreshLayout;
-    Network network;
+    ShareNetwork shareNetwork;
+    private String TAG="ShareFragment";
+    ArrayList<Item> shareItemlist = new ArrayList<>();
+    ShareAdapter shareAdapter;
+    RefreshListener listener;
+    RecyclerView mRecyclerView;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_share,null);
-        RecyclerView mRecyclerView = (RecyclerView)view.findViewById(R.id.recyclerView_share);
+        mRecyclerView = (RecyclerView)view.findViewById(R.id.recyclerView_share);
         swipeRefreshLayout = (RefreshLayout)view.findViewById(R.id.swipe_refresh);
-        swipeRefreshLayout.setOnRefreshListener(new RefreshListener());
-        swipeRefreshLayout.setOnLoadListener(new mLoadListener());
 
+        swipeRefreshLayout.setOnRefreshListener(new RefreshListener());
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_red_light, android.R.color.holo_green_light,
                 android.R.color.holo_blue_bright, android.R.color.holo_orange_light);
+
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-
-        mRecyclerView.setAdapter(new ShareAdapter(getActivity()));
-
-        network.getSharelist();
+        shareAdapter = new ShareAdapter(getActivity(),shareItemlist);
+        mRecyclerView.setAdapter(shareAdapter);
+        shareNetwork  = new ShareNetwork(getActivity(),shareAdapter,shareItemlist,swipeRefreshLayout);
 
         return view;
     }
@@ -61,23 +66,19 @@ public class ShareFragment extends Fragment{
         setHasOptionsMenu(true);
     }
 
+
+
+
     private class RefreshListener implements SwipeRefreshLayout.OnRefreshListener{
 
         @Override
         public void onRefresh() {
-            Toast.makeText(getActivity(),"refresh",Toast.LENGTH_SHORT).show();
+            shareNetwork.getSharelist();
+
 
         }
+
     }
-    class mLoadListener implements RefreshLayout.OnLoadListener{
-
-
-        @Override
-        public void onLoad() {
-            Toast.makeText(getActivity(),"load",Toast.LENGTH_SHORT).show();
-        }
-    }
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -134,10 +135,13 @@ public class ShareFragment extends Fragment{
                     Intent intent = new Intent();
                     intent.setClass(getActivity(),PublicDocActivity.class);
                     getActivity().startActivity(intent);
+
                     return false;
                 }
             });
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
+
+
 }
