@@ -26,7 +26,7 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
     private static final String TAG = "ShareAdapter";
     Context mContext;
     ArrayList<Item>shareitems;
-    int i;
+
     public ShareAdapter(Context context, ArrayList<Item> shareitems){
         this.mContext=context;
         this.shareitems = shareitems;
@@ -35,16 +35,22 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        this.i = i;
+
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.list_share, viewGroup, false);
-        ViewHolder vh = new ViewHolder(view,i);
+        ViewHolder vh = new ViewHolder(view);
         return vh;
 
     }
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int i) {
+        viewHolder.subject.setText(shareitems.get(i).getSubject());
+        viewHolder.time.setText(shareitems.get(i).getCreatedTime().toString());
+        viewHolder.nickname.setText(shareitems.get(i).getOwner().getNickname());
+        viewHolder.detail.setText(shareitems.get(i).getContent());
+        viewHolder.collection.setText(shareitems.get(i).getStarNumber().toString());
+        viewHolder.praise.setText(shareitems.get(i).getPraiseNumber().toString());
         viewHolder.mCardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,20 +87,20 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
 
 
 
-        public ViewHolder(View v,int i) {
+        public ViewHolder(View v) {
             super(v);
             subject=(TextView)v.findViewById(R.id.subject);
-            subject.setText(shareitems.get(i).getSubject());
+
             time=(TextView)v.findViewById(R.id.time);
-            time.setText(shareitems.get(i).getCreatedTime().toString());
+
             nickname=(TextView)v.findViewById(R.id.nickname);
-            nickname.setText(shareitems.get(i).getOwner().getNickname());
+
             detail=(TextView)v.findViewById(R.id.detail);
-            detail.setText(shareitems.get(i).getContent());
+
             collection=(TextView)v.findViewById(R.id.collection_num);
-            collection.setText(shareitems.get(i).getStarNumber().toString());
+
             praise=(TextView)v.findViewById(R.id.praise_num);
-            praise.setText(shareitems.get(i).getPraiseNumber().toString());
+
             comment=(TextView)v.findViewById(R.id.comment_num);
             mCardview=(CardView)v.findViewById(R.id.card_view_share);
 

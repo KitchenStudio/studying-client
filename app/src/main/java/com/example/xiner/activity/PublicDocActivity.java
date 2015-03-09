@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,6 +38,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -65,22 +68,20 @@ public class PublicDocActivity extends ActionBarActivity {
     boolean mStartRecording = true;
     PublicDocNetwork publicDocNetwork;
     ArrayList<CustomGallery> dataT;
-    EditText shareContentedit;
+    EditText shareContentedit,subjectEdit;
     ArrayList<String> allPictures = new ArrayList<>();
+    private String single_path;
 
-
-
-
-    public PublicDocActivity() {
-        mFileName = Environment.getExternalStorageDirectory().getAbsolutePath() + "/audiorecordxueyou.3gp";
-        publicDocNetwork = new PublicDocNetwork();
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_public_doc);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        mFileName = Environment.getExternalStorageDirectory().getAbsolutePath() + "/audiorecordxueyou.3gp";
+        publicDocNetwork = new PublicDocNetwork(this);
         initImageLoader();
         init();
     }
@@ -95,11 +96,20 @@ public class PublicDocActivity extends ActionBarActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
-                publicDocNetwork.uploadshare(getAlllist(), shareContentedit.getText().toString(), "大一年级", "数据结构");
+                publicDocNetwork.uploadshare(getAlllist(), shareContentedit.getText().toString(),subjectEdit.getText().toString() );
                 return false;
             }
         });
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (android.R.id.home==item.getItemId()){
+            finish();
+            return false;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -111,7 +121,7 @@ public class PublicDocActivity extends ActionBarActivity {
         handler = new Handler();
 
         shareContentedit = (EditText) findViewById(R.id.sharecontent_edit);
-
+        subjectEdit =(EditText)findViewById(R.id.subject_edit);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView_uploadfile);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -268,12 +278,14 @@ public class PublicDocActivity extends ActionBarActivity {
             String state = Environment.getExternalStorageState();
             if (state.equals(Environment.MEDIA_MOUNTED)) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "head.png")));
+//                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.getExternalStorageDirectory(),"takepic.png")));
                 startActivityForResult(intent, 2);
             }
 
         }
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -293,23 +305,30 @@ public class PublicDocActivity extends ActionBarActivity {
             case 2:
 //                返回的拍照的结果
                 if (resultCode == RESULT_OK) {
-                    gridGallerycard = (CardView) findViewById(R.id.public_card_uploadpic);
-                    gridGallerycard.setVisibility(View.VISIBLE);
-                    GridView gridView = (GridView) findViewById(R.id.gridGallery);
-                    gridView.setFastScrollEnabled(true);
-                    adapter = new GalleryAdapter(getApplicationContext(), imageLoader);
-                    adapter.setActionMultiplePick(false);
-                    gridView.setAdapter(adapter);
-                    adapter.clear();
-                    viewSwitcher.setDisplayedChild(1);
-                    String single_path = Environment.getExternalStorageDirectory() + "/head.png";
-                    imageLoader.displayImage("file://" + single_path, imgSinglePick);
-                    if (single_path != null) {
-                        allPictures.clear();
+                    String sdStatus = Environment.getExternalStorageState();
+                    if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
 
-                        allPictures.add("file://" + single_path);
+                        return;
+                    }
+
+                    Bundle bundle = data.getExtras();
+                    Bitmap bitmap = bundle.getParcelable("data");// 获取相机返回的数据，并转换为Bitmap图片格式
+                    if (bitmap != null) {
+
+
+                        gridGallerycard = (CardView) findViewById(R.id.public_card_uploadpic);
+                        gridGallerycard.setVisibility(View.VISIBLE);
+                        viewSwitcher.setDisplayedChild(1);
+                        single_path = Environment.getExternalStorageDirectory() + "/xueyou/takepic.jpg";
+                        imgSinglePick.setImageBitmap(bitmap);
+                        if (single_path != null) {
+                            allPictures.clear();
+                            allPictures.add("file://" + single_path);
+                        }
+                        setPicToView(bitmap);
                     }
                 }
+
                 break;
             case 3:
                 //返回的选择的图片的结果
@@ -348,6 +367,37 @@ public class PublicDocActivity extends ActionBarActivity {
         }
 
 
+    }
+
+    //保存头像
+    private void setPicToView(Bitmap mBitmap) {
+        Log.v(TAG,"保存");
+        String sdStatus = Environment.getExternalStorageState();
+        if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
+            return;
+        }
+        FileOutputStream b = null;
+        String single_path = Environment.getExternalStorageDirectory()+"/xueyou";
+        File file = new File(single_path);
+        file.mkdirs();// 创建文件夹
+        String fileName = single_path + "/takepic.jpg";// 图片名字
+        Log.v(TAG,fileName+"filename");
+        try {
+            b = new FileOutputStream(fileName);
+            mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);// 把数据写入文件
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                // 关闭流
+                b.flush();
+                b.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     //开始录音

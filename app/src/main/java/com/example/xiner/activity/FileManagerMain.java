@@ -27,6 +27,8 @@ import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -152,6 +154,19 @@ public final class FileManagerMain extends ActionBarActivity {
 
             }
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+       if(android.R.id.home == item.getItemId()){
+           finish();
+
+           return false;
+       }
+
+
+           return super.onOptionsItemSelected(item);
     }
 
     @Override

@@ -14,38 +14,25 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <android.support.v7.widget.CardView
 
-                android:id="@+id/public_select_card"
+            <LinearLayout
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                android:layout_marginTop="5dp"
-                card_view:cardCornerRadius="4dp">
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/subject"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_margin="20dp"
-                    android:text="请选择年级和科目"
-                    android:textSize="7pt" />
+                    android:text="科目：" />
 
-            </android.support.v7.widget.CardView>
-            <!--  <android.support.v7.widget.CardView
-
-                  android:id="@+id/public_card_detail"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:layout_marginBottom="5dp"
-                  android:layout_marginTop="5dp"
-                  android:layout_marginLeft="2dp"
-                  android:layout_marginRight="2dp"
-
-                  card_view:cardCornerRadius="4dp">-->
+                <EditText
+                    android:id="@+id/subject_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/sharecontent_edit"
@@ -106,8 +93,7 @@
                     android:layout_height="100dp"
                     android:layout_gravity="center_horizontal|center_vertical"
                     android:layout_marginBottom="30dp"
-                    android:layout_marginTop="30dp"
-                    android:src="@drawable/camera" />
+                    android:layout_marginTop="30dp" />
 
             </android.support.v7.widget.CardView>
 
@@ -144,8 +130,6 @@
             </ViewSwitcher>
 
 
-
-
             <!--  <Button
                   android:id="@+id/upserver_button"
                   android:layout_width="match_parent"
@@ -179,8 +163,8 @@
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="10dp"
+            android:orientation="horizontal"
 
             >
 
@@ -217,30 +201,29 @@
 
         <ImageView
             android:id="@+id/record_press"
-            android:visibility="gone"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="70dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
             android:src="@drawable/record"
-            />
+            android:visibility="gone" />
+
         <ImageView
             android:id="@+id/record_pressstart"
-            android:visibility="gone"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="70dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
             android:src="@drawable/recordstart"
-            />
+            android:visibility="gone" />
+
         <ImageView
             android:id="@+id/record_pressover"
-            android:visibility="gone"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="70dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
             android:src="@drawable/recordover"
-            />
+            android:visibility="gone" />
     </LinearLayout>
 </RelativeLayout>

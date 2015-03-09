@@ -26,7 +26,7 @@ import java.util.Set;
  * Created by xiner on 15-3-8.
  */
 public class ShareNetwork  {
-    public static final String getshareList = "http://211.87.226.208:8080/api/v1/item";
+    public static final String getshareList = "http://211.87.226.178:8080/api/v1/item";
 
     private static String TAG = "ShareNetwork";
     Context context;
