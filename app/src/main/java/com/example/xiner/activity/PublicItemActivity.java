@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -45,7 +44,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class PublicDocActivity extends ActionBarActivity {
+public class PublicItemActivity extends ActionBarActivity {
     private ImageView uploadFile;
     private String TAG = "PublicDocActiviy";
     ImageLoader imageLoader;
@@ -77,10 +76,7 @@ public class PublicDocActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_public_doc);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setDisplayShowCustomEnabled(true);
-//        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        setContentView(R.layout.activity_public_item);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -187,9 +183,9 @@ public class PublicDocActivity extends ActionBarActivity {
             }
             onRecord(mStartRecording);
             if (mStartRecording) {
-                Toast.makeText(PublicDocActivity.this, "开始录音", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PublicItemActivity.this, "开始录音", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(PublicDocActivity.this, "停止录音", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PublicItemActivity.this, "停止录音", Toast.LENGTH_SHORT).show();
             }
             mStartRecording = !mStartRecording;
         }
@@ -223,9 +219,9 @@ public class PublicDocActivity extends ActionBarActivity {
         public void onClick(View v) {
             onPlay(mStartPlaying);
             if (mStartPlaying) {
-                Toast.makeText(PublicDocActivity.this, "开始播放", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PublicItemActivity.this, "开始播放", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(PublicDocActivity.this, "停止播放", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PublicItemActivity.this, "停止播放", Toast.LENGTH_SHORT).show();
             }
             mStartPlaying = !mStartPlaying;
 
@@ -255,7 +251,7 @@ public class PublicDocActivity extends ActionBarActivity {
         @Override
         public void onClick(View v) {
             Intent intent = new Intent();
-            intent.setClass(PublicDocActivity.this, FileManagerMain.class);
+            intent.setClass(PublicItemActivity.this, FileManagerActivity.class);
             startActivityForResult(intent, 1);
         }
     }

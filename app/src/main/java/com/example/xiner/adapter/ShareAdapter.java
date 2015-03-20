@@ -2,34 +2,23 @@ package com.example.xiner.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Network;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.xiner.R;
-import com.example.xiner.activity.DetailShareActivity;
+import com.example.xiner.activity.ShareDetailActivity;
 import com.example.xiner.entity.Item;
 import com.example.xiner.fragment.ShareFragment;
 import com.example.xiner.net.ShareNetwork;
-import com.example.xiner.util.HttpUtil;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 
-import org.apache.http.Header;
-import org.json.JSONArray;
-
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.zip.CRC32;
 
 /**
  * Created by xiner on 14-12-21.
@@ -72,8 +61,8 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
         if (shareitems.size() != 0 && i < shareitems.size()) {
 
             viewHolder.subject.setText(shareitems.get(i).getSubject());
-
-            viewHolder.time.setText(shareitems.get(i).getCreatedTime().toString());
+            SimpleDateFormat myFmt2=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            viewHolder.time.setText(myFmt2.format(shareitems.get(i).getCreatedTime()));
             viewHolder.nickname.setText(shareitems.get(i).getOwner().getNickname());
             viewHolder.detail.setText(shareitems.get(i).getContent());
 
@@ -86,7 +75,7 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
                     intent.putExtra("subject", "科目是");
                     intent.putExtra("time", "时间是");
                     intent.putExtra("nickname", "昵称是");
-                    intent.setClass(mContext, DetailShareActivity.class);
+                    intent.setClass(mContext, ShareDetailActivity.class);
                     mContext.startActivity(intent);
                 }
             });

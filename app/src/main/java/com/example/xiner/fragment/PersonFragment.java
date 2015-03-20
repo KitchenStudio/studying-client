@@ -48,7 +48,7 @@ public class PersonFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.activity_individualcenter,null);
+        View view = inflater.inflate(R.layout.fragment_person,null);
         String nicknametext= AppBase.getApp().getDataStore().getString("nickname","昵称");
         String sextext=AppBase.getApp().getDataStore().getString("sex","性别");
         String academytext=AppBase.getApp().getDataStore().getString("academy","学院");

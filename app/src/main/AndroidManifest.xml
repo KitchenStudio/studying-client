@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.PublicDocActivity"
+            android:name=".activity.PublicItemActivity"
             android:label="@string/title_activity_public_doc"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait" >
@@ -62,12 +62,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.DetailShareActivity"
+            android:name=".activity.ShareDetailActivity"
             android:label="@string/title_activity_detail_share"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".activity.FileManagerMain" />
+        <activity android:name=".activity.FileManagerActivity" />
         <activity android:name=".activity.CustomGalleryActivity" >
             <intent-filter>
                 <action android:name="luminous.ACTION_PICK" />

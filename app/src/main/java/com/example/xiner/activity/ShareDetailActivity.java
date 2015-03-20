@@ -16,7 +16,7 @@ import com.example.xiner.adapter.ShareCommentAdapter;
 /**
  * Created by xiner on 14-12-22.
  */
-public class DetailShareActivity extends ActionBarActivity {
+public class ShareDetailActivity extends ActionBarActivity {
     private static final String TAG = "DetailShareActivity";
     private RecyclerView.LayoutManager mLayoutManager;
     Toolbar toolbar;

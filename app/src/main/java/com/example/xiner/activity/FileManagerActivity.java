@@ -28,7 +28,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -63,7 +62,7 @@ import java.util.ArrayList;
  *
  * @author Joe Berria
  */
-public final class FileManagerMain extends ActionBarActivity {
+public final class FileManagerActivity extends ActionBarActivity {
     public static final String ACTION_WIDGET = "com.nexes.manager.Main.ACTION_WIDGET";
 
     private static final String PREFS_NAME = "ManagerPrefsFile";    //user preference file name
@@ -91,7 +90,7 @@ public final class FileManagerMain extends ActionBarActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.filemanagermain);
+        setContentView(R.layout.activity_filemanager);
         ListView listView = (ListView) findViewById(android.R.id.list);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -115,9 +114,9 @@ public final class FileManagerMain extends ActionBarActivity {
         mFileMag.setSortType(sort);
 
         if (savedInstanceState != null)
-            mHandler = new EventHandler(FileManagerMain.this, mFileMag, savedInstanceState.getString("location"));
+            mHandler = new EventHandler(FileManagerActivity.this, mFileMag, savedInstanceState.getString("location"));
         else
-            mHandler = new EventHandler(FileManagerMain.this, mFileMag);
+            mHandler = new EventHandler(FileManagerActivity.this, mFileMag);
 
         mHandler.setTextColor(color);
         mHandler.setShowThumbnails(thumb);
@@ -202,7 +201,7 @@ public final class FileManagerMain extends ActionBarActivity {
         public void onClick(View v) {
             if(mHandler.isMulti_select_flag()) {
                 mHandler.getmDelegate().killMultiSelect(true);
-                Toast.makeText(FileManagerMain.this, "Multi-select is now off",
+                Toast.makeText(FileManagerActivity.this, "Multi-select is now off",
                         Toast.LENGTH_SHORT).show();
             }
             mHandler.stopThumbnailThread();
@@ -221,7 +220,7 @@ public final class FileManagerMain extends ActionBarActivity {
             if (mHandler.mFileMang.getCurrentDir() != "/") {
                 if(mHandler.isMulti_select_flag()) {
                     mHandler.getmDelegate().killMultiSelect(true);
-                    Toast.makeText(FileManagerMain.this, "Multi-select is now off",
+                    Toast.makeText(FileManagerActivity.this, "Multi-select is now off",
                             Toast.LENGTH_SHORT).show();
                 }
 
@@ -254,7 +253,7 @@ public final class FileManagerMain extends ActionBarActivity {
                 }
                 ArrayList<String> uris = new ArrayList<String>();
                 int length = mHandler.getmMultiSelectData().size();
-                Intent mail_int = new Intent(FileManagerMain.this,PublicDocActivity.class);
+                Intent mail_int = new Intent(FileManagerActivity.this,PublicItemActivity.class);
                 for(int i = 0; i < length; i++) {
                     File file = new File(mHandler.getmMultiSelectData().get(i));
                     Log.v(TAG,Uri.fromFile(file).toString());
@@ -277,7 +276,7 @@ public final class FileManagerMain extends ActionBarActivity {
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
             multi = true;
             mTable.notifyDataSetChanged();
-            Toast.makeText(FileManagerMain.this, "box", Toast.LENGTH_SHORT).show();
+            Toast.makeText(FileManagerActivity.this, "box", Toast.LENGTH_SHORT).show();
 
             return true;
         }
@@ -324,7 +323,7 @@ public final class FileManagerMain extends ActionBarActivity {
                             mUseBackKey = true;
 
                     } else {
-                        Toast.makeText(FileManagerMain.this, "Can't read folder due to permissions",
+                        Toast.makeText(FileManagerActivity.this, "Can't read folder due to permissions",
                                 Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -413,7 +412,7 @@ public final class FileManagerMain extends ActionBarActivity {
                             try {
                                 startActivity(pdfIntent);
                             } catch (ActivityNotFoundException e) {
-                                Toast.makeText(FileManagerMain.this, "Sorry, couldn't find a pdf viewer",
+                                Toast.makeText(FileManagerActivity.this, "Sorry, couldn't find a pdf viewer",
                                         Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -451,7 +450,7 @@ public final class FileManagerMain extends ActionBarActivity {
                             try {
                                 startActivity(htmlIntent);
                             } catch (ActivityNotFoundException e) {
-                                Toast.makeText(FileManagerMain.this, "Sorry, couldn't find a HTML viewer",
+                                Toast.makeText(FileManagerActivity.this, "Sorry, couldn't find a HTML viewer",
                                         Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -494,7 +493,7 @@ public final class FileManagerMain extends ActionBarActivity {
                             try {
                                 startActivity(generic);
                             } catch (ActivityNotFoundException e) {
-                                Toast.makeText(FileManagerMain.this, "Sorry, couldn't find anything " +
+                                Toast.makeText(FileManagerActivity.this, "Sorry, couldn't find anything " +
                                                 "to open " + file.getName(),
                                         Toast.LENGTH_SHORT).show();
                             }
@@ -562,7 +561,7 @@ public final class FileManagerMain extends ActionBarActivity {
         } else if (keycode == KeyEvent.KEYCODE_BACK && mUseBackKey && !current.equals("/")) {
             if (mHandler.isMultiSelected()) {
                 mTable.killMultiSelect(true);
-                Toast.makeText(FileManagerMain.this, "Multi-select is now off", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FileManagerActivity.this, "Multi-select is now off", Toast.LENGTH_SHORT).show();
 
             } else {
                 //stop updating thumbnail icons if its running
@@ -573,11 +572,11 @@ public final class FileManagerMain extends ActionBarActivity {
             return true;
 
         } else if (keycode == KeyEvent.KEYCODE_BACK && mUseBackKey && current.equals("/")) {
-            Toast.makeText(FileManagerMain.this, "Press back again to quit.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(FileManagerActivity.this, "Press back again to quit.", Toast.LENGTH_SHORT).show();
 
             if (mHandler.isMultiSelected()) {
                 mTable.killMultiSelect(true);
-                Toast.makeText(FileManagerMain.this, "Multi-select is now off", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FileManagerActivity.this, "Multi-select is now off", Toast.LENGTH_SHORT).show();
             }
 
             mUseBackKey = false;

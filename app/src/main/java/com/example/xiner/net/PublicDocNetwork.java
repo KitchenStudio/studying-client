@@ -5,31 +5,18 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.xiner.activity.PublicDocActivity;
-import com.example.xiner.entity.FileItem;
-import com.example.xiner.entity.Item;
-import com.example.xiner.entity.User;
-import com.example.xiner.fragment.ShareFragment;
 import com.example.xiner.util.HttpUtil;
 import com.example.xiner.util.LoadingDialog;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
 /**
  * Created by xiner on 15-1-27.

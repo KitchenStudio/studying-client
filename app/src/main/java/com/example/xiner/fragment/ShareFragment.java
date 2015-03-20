@@ -19,7 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.xiner.R;
-import com.example.xiner.activity.PublicDocActivity;
+import com.example.xiner.activity.PublicItemActivity;
 import com.example.xiner.adapter.ShareAdapter;
 import com.example.xiner.entity.Item;
 import com.example.xiner.main.AppBase;
@@ -33,7 +33,6 @@ import org.apache.http.Header;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by xiner on 14-12-20.
@@ -203,7 +202,7 @@ public class ShareFragment extends Fragment{
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     Intent intent = new Intent();
-                    intent.setClass(getActivity(),PublicDocActivity.class);
+                    intent.setClass(getActivity(),PublicItemActivity.class);
                     getActivity().startActivity(intent);
 
                     return false;

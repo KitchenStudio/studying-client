@@ -111,12 +111,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp">
+                <GridView
+                    android:id="@+id/gridGallery"
+                    android:layout_width="fill_parent"
+                    android:layout_height="100dp"
+                    android:layout_gravity="top"
+                    android:layout_marginBottom="-10dp"
+                    android:layout_marginLeft="-10dp"
+                    android:layout_marginRight="-10dp"
+                    android:layout_marginTop="-10dp"
+                    android:horizontalSpacing="-15dp"
+                    android:numColumns="3"
+                    android:padding="0dp"
+                    android:verticalSpacing="-15dp"
+                    android:visibility="gone"
+                    >
+                    </GridView>
 
-                <ImageView
-                    android:id="@+id/idima_tupian"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/tupian" />
+
+                <!-- <ImageView
+                     android:id="@+id/idima_tupian"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:src="@drawable/tupian" />-->
             </RelativeLayout>
 
             <TextView
