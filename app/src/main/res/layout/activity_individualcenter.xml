@@ -177,6 +177,7 @@
                         android:layout_toRightOf="@id/message1"
                         android:layout_margin="10dp"
                         android:textSize="9pt"
+
                         android:text="我的消息" />
 
                     <ImageView

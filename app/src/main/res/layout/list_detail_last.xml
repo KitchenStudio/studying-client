@@ -3,7 +3,7 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:id="@+id/last_linear">
     <TextView
-        android:id="@+id/text_last"
+        android:id="@+id/loadmore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="7pt"

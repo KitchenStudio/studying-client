@@ -26,6 +26,15 @@ import com.example.xiner.adapter.CollectionAdapter;
  */
 public class CollectionFragment extends Fragment{
     LinearLayoutManager mLayoutManager;
+
+    public static CollectionFragment newInstance(int position) {
+        CollectionFragment f = new CollectionFragment();
+        Bundle b = new Bundle();
+        b.putInt("position", position);
+        f.setArguments(b);
+        return f;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);

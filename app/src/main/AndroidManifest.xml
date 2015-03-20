@@ -15,7 +15,7 @@
         android:screenOrientation="portrait"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".activity.FragmentTabsPager"
+            android:name=".activity.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -27,6 +27,7 @@
         <activity
             android:name=".activity.PublicDocActivity"
             android:label="@string/title_activity_public_doc"
+            android:theme="@style/AppTheme"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -63,6 +64,7 @@
         <activity
             android:name=".activity.DetailShareActivity"
             android:label="@string/title_activity_detail_share"
+            android:theme="@style/AppTheme"
             android:screenOrientation="portrait" >
         </activity>
         <activity android:name=".activity.FileManagerMain" />

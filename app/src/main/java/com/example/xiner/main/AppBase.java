@@ -2,8 +2,12 @@ package com.example.xiner.main;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
+
+import com.example.xiner.sqlite.SqliteBase;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,7 +18,11 @@ import java.io.IOException;
  */
 public class AppBase extends Application {
 
+    private static final String TAG ="AppBase" ;
+    SqliteBase sqliteBase;
+
     public static AppBase app;
+    SQLiteDatabase db;
 
 
    public SharedPreferences getDataStore(){
@@ -25,6 +33,8 @@ public class AppBase extends Application {
     public void onCreate() {
         super.onCreate();
         app=this;
+        sqliteBase = new SqliteBase(this,"xueyou.db",null,2);
+        sqliteBase.getWritableDatabase();
     }
 
     public static AppBase getApp(){

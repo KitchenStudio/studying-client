@@ -37,7 +37,7 @@ import java.util.Set;
 public class PublicDocNetwork {
 
     public static final String TAG = "Network";
-    public static final String uploadFile = "http://211.87.226.178:8080/api/v1/item/files";
+    public static final String uploadFile = HttpUtil.baseUrl+"/files";
     Context context;
 
     public PublicDocNetwork(Context context){

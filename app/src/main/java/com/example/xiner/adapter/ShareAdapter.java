@@ -2,6 +2,8 @@ package com.example.xiner.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Network;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,13 +12,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.xiner.R;
 import com.example.xiner.activity.DetailShareActivity;
 import com.example.xiner.entity.Item;
+import com.example.xiner.fragment.ShareFragment;
+import com.example.xiner.net.ShareNetwork;
+import com.example.xiner.util.HttpUtil;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
+
+import org.apache.http.Header;
+import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.CRC32;
 
 /**
@@ -25,86 +37,116 @@ import java.util.zip.CRC32;
 public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> {
     private static final String TAG = "ShareAdapter";
     Context mContext;
-    ArrayList<Item>shareitems;
+    ArrayList<Item> shareitems;
+    ShareNetwork shareNetwork = new ShareNetwork();
+    ShareFragment shareFragment;
 
-    public ShareAdapter(Context context, ArrayList<Item> shareitems){
-        this.mContext=context;
+    public ShareAdapter(Context context, ArrayList<Item> shareitems,ShareFragment shareFragment) {
+        this.shareFragment = shareFragment;
+        this.mContext = context;
         this.shareitems = shareitems;
-        Log.v(TAG,shareitems.size()+"sharesize");
     }
+
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
 
-        View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.list_share, viewGroup, false);
-        ViewHolder vh = new ViewHolder(view);
-        return vh;
+        Log.v(TAG, i + "type");
+        ViewHolder holder;
+        if (i == 0) {
+            View view1 = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_detail_last, viewGroup, false);
+            holder = new ViewHolder(view1);
+        } else {
+            View view = LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.list_share, viewGroup, false);
+            holder = new ViewHolder(view);
+        }
+        return holder;
 
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, final int i) {
-        viewHolder.subject.setText(shareitems.get(i).getSubject());
-        viewHolder.time.setText(shareitems.get(i).getCreatedTime().toString());
-        viewHolder.nickname.setText(shareitems.get(i).getOwner().getNickname());
-        viewHolder.detail.setText(shareitems.get(i).getContent());
-        viewHolder.collection.setText(shareitems.get(i).getStarNumber().toString());
-        viewHolder.praise.setText(shareitems.get(i).getPraiseNumber().toString());
-        viewHolder.mCardview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.putExtra("subject","科目是");
-                intent.putExtra("time","时间是");
-                intent.putExtra("nickname","昵称是");
-                intent.setClass(mContext,DetailShareActivity.class);
-                mContext.startActivity(intent);
-            }
-        });
-        // viewHolder.mTextView.setText("hello" + i);
+    public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
+        Log.v(TAG, i + "position");
+        if (shareitems.size() != 0 && i < shareitems.size()) {
 
-//        viewHolder.mCardview.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent();
-//                intent.setClass(v.getContext(), DetailShareActivity.class);
-//                v.getContext().startActivity(intent);
-//                Log.v("ShareAdapter",i+"");
-//            }
-//        });
+            viewHolder.subject.setText(shareitems.get(i).getSubject());
+
+            viewHolder.time.setText(shareitems.get(i).getCreatedTime().toString());
+            viewHolder.nickname.setText(shareitems.get(i).getOwner().getNickname());
+            viewHolder.detail.setText(shareitems.get(i).getContent());
+
+            viewHolder.collection.setText(shareitems.get(i).getStarNumber().toString());
+            viewHolder.praise.setText(shareitems.get(i).getPraiseNumber().toString());
+            viewHolder.mCardview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.putExtra("subject", "科目是");
+                    intent.putExtra("time", "时间是");
+                    intent.putExtra("nickname", "昵称是");
+                    intent.setClass(mContext, DetailShareActivity.class);
+                    mContext.startActivity(intent);
+                }
+            });
+        } else {
+            viewHolder.load.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    viewHolder.load.setClickable(false);
+
+                    shareFragment.LoadMore();
+
+                }
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
-        return shareitems.size();
+        if (shareitems.size() != 0) {
+            return shareitems.size() + 1;
+        } else {
+            return 0;
+        }
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         public CardView mCardview;
-        private  String TAG = "ViewHolder";
-        TextView subject,time,nickname,detail,collection,praise,comment;
+        private String TAG = "ViewHolder";
+        TextView subject, time, nickname, detail, collection, praise, comment;
 
-
+        TextView load;
 
         public ViewHolder(View v) {
             super(v);
-            subject=(TextView)v.findViewById(R.id.subject);
+            subject = (TextView) v.findViewById(R.id.subject);
 
-            time=(TextView)v.findViewById(R.id.time);
+            time = (TextView) v.findViewById(R.id.time);
 
-            nickname=(TextView)v.findViewById(R.id.nickname);
+            nickname = (TextView) v.findViewById(R.id.nickname);
 
-            detail=(TextView)v.findViewById(R.id.detail);
+            detail = (TextView) v.findViewById(R.id.detail);
 
-            collection=(TextView)v.findViewById(R.id.collection_num);
+            collection = (TextView) v.findViewById(R.id.collection_num);
 
-            praise=(TextView)v.findViewById(R.id.praise_num);
+            praise = (TextView) v.findViewById(R.id.praise_num);
 
-            comment=(TextView)v.findViewById(R.id.comment_num);
-            mCardview=(CardView)v.findViewById(R.id.card_view_share);
-
+            comment = (TextView) v.findViewById(R.id.comment_num);
+            mCardview = (CardView) v.findViewById(R.id.card_view_share);
+            load = (TextView) v.findViewById(R.id.loadmore);
         }
+
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (position == shareitems.size()) {
+            return 0;
+        } else {
+            return 1;
+        }
+
+    }
 }

@@ -10,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,29 +22,47 @@ import com.example.xiner.R;
 import com.example.xiner.activity.PublicDocActivity;
 import com.example.xiner.adapter.ShareAdapter;
 import com.example.xiner.entity.Item;
+import com.example.xiner.main.AppBase;
 import com.example.xiner.net.ShareNetwork;
-import com.example.xiner.view.RefreshLayout;
+import com.example.xiner.util.HttpUtil;
+
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.apache.http.Header;
+import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by xiner on 14-12-20.
  */
 public class ShareFragment extends Fragment{
     LinearLayoutManager mLayoutManager;
-    RefreshLayout swipeRefreshLayout;
-    ShareNetwork shareNetwork;
+    SwipeRefreshLayout swipeRefreshLayout;
+     ShareNetwork shareNetwork;
     private String TAG="ShareFragment";
-    ArrayList<Item> shareItemlist = new ArrayList<>();
-    ShareAdapter shareAdapter;
+     ArrayList<Item> shareItemlist = new ArrayList<>();
+     ShareAdapter shareAdapter;
     RefreshListener listener;
     RecyclerView mRecyclerView;
+
+
+    public static ShareFragment newInstance(int position) {
+        ShareFragment f = new ShareFragment();
+        Bundle b = new Bundle();
+        b.putInt("position", position);
+        f.setArguments(b);
+        return f;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_share,null);
         mRecyclerView = (RecyclerView)view.findViewById(R.id.recyclerView_share);
-        swipeRefreshLayout = (RefreshLayout)view.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipe_refresh);
 
         swipeRefreshLayout.setOnRefreshListener(new RefreshListener());
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_red_light, android.R.color.holo_green_light,
@@ -52,7 +71,7 @@ public class ShareFragment extends Fragment{
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        shareAdapter = new ShareAdapter(getActivity(),shareItemlist);
+        shareAdapter = new ShareAdapter(getActivity(),shareItemlist,ShareFragment.this);
         mRecyclerView.setAdapter(shareAdapter);
         shareNetwork  = new ShareNetwork(getActivity(),shareAdapter,shareItemlist,swipeRefreshLayout);
 
@@ -63,6 +82,7 @@ public class ShareFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.v(TAG,"onCreate");
         setHasOptionsMenu(true);
     }
 
@@ -73,13 +93,63 @@ public class ShareFragment extends Fragment{
 
         @Override
         public void onRefresh() {
-            shareNetwork.getSharelist();
+            HttpUtil.get(shareNetwork.getshareList, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+
+                    super.onSuccess(statusCode, headers, response);
+                    shareItemlist.clear();
+                    shareItemlist.addAll(shareNetwork.ParseNet(response));
+                    shareAdapter.notifyDataSetChanged();
+                    swipeRefreshLayout.setRefreshing(false);
+                    AppBase.getApp().getDataStore().edit().putInt("contentpage",0).commit();
+//                downloadFiles();
+                }
+
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    super.onFailure(statusCode, headers, responseString, throwable);
+                    Log.v(TAG, statusCode + "codefailer");
+                    throwable.printStackTrace(System.out);
+                }
+            });
 
 
         }
 
     }
 
+    public  void LoadMore(){
+
+        RequestParams params = new RequestParams();
+        int contentPage = AppBase.getApp().getDataStore().getInt("contentpage",0);
+        contentPage++;
+        params.put("number",contentPage);
+        final int finalContentPage = contentPage;
+        Log.v(TAG,finalContentPage+"content");
+        HttpUtil.post(shareNetwork.loadmoreurl, params, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                super.onSuccess(statusCode, headers, response);
+                ArrayList<Item> listitem = shareNetwork.ParseNet(response);
+                shareItemlist.addAll(listitem);
+                shareAdapter.notifyDataSetChanged();
+                AppBase.getApp().getDataStore().edit().putInt("contentpage", finalContentPage).commit();
+
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                throwable.printStackTrace(System.out);
+                Log.v(TAG, "failer");
+            }
+        });
+
+    }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 

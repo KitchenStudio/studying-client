@@ -72,6 +72,8 @@ public abstract class FileAsyncHttpResponseHandler extends AsyncHttpResponseHand
         this.append = false;
     }
 
+
+
     /**
      * Attempts to delete file with stored response
      *

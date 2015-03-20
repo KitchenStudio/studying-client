@@ -21,6 +21,7 @@ import com.example.xiner.fragment.PersonFragment;
 import com.example.xiner.main.AppBase;
 
 import com.example.xiner.R;
+import com.example.xiner.net.InfoNet;
 import com.example.xiner.view.CircularImage;
 
 import java.io.File;
@@ -75,6 +76,16 @@ public class EditInfoActivity extends ActionBarActivity {
 
         @Override
         public void onClick(View v) {
+
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    InfoNet infoNet = new InfoNet();
+                    infoNet.uploadFile(path + "head.jpg");
+                }
+            }).start();
+
             if(nickname.getText()==null || sex.getText()==null || academy.getText() ==null || grade.getText() ==null){
                 Toast.makeText(EditInfoActivity.this,"请将信息填写完整",Toast.LENGTH_SHORT).show();
             }else {
@@ -148,6 +159,8 @@ public class EditInfoActivity extends ActionBarActivity {
         intent.putExtra("outputY", 150);
         intent.putExtra("return-data", true);
         startActivityForResult(intent, 3);
+
+
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

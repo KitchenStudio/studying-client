@@ -32,6 +32,14 @@ public class PersonFragment extends Fragment {
     ImageView sexImage;
     TextView nickname,academy,grade;
 
+    public static PersonFragment newInstance(int position) {
+        PersonFragment f = new PersonFragment();
+        Bundle b = new Bundle();
+        b.putInt("position", position);
+        f.setArguments(b);
+        return f;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
