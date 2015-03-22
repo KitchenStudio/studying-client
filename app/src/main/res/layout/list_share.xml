@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="年级"
+                android:text="昵称"
                 android:textSize="7pt"/>
 
             <TextView
@@ -59,25 +59,8 @@
                 android:textSize="9pt" />
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp">
 
-            <ImageView
-                android:id="@+id/idima_tupian"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/tupian" />
-        </RelativeLayout>
-        <TextView
-            android:id="@+id/filename"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/filename"
-            android:textColor="@color/blue"
-            android:layout_margin="4dp"
-            android:textSize="7pt"/>
+
 
         <RelativeLayout
             android:layout_width="match_parent"

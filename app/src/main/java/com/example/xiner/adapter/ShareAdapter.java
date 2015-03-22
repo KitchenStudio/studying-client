@@ -2,6 +2,7 @@ package com.example.xiner.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,10 +13,17 @@ import android.widget.TextView;
 
 import com.example.xiner.R;
 import com.example.xiner.activity.ShareDetailActivity;
-import com.example.xiner.entity.Item;
+import com.example.xiner.entity.DetailItem;
+import com.example.xiner.entity.ListItem;
 import com.example.xiner.fragment.ShareFragment;
 import com.example.xiner.net.ShareNetwork;
+import com.example.xiner.util.HttpUtil;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
+
+import org.apache.http.Header;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,11 +34,11 @@ import java.util.ArrayList;
 public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> {
     private static final String TAG = "ShareAdapter";
     Context mContext;
-    ArrayList<Item> shareitems;
+    ArrayList<ListItem> shareitems;
     ShareNetwork shareNetwork = new ShareNetwork();
     ShareFragment shareFragment;
 
-    public ShareAdapter(Context context, ArrayList<Item> shareitems,ShareFragment shareFragment) {
+    public ShareAdapter(Context context, ArrayList<ListItem> shareitems,ShareFragment shareFragment) {
         this.shareFragment = shareFragment;
         this.mContext = context;
         this.shareitems = shareitems;
@@ -63,20 +71,51 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
             viewHolder.subject.setText(shareitems.get(i).getSubject());
             SimpleDateFormat myFmt2=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             viewHolder.time.setText(myFmt2.format(shareitems.get(i).getCreatedTime()));
-            viewHolder.nickname.setText(shareitems.get(i).getOwner().getNickname());
+            viewHolder.nickname.setText(shareitems.get(i).getNickname());
             viewHolder.detail.setText(shareitems.get(i).getContent());
 
-            viewHolder.collection.setText(shareitems.get(i).getStarNumber().toString());
-            viewHolder.praise.setText(shareitems.get(i).getPraiseNumber().toString());
+            viewHolder.collection.setText("("+shareitems.get(i).getStars().toString()+")");
+            viewHolder.praise.setText("("+shareitems.get(i).getUps().toString()+")");
+            viewHolder.comment.setText("("+shareitems.get(i).getComments().toString()+")");
+
+
             viewHolder.mCardview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent();
-                    intent.putExtra("subject", "科目是");
-                    intent.putExtra("time", "时间是");
-                    intent.putExtra("nickname", "昵称是");
-                    intent.setClass(mContext, ShareDetailActivity.class);
-                    mContext.startActivity(intent);
+                    Long id = shareitems.get(i).getId();
+//                    RequestParams params = new RequestParams();
+                        Log.v(TAG,id+"ididid");
+                    HttpUtil.get(shareNetwork.getitemdetail+"/"+id, new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                            super.onSuccess(statusCode, headers, response);
+                            DetailItem item = shareNetwork.ParseNet(response);
+                            Log.v(TAG,item.getUserFigure()+"firgure");
+                            Intent intent = new Intent();
+                            intent.putExtra("subject", shareitems.get(i).getSubject());
+
+                            SimpleDateFormat myFmt2=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            String time =myFmt2.format(shareitems.get(i).getCreatedTime());
+
+                            intent.putExtra("time", time);
+                            intent.putExtra("nickname", shareitems.get(i).getNickname());
+                            intent.putExtra("content",shareitems.get(i).getContent());
+                            intent.putExtra("praiseNum",shareitems.get(i).getUps().toString());
+                            intent.putExtra("collectionNum",shareitems.get(i).getStars().toString());
+                            intent.putExtra("comments",shareitems.get(i).getComments().toString());
+                            intent.setClass(mContext, ShareDetailActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("detailitem",item);
+                            intent.putExtras(bundle);
+                            mContext.startActivity(intent);
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                            super.onFailure(statusCode, headers, responseString, throwable);
+                        }
+                    });
+
                 }
             });
         } else {

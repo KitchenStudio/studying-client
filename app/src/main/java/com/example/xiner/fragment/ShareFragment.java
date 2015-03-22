@@ -21,7 +21,8 @@ import android.view.ViewGroup;
 import com.example.xiner.R;
 import com.example.xiner.activity.PublicItemActivity;
 import com.example.xiner.adapter.ShareAdapter;
-import com.example.xiner.entity.Item;
+
+import com.example.xiner.entity.ListItem;
 import com.example.xiner.main.AppBase;
 import com.example.xiner.net.ShareNetwork;
 import com.example.xiner.util.HttpUtil;
@@ -42,7 +43,7 @@ public class ShareFragment extends Fragment{
     SwipeRefreshLayout swipeRefreshLayout;
      ShareNetwork shareNetwork;
     private String TAG="ShareFragment";
-     ArrayList<Item> shareItemlist = new ArrayList<>();
+     ArrayList<ListItem> shareItemlist = new ArrayList<>();
      ShareAdapter shareAdapter;
     RefreshListener listener;
     RecyclerView mRecyclerView;
@@ -102,7 +103,6 @@ public class ShareFragment extends Fragment{
                     shareAdapter.notifyDataSetChanged();
                     swipeRefreshLayout.setRefreshing(false);
                     AppBase.getApp().getDataStore().edit().putInt("contentpage",0).commit();
-//                downloadFiles();
                 }
 
 
@@ -124,15 +124,15 @@ public class ShareFragment extends Fragment{
         RequestParams params = new RequestParams();
         int contentPage = AppBase.getApp().getDataStore().getInt("contentpage",0);
         contentPage++;
-        params.put("number",contentPage);
+        params.put("page",contentPage);
         final int finalContentPage = contentPage;
         Log.v(TAG,finalContentPage+"content");
-        HttpUtil.post(shareNetwork.loadmoreurl, params, new JsonHttpResponseHandler() {
+        HttpUtil.get(shareNetwork.getshareList, params, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
-                ArrayList<Item> listitem = shareNetwork.ParseNet(response);
+                ArrayList<ListItem> listitem = shareNetwork.ParseNet(response);
                 shareItemlist.addAll(listitem);
                 shareAdapter.notifyDataSetChanged();
                 AppBase.getApp().getDataStore().edit().putInt("contentpage", finalContentPage).commit();

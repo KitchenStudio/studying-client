@@ -1,110 +1,130 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+    android:orientation="vertical"
+    android:layout_height="match_parent">
 
-<RelativeLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.example.xiner.activity.EditInfoActivity">
-
-
-    <com.example.xiner.view.CircularImage
-        android:id="@+id/edit_cover_user_photo"
-        android:layout_width="74.0dip"
-        android:layout_height="74.0dip"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp"
-        android:src="@drawable/tupian" />
-
-    <LinearLayout
-        android:id="@+id/eidt_name_lay"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/edit_cover_user_photo"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        >
+        android:background="?attr/colorPrimaryDark"
 
+        />
 
-    <TextView android:text="@string/edit_name_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-        <EditText
-            android:id="@+id/nickname_edit"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/edit_academy_lay"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/eidt_name_lay"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        >
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            tools:context="com.example.xiner.activity.EditInfoActivity">
 
 
-        <TextView android:text="@string/edit_academy_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <EditText
-            android:id="@+id/academy_edit"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            <com.example.xiner.view.CircularImage
+                android:id="@+id/edit_cover_user_photo"
+                android:layout_width="74.0dip"
+                android:layout_height="74.0dip"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="25dp"
+                android:src="@drawable/tupian" />
 
-    <LinearLayout
-        android:id="@+id/edit_grade_lay"
-        android:layout_below="@+id/edit_academy_lay"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        >
+            <LinearLayout
+                android:id="@+id/eidt_name_lay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edit_cover_user_photo"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
 
 
-        <TextView android:text="@string/edit_grade_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <EditText
-            android:id="@+id/grade_edit"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/edit_sex_lay"
-        android:layout_below="@+id/edit_grade_lay"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/edit_name_text" />
+
+                <EditText
+                    android:id="@+id/nickname_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/edit_academy_lay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/eidt_name_lay"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
 
 
-        <TextView android:text="@string/edit_sex_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <EditText
-            android:id="@+id/sex_edit"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/edit_academy_text" />
 
-    <Button
-        android:id="@+id/save_button"
-        android:layout_below="@+id/edit_sex_lay"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/saveedit"/>
-</RelativeLayout>
-</ScrollView>
+                <EditText
+                    android:id="@+id/academy_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/edit_grade_lay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edit_academy_lay"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/edit_grade_text" />
+
+                <EditText
+                    android:id="@+id/grade_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/edit_sex_lay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edit_grade_lay"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/edit_sex_text" />
+
+                <EditText
+                    android:id="@+id/sex_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/save_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edit_sex_lay"
+                android:layout_marginTop="10dp"
+                android:text="@string/saveedit" />
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>

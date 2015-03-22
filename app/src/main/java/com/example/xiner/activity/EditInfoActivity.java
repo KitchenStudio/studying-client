@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,10 +36,17 @@ public class EditInfoActivity extends ActionBarActivity {
     Button saveButton;
     EditText nickname,sex,academy,grade;
     private final static String path = "/sdcard/xueyou/myHead/";// sd路径
+    Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_info);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            toolbar.setNavigationIcon(R.drawable.ic_ab_drawer);
+        }
 
         String nicknametext= AppBase.getApp().getDataStore().getString("nickname","昵称");
         String sextext=AppBase.getApp().getDataStore().getString("sex","性别");

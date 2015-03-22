@@ -14,7 +14,7 @@ public class FileItem implements Serializable{
 	
 	private String type;
 
-	private Item item;
+//	private Item item;
 
 
 	
@@ -48,13 +48,13 @@ public class FileItem implements Serializable{
 		return type;
 	}
 	
-	public void setItem(Item item) {
-		this.item = item;
-	}
-	
-	public Item getItem() {
-		return item;
-	}
+//	public void setItem(Item item) {
+//		this.item = item;
+//	}
+//
+//	public Item getItem() {
+//		return item;
+//	}
 	
 	public static final String PICTURE = "PICTURE";
 	public static final String AUDIO = "AUDIO";

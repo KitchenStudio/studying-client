@@ -30,7 +30,7 @@
     <string name="savingImage">保存图片</string>
     <string name="multiface_crop_help">多裁剪帮助</string>
     <string name="btn_ok">确定</string>
-    <string name="title_activity_edit_info">EditInfoActivity</string>
+    <string name="title_activity_edit_info">修改信息</string>
     <string name="edit_name_text">昵称</string>
     <string name="edit_academy_text">专业</string>
     <string name="edit_grade_text">年级</string>

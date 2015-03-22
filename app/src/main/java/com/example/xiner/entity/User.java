@@ -41,7 +41,7 @@ public class User implements Serializable{
 	private String mail;
 	
 
-	private Set<Item> stars;
+//	private Set<Item> stars;
 	
 
 //	private Set<Item> items;
@@ -89,13 +89,13 @@ public class User implements Serializable{
 		return mail;
 	}
 	
-	public void setStars(Set<Item> stars) {
-		this.stars = stars;
-	}
-	
-	public Set<Item> getStars() {
-		return stars;
-	}
+//	public void setStars(Set<Item> stars) {
+//		this.stars = stars;
+//	}
+//
+//	public Set<Item> getStars() {
+//		return stars;
+//	}
 
 
 }
