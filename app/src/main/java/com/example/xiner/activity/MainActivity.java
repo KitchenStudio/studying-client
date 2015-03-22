@@ -89,6 +89,7 @@ public class MainActivity extends ActionBarActivity {
                         toolbar.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
                         slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
                         mDrawerLayout.closeDrawer(Gravity.START);
+
                         break;
                     case 1:
                         mDrawerList.setBackgroundColor(getResources().getColor(R.color.red));
