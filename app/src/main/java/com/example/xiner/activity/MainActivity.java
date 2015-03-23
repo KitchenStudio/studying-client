@@ -100,6 +100,7 @@ public class MainActivity extends ActionBarActivity {
                         break;
                     case 2:
                         mDrawerList.setBackgroundColor(getResources().getColor(R.color.blue));
+                        mDrawerList.setBackgroundColor(getResources().getColor(R.color.blue));
                         toolbar.setBackgroundColor(getResources().getColor(R.color.blue));
                         slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.blue));
                         mDrawerLayout.closeDrawer(Gravity.START);

@@ -16,14 +16,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
-
-import com.example.xiner.fragment.PersonFragment;
 import com.example.xiner.main.AppBase;
 
 import com.example.xiner.R;
-import com.example.xiner.net.InfoNet;
+import com.example.xiner.net.EditInfoNet;
+import com.example.xiner.util.HttpUtil;
 import com.example.xiner.view.CircularImage;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -34,24 +37,41 @@ public class EditInfoActivity extends ActionBarActivity {
     CircularImage editPhoto;
     private Bitmap head;
     Button saveButton;
-    EditText nickname,sex,academy,grade;
-    private final static String path = "/sdcard/xueyou/myHead/";// sd路径
+    RadioGroup sexgroup;
+    EditText nickname,academy;
+    private final static String path = Environment.getExternalStorageDirectory()+"/xueyou/myHead/";// sd路径
     Toolbar toolbar;
+    String sexString;
+    AppBase appBase;
+    RadioButton manButton,womanButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_info);
-
+        appBase = AppBase.getApp();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             toolbar.setNavigationIcon(R.drawable.ic_ab_drawer);
         }
-
         String nicknametext= AppBase.getApp().getDataStore().getString("nickname","昵称");
-        String sextext=AppBase.getApp().getDataStore().getString("sex","性别");
+        sexString=AppBase.getApp().getDataStore().getString("sex","男");
         String academytext=AppBase.getApp().getDataStore().getString("academy","学院");
-        String gradetext=AppBase.getApp().getDataStore().getString("grade","年级");
+
+
+        sexgroup =(RadioGroup)findViewById(R.id.sex_group);
+        manButton =(RadioButton)findViewById(R.id.man_sex);
+        womanButton=(RadioButton)findViewById(R.id.woman_sex);
+        sexgroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+               if (checkedId == R.id.man_sex){
+                   sexString = "男";
+               }else {
+                   sexString ="女";
+               }
+            }
+        });
 
         editPhoto =(CircularImage)findViewById(R.id.edit_cover_user_photo);
         editPhoto.setOnClickListener(new headeditListener());
@@ -61,23 +81,22 @@ public class EditInfoActivity extends ActionBarActivity {
         saveButton=(Button)findViewById(R.id.save_button);
         saveButton.setOnClickListener(new saveListener());
         nickname=(EditText)findViewById(R.id.nickname_edit);
-        sex=(EditText)findViewById(R.id.sex_edit);
+
         academy=(EditText)findViewById(R.id.academy_edit);
-        grade=(EditText)findViewById(R.id.grade_edit);
+
 
         if(nicknametext!=null){
             nickname.setText(nicknametext);
         }
-        if(sextext!=null){
-          sex.setText(sextext);
-        }
         if(academytext!=null){
             academy.setText(academytext);
         }
-        if(gradetext!=null){
-            grade.setText(gradetext);
-        }
 
+        if (sexString.equals("男")){
+            manButton.setChecked(true);
+        }else {
+            womanButton.setChecked(true);
+        }
     }
 
     class saveListener implements View.OnClickListener{
@@ -86,22 +105,20 @@ public class EditInfoActivity extends ActionBarActivity {
         public void onClick(View v) {
 
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    InfoNet infoNet = new InfoNet();
-                    infoNet.uploadFile(path + "head.jpg");
-                }
-            }).start();
 
-            if(nickname.getText()==null || sex.getText()==null || academy.getText() ==null || grade.getText() ==null){
+
+            if(nickname.getText()==null  || academy.getText() ==null){
                 Toast.makeText(EditInfoActivity.this,"请将信息填写完整",Toast.LENGTH_SHORT).show();
             }else {
                 AppBase.getApp().getDataStore().edit().putBoolean("ifeditphoto", true).commit();
                 AppBase.getApp().getDataStore().edit().putString("nickname", nickname.getText().toString()).commit();
-                AppBase.getApp().getDataStore().edit().putString("sex", sex.getText().toString()).commit();
+                AppBase.getApp().getDataStore().edit().putString("sex", sexString).commit();
                 AppBase.getApp().getDataStore().edit().putString("academy", academy.getText().toString()).commit();
-                AppBase.getApp().getDataStore().edit().putString("grade", grade.getText().toString()).commit();
+
+
+                EditInfoNet editInfoNet = new EditInfoNet(EditInfoActivity.this);
+                editInfoNet.EditInfo(path+"head.jpg",nickname.getText().toString(),academy.getText().toString(),sexString);
+
             }
 
            finish();
@@ -193,7 +210,7 @@ public class EditInfoActivity extends ActionBarActivity {
                     Bundle extras = data.getExtras();
                     head = extras.getParcelable("data");
                     if (head != null) {
-                        setPicToView(head);// 保存在SD卡中
+                        appBase.setPicToView(head,path);// 保存在SD卡中
                         editPhoto.setImageBitmap(head);// 用ImageView显示出来
                     }
                 }
@@ -203,34 +220,7 @@ public class EditInfoActivity extends ActionBarActivity {
 
         }
     }
-    //保存头像
-    private void setPicToView(Bitmap mBitmap) {
 
-        String sdStatus = Environment.getExternalStorageState();
-        if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
-            return;
-        }
-        FileOutputStream b = null;
-        File file = new File(path);
-        file.mkdirs();// 创建文件夹
-        String fileName = path + "head.jpg";// 图片名字
-        try {
-            b = new FileOutputStream(fileName);
-            mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);// 把数据写入文件
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                // 关闭流
-                b.flush();
-                b.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

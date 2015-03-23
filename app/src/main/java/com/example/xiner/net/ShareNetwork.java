@@ -223,20 +223,4 @@ return detailItem;
     }
 
 
-    public void getDetailInfo(long id) {
-        RequestParams params = new RequestParams();
-//        params.put("id", id);
-        HttpUtil.post(loadmoreurl+id, params, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-                ParseNet(response);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                super.onFailure(statusCode, headers, responseString, throwable);
-            }
-        });
-    }
 }

@@ -29,6 +29,7 @@
 
     <color name="windowBackgroundColor">#333333</color>
     <color name="black_translucent">#80000000</color>
+    <color name="text_grey">#ff757575</color>
 
     <drawable name="light_black_">#33000000</drawable>
 </resources>

@@ -23,7 +23,7 @@ public class User implements Serializable{
 
 	private String username;
 
-//	private String password;
+	private String password;
 
 //	private boolean accountNonExpired;
 //
@@ -88,14 +88,12 @@ public class User implements Serializable{
 	public String getMail() {
 		return mail;
 	}
-	
-//	public void setStars(Set<Item> stars) {
-//		this.stars = stars;
-//	}
-//
-//	public Set<Item> getStars() {
-//		return stars;
-//	}
 
+    public String getPassword() {
+        return password;
+    }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

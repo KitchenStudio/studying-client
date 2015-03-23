@@ -1,8 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -52,7 +52,8 @@
                     android:id="@+id/nickname_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:textColor="@color/text_grey" />
             </LinearLayout>
 
             <LinearLayout
@@ -73,11 +74,14 @@
                     android:id="@+id/academy_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:textColor="@color/text_grey" />
             </LinearLayout>
 
+
+
             <LinearLayout
-                android:id="@+id/edit_grade_lay"
+                android:id="@+id/edit_sex_lay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/edit_academy_lay"
@@ -88,34 +92,31 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/edit_grade_text" />
-
-                <EditText
-                    android:id="@+id/grade_edit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/edit_sex_lay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/edit_grade_lay"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="@string/edit_sex_text" />
 
-                <EditText
-                    android:id="@+id/sex_edit"
-                    android:layout_width="wrap_content"
+                <RadioGroup
+                    android:id="@+id/sex_group"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/man_sex"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:text="男" />
+
+                    <RadioButton
+                        android:id="@+id/woman_sex"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="女" />
+                </RadioGroup>
             </LinearLayout>
 
             <Button

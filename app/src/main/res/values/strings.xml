@@ -36,5 +36,7 @@
     <string name="edit_grade_text">年级</string>
     <string name="saveedit">保存</string>
     <string name="edit_sex_text">性别</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_register">RegisterActivity</string>
 
 </resources>

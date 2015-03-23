@@ -15,7 +15,7 @@
         android:screenOrientation="portrait"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".activity.RegisterActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -27,8 +27,8 @@
         <activity
             android:name=".activity.PublicItemActivity"
             android:label="@string/title_activity_public_doc"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -64,9 +64,8 @@
         <activity
             android:name=".activity.ShareDetailActivity"
             android:label="@string/title_activity_detail_share"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity android:name=".activity.FileManagerActivity" />
         <activity android:name=".activity.CustomGalleryActivity" >
             <intent-filter>
@@ -79,8 +78,15 @@
         <activity
             android:name=".activity.EditInfoActivity"
             android:label="@string/title_activity_edit_info"
-            android:theme="@style/AppTheme"
-            >
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:theme="@style/AppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.MainActivity"
+            android:label="@string/title_activity_register" >
         </activity>
     </application>
 

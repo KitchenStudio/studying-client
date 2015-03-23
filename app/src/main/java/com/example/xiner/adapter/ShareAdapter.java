@@ -83,8 +83,6 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
                 @Override
                 public void onClick(View v) {
                     Long id = shareitems.get(i).getId();
-//                    RequestParams params = new RequestParams();
-                        Log.v(TAG,id+"ididid");
                     HttpUtil.get(shareNetwork.getitemdetail+"/"+id, new JsonHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

@@ -1,0 +1,77 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.xiner.activity.RegisterActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimaryDark"
+        />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            tools:context="com.example.xiner.activity.RegisterActivity">
+
+            <ImageView
+                android:id="@+id/face_registerimg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/faceimage" />
+
+
+
+
+
+
+            <EditText
+                android:id="@+id/email_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/face_registerimg"
+                android:layout_marginTop="20dp"
+                android:hint="请输入邮箱" />
+
+            <EditText
+                android:id="@+id/password_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/email_register"
+                android:layout_marginTop="20dp"
+                android:hint="请输入密码"
+                android:password="true" />
+            <EditText
+                android:id="@+id/passwordagain_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/password_register"
+                android:layout_marginTop="20dp"
+                android:hint="请再次密码"
+                android:password="true" />
+
+            <Button
+                android:id="@+id/register_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/passwordagain_register"
+                android:layout_marginTop="20dp"
+                android:background="@color/blue"
+                android:text="注册"
+                android:textColor="@android:color/white" />
+        </RelativeLayout>
+
+    </ScrollView>
+</RelativeLayout>

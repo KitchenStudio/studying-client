@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xiner.R;
+import com.example.xiner.entity.DetailItem;
 import com.example.xiner.entity.ListItem;
 
 import java.text.SimpleDateFormat;
@@ -24,7 +25,7 @@ public class ShareCommentAdapter extends RecyclerView.Adapter<ShareCommentAdapte
 
     private static String TAG = "ShareCommentAdapter";
     Context mContext;
-//    ListItem item;
+//    DetailItem item;
 
     public ShareCommentAdapter(Context context) {
         this.mContext = context;
