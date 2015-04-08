@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,6 +21,8 @@ import com.example.xiner.entity.DetailItem;
 import com.example.xiner.entity.FileItem;
 import com.example.xiner.entity.ListItem;
 import com.example.xiner.entity.User;
+import com.example.xiner.util.HttpUtil;
+import com.loopj.android.http.RequestParams;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,6 +43,7 @@ public class ShareDetailActivity extends ActionBarActivity {
     ArrayList<String> other;
     DetailItem item;
     List<Comment> commentList;
+    ImageView zan,collection,comment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +56,8 @@ public class ShareDetailActivity extends ActionBarActivity {
             toolbar.setNavigationIcon(R.drawable.ic_ab_drawer);
         }
         RecyclerView mRecyclerview = (RecyclerView) findViewById(R.id.recyclerView_sharedetail);
-        ShareCommentAdapter shareCommentAdapter = new ShareCommentAdapter(this);
+
+        ShareCommentAdapter shareCommentAdapter = new ShareCommentAdapter(this,commentList);
         if (pictureurl != null) {
             PictureAdapter pictureAdapter = new PictureAdapter(this, pictureurl);
             GridView gridView = (GridView) findViewById(R.id.picturegridview);
@@ -74,6 +79,13 @@ public class ShareDetailActivity extends ActionBarActivity {
         timetext = (TextView) findViewById(R.id.time_text);
         subjecttext = (TextView) findViewById(R.id.subject_text);
         detailtext = (TextView) findViewById(R.id.detail_text);
+        ClickListener clickListener = new ClickListener();
+        zan =(ImageView)findViewById(R.id.idima_praise);
+        zan.setOnClickListener(clickListener);
+        collection =(ImageView)findViewById(R.id.idima_collection);
+        collection.setOnClickListener(clickListener);
+        comment =(ImageView)findViewById(R.id.idima_comment);
+        comment.setOnClickListener(clickListener);
 
         String subject = getIntent().getExtras().getString("subject");
         String time = getIntent().getExtras().getString("time");
@@ -108,4 +120,23 @@ public class ShareDetailActivity extends ActionBarActivity {
         commentText.setText("(" + comments + ")");
         praiseText.setText("(" + praiseNum + ")");
     }
+
+    class  ClickListener implements View.OnClickListener{
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.idima_collection:
+
+                    break;
+                case R.id.idima_comment:
+                    break;
+                case R.id.idima_praise:
+                    break;
+            }
+
+        }
+    }
+
+
 }

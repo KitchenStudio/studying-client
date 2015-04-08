@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
@@ -45,17 +46,15 @@ import java.util.ArrayList;
 
 
 public class PublicItemActivity extends ActionBarActivity {
-    private ImageView uploadFile;
     private String TAG = "PublicDocActiviy";
     ImageLoader imageLoader;
     CardView gridGallerycard;
     Handler handler;
     GalleryAdapter adapter;
-    ViewSwitcher viewSwitcher, fileupload_switcher;
+    ViewSwitcher viewSwitcher;
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
     ImageView imgSinglePick;
-    CardView upload_filecard;
     UploadfileAdapter uploadfileAdapter;
 
 
@@ -68,7 +67,7 @@ public class PublicItemActivity extends ActionBarActivity {
     boolean mStartRecording = true;
     PublicDocNetwork publicDocNetwork;
     ArrayList<CustomGallery> dataT;
-    EditText shareContentedit,subjectEdit;
+    EditText shareContentedit, subjectEdit;
     ArrayList<String> allPictures = new ArrayList<>();
     private String single_path;
     Toolbar toolbar;
@@ -98,7 +97,7 @@ public class PublicItemActivity extends ActionBarActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
-                publicDocNetwork.uploadshare(getAlllist(), shareContentedit.getText().toString(),subjectEdit.getText().toString() );
+                publicDocNetwork.uploadshare(getAlllist(), shareContentedit.getText().toString(), subjectEdit.getText().toString());
                 return false;
             }
         });
@@ -107,7 +106,7 @@ public class PublicItemActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (android.R.id.home==item.getItemId()){
+        if (android.R.id.home == item.getItemId()) {
             finish();
             return false;
         }
@@ -121,112 +120,111 @@ public class PublicItemActivity extends ActionBarActivity {
 
     private void init() {
         handler = new Handler();
-
+        ClickListener clickListener = new ClickListener();
         shareContentedit = (EditText) findViewById(R.id.sharecontent_edit);
-        subjectEdit =(EditText)findViewById(R.id.subject_edit);
+        subjectEdit = (EditText) findViewById(R.id.subject_edit);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView_uploadfile);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         uploadfileAdapter = new UploadfileAdapter();
         recyclerView.setAdapter(uploadfileAdapter);
-
         viewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher);
         viewSwitcher.setDisplayedChild(1);
         imgSinglePick = (ImageView) findViewById(R.id.imgSinglePick);
-        upload_filecard = (CardView) findViewById(R.id.public_filecard_upload);
-        upload_filecard.setOnClickListener(new FileUploadListener());
         uploadfileimage = (ImageView) findViewById(R.id.uploadfile_image);
-        uploadfileimage.setOnClickListener(new FileUploadListener());
         takepictureimage = (ImageView) findViewById(R.id.takepicture_image);
-        takepictureimage.setOnClickListener(new takepicListener());
         recordsoundimage = (ImageView) findViewById(R.id.soundrecord_image);
-        recordsoundimage.setOnClickListener(new recordListener());
         uploadpictureimage = (ImageView) findViewById(R.id.uploadpicture_image);
-        uploadpictureimage.setOnClickListener(new picselListener());
         recordImageView = (ImageView) findViewById(R.id.record_press);
-        recordImageView.setOnClickListener(new startrecordListener());
         recordstart = (ImageView) findViewById(R.id.record_pressstart);
-        recordstart.setOnClickListener(new overrecordListener());
         recordover = (ImageView) findViewById(R.id.record_pressover);
-        recordover.setOnClickListener(new playrecordListener());
+        uploadfileimage.setOnClickListener(clickListener);
+        takepictureimage.setOnClickListener(clickListener);
+        recordsoundimage.setOnClickListener(clickListener);
+        uploadpictureimage.setOnClickListener(clickListener);
+        recordImageView.setOnClickListener(clickListener);
+        recordstart.setOnClickListener(clickListener);
+        recordover.setOnClickListener(clickListener);
 
 
     }
 
-    /*
-    * 录音的监听
-    *
-    * */
-    class recordListener implements View.OnClickListener {
 
+    class ClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            if (recordImageView.getVisibility() == View.VISIBLE || recordstart.getVisibility() == View.VISIBLE || recordover.getVisibility() == View.VISIBLE) {
-                recordImageView.setClickable(false);
-                return;
+            Intent intent;
+            switch (v.getId()) {
+                case R.id.soundrecord_image://录音的监听
+                    if (recordImageView.getVisibility() == View.VISIBLE || recordstart.getVisibility() == View.VISIBLE || recordover.getVisibility() == View.VISIBLE) {
+                        recordImageView.setClickable(false);
+                        return;
+                    }
+                    recordImageView.setVisibility(View.VISIBLE);
+                    break;
+
+                case R.id.record_press: //开始录音的监听
+                    recordImageView.setVisibility(View.GONE);
+                    if (recordstart.getVisibility() != View.VISIBLE) {
+                        recordstart.setVisibility(View.VISIBLE);
+                    }
+                    onRecord(mStartRecording);
+                    if (mStartRecording) {
+                        Toast.makeText(PublicItemActivity.this, "开始录音", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(PublicItemActivity.this, "停止录音", Toast.LENGTH_SHORT).show();
+                    }
+                    mStartRecording = !mStartRecording;
+                    break;
+
+                case R.id.record_pressstart://结束录音的监听
+                    recordImageView.setVisibility(View.GONE);
+                    recordstart.setVisibility(View.GONE);
+                    if (recordover.getVisibility() != View.VISIBLE) {
+                        recordover.setVisibility(View.VISIBLE);
+                    }
+                    onRecord(mStartRecording);
+                    break;
+
+                case R.id.record_pressover:
+                    boolean mStartPlaying = true;
+                    onPlay(mStartPlaying);
+                    if (mStartPlaying) {
+                        Toast.makeText(PublicItemActivity.this, "开始播放", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(PublicItemActivity.this, "停止播放", Toast.LENGTH_SHORT).show();
+                    }
+                    mStartPlaying = !mStartPlaying;
+                    break;
+
+//                case R.id.public_filecard_upload://选择文件监听
+//                    intent = new Intent();
+//                    intent.setClass(PublicItemActivity.this, FileManagerActivity.class);
+//                    startActivityForResult(intent, 1);
+//                    break;
+
+                case R.id.uploadfile_image://选择文件监听
+                    intent = new Intent();
+                    intent.setClass(PublicItemActivity.this, FileManagerActivity.class);
+                    startActivityForResult(intent, 1);
+                    break;
+
+                case R.id.uploadpicture_image://选择图片监听
+                    intent = new Intent(Action.ACTION_MULTIPLE_PICK);
+                    startActivityForResult(intent, 3);
+                    break;
+
+                case R.id.takepicture_image://拍照监听
+                    String state = Environment.getExternalStorageState();
+                    if (state.equals(Environment.MEDIA_MOUNTED)) {
+                        intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(intent, 2);
+                    }
+                    break;
             }
-            recordImageView.setVisibility(View.VISIBLE);
         }
     }
 
-/*
-* 开始录音的监听
-* */
-    class startrecordListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-
-            recordImageView.setVisibility(View.GONE);
-            if (recordstart.getVisibility() != View.VISIBLE) {
-                recordstart.setVisibility(View.VISIBLE);
-            }
-            onRecord(mStartRecording);
-            if (mStartRecording) {
-                Toast.makeText(PublicItemActivity.this, "开始录音", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(PublicItemActivity.this, "停止录音", Toast.LENGTH_SHORT).show();
-            }
-            mStartRecording = !mStartRecording;
-        }
-    }
-
-    /*
-    *
-    * 结束录音监听
-    * */
-    class overrecordListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            recordImageView.setVisibility(View.GONE);
-            recordstart.setVisibility(View.GONE);
-            if (recordover.getVisibility() != View.VISIBLE) {
-                recordover.setVisibility(View.VISIBLE);
-            }
-            onRecord(mStartRecording);
-
-        }
-    }
-
-    /*
-    * 播放录音界面
-    * */
-    class playrecordListener implements View.OnClickListener {
-        boolean mStartPlaying = true;
-
-        @Override
-        public void onClick(View v) {
-            onPlay(mStartPlaying);
-            if (mStartPlaying) {
-                Toast.makeText(PublicItemActivity.this, "开始播放", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(PublicItemActivity.this, "停止播放", Toast.LENGTH_SHORT).show();
-            }
-            mStartPlaying = !mStartPlaying;
-
-        }
-    }
 
     /*
     * 初始化加载图画类库
@@ -244,50 +242,6 @@ public class PublicItemActivity extends ActionBarActivity {
         imageLoader.init(config);
     }
 
-/*
-* 文件上传监听
-* */
-    class FileUploadListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent();
-            intent.setClass(PublicItemActivity.this, FileManagerActivity.class);
-            startActivityForResult(intent, 1);
-        }
-    }
-
-    /*
-    *
-    *图片选择监听
-    * */
-    class picselListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
-            startActivityForResult(i, 3);
-        }
-    }
-
-    /*
-    * 拍照的监听
-    * */
-
-    class takepicListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            String state = Environment.getExternalStorageState();
-            if (state.equals(Environment.MEDIA_MOUNTED)) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.getExternalStorageDirectory(),"takepic.png")));
-                startActivityForResult(intent, 2);
-            }
-
-        }
-    }
-
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -296,11 +250,8 @@ public class PublicItemActivity extends ActionBarActivity {
             case 1:
                 //返回的选择的文件的结果
                 if (resultCode == RESULT_OK) {
-                    fileupload_switcher = (ViewSwitcher) findViewById(R.id.file_uploadswitch);
-                    fileupload_switcher.setVisibility(View.VISIBLE);
-                    fileupload_switcher.setDisplayedChild(1);
+                    recyclerView.setVisibility(View.VISIBLE);
                     listfilename = data.getExtras().getStringArrayList("urilist");
-                    fileupload_switcher.setDisplayedChild(0);
                     uploadfileAdapter.addAll(listfilename);
                 }
                 break;
@@ -360,7 +311,7 @@ public class PublicItemActivity extends ActionBarActivity {
                     if (all_path.length != 0) {
                         allPictures.clear();
                         for (int i = 0; i < all_path.length; i++) {
-                            allPictures.add("file://"+all_path[i]);
+                            allPictures.add("file://" + all_path[i]);
                         }
                     }
                 }
@@ -373,17 +324,17 @@ public class PublicItemActivity extends ActionBarActivity {
 
     //保存头像
     private void setPicToView(Bitmap mBitmap) {
-        Log.v(TAG,"保存");
+        Log.v(TAG, "保存");
         String sdStatus = Environment.getExternalStorageState();
         if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
             return;
         }
         FileOutputStream b = null;
-        String single_path = Environment.getExternalStorageDirectory()+"/xueyou";
+        String single_path = Environment.getExternalStorageDirectory() + "/xueyou";
         File file = new File(single_path);
         file.mkdirs();// 创建文件夹
         String fileName = single_path + "/takepic.jpg";// 图片名字
-        Log.v(TAG,fileName+"filename");
+        Log.v(TAG, fileName + "filename");
         try {
             b = new FileOutputStream(fileName);
             mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);// 把数据写入文件
@@ -447,7 +398,7 @@ public class PublicItemActivity extends ActionBarActivity {
         mediaPlayer = null;
     }
 
-//正在播放
+    //正在播放
     private void onPlay(boolean start) {
 
         if (start) {
@@ -467,7 +418,7 @@ public class PublicItemActivity extends ActionBarActivity {
         }
     }
 
-//获得上传的多个文件
+    //获得上传的多个文件
     private ArrayList<String> getAlllist() {
         ArrayList<String> filenames = new ArrayList<>();
         if (listfilename != null) {
@@ -477,7 +428,7 @@ public class PublicItemActivity extends ActionBarActivity {
             filenames.addAll(allPictures);
         }
         if (mFileName != null) {
-            filenames.add("file://"+mFileName);
+            filenames.add("file://" + mFileName);
         }
 
         return filenames;

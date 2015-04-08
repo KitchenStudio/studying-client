@@ -34,58 +34,21 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/nickname_detail"
+                    android:id="@+id/timedetail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="9pt"
                     android:text="@string/time_comment" />
-
-               <!-- <LinearLayout
+                <TextView
+                    android:id="@+id/nickname_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/grade_detail"
-                        android:textColor="@color/blue" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="3dp"
-                        android:text="@string/subject_detail"
-                        android:textColor="@color/blue" />
-                </LinearLayout>-->
+                    android:textSize="9pt"
+                    android:text="昵称" />
             </LinearLayout>
 
 
-            <!-- <TextView
-                 android:id="@+id/subject"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_alignParentLeft="true"
 
-                 android:text="科目"
-                 android:textSize="7pt" />
-
-             <TextView
-                 android:id="@+id/grade"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_centerHorizontal="true"
-                 android:text="年级"
-                 android:textSize="7pt" />-->
-
-            <!--<TextView
-                android:id="@+id/time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="时间"
-                android:textSize="7pt" />-->
 
         </RelativeLayout>
 
@@ -95,6 +58,7 @@
             android:layout_margin="4dp">
 
             <TextView
+                android:id="@+id/comment_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="详细信息详细信息详细信息详细信息详细信息详细信息详细信息"
@@ -106,11 +70,20 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp">
 
-            <ImageView
-                android:id="@+id/idima_tupian"
-                android:layout_width="wrap_content"
+            <GridView
+                android:id="@+id/picturegridviewcomment"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/tupian" />
+                android:layout_gravity="top"
+                android:layout_marginBottom="-10dp"
+                android:layout_marginLeft="-10dp"
+                android:layout_marginRight="-10dp"
+                android:layout_marginTop="-10dp"
+                android:horizontalSpacing="-15dp"
+                android:numColumns="3"
+                android:padding="0dp"
+                android:visibility="gone"
+                android:verticalSpacing="-15dp"></GridView>
         </RelativeLayout>
 
         <TextView

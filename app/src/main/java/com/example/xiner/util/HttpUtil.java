@@ -4,17 +4,25 @@ package com.example.xiner.util;
  * Created by xiner on 14-12-23.
  */
 
-import android.content.ClipData;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.http.AndroidHttpClient;
+import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.ImageView;
 
-import com.example.xiner.entity.ListItem;
+import com.example.xiner.R;
 import com.loopj.android.http.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 
+import java.io.InputStream;
+import java.lang.ref.WeakReference;
 
 public class HttpUtil {
-    public static final String baseUrl="http://211.87.226.156:8080/api/v1/item";
+    public static final String baseUrl="http://211.87.226.198:8080/api/v1/item";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
@@ -49,4 +57,7 @@ public class HttpUtil {
 //        client.post(url, params, responseHandler);
 //        return list;
 //    }
+
+
+
 }

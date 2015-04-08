@@ -108,51 +108,38 @@
 
             </android.support.v7.widget.CardView>
 
-            <ViewSwitcher
-                android:id="@+id/file_uploadswitch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone">
+            <!--<ViewSwitcher-->
+                <!--android:id="@+id/file_uploadswitch"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:visibility="gone">-->
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerView_uploadfile"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="300px" />
 
-                <android.support.v7.widget.CardView
+              <!--<android.support.v7.widget.CardView-->
 
-                    android:id="@+id/public_filecard_upload"
-                    android:layout_width="match_parent"
-                    android:layout_height="200px"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginRight="2dp"
-                    android:layout_marginTop="5dp"
-                    card_view:cardCornerRadius="4dp">
+                    <!--android:id="@+id/public_filecard_upload"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="200px"-->
+                    <!--android:layout_marginBottom="5dp"-->
+                    <!--android:layout_marginLeft="2dp"-->
+                    <!--android:layout_marginRight="2dp"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--card_view:cardCornerRadius="4dp">-->
 
-                    <TextView
+                    <!--<TextView-->
 
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="还没有上传文件哦～"
-                        android:textSize="7pt" />
-                </android.support.v7.widget.CardView>
-            </ViewSwitcher>
-
-
-            <!--  <Button
-                  android:id="@+id/upserver_button"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:text="@string/public_detail"
-                  android:background="@color/blue"
-                  android:textColor="@android:color/white"
-                  android:layout_marginTop="5dp"
-                  android:layout_marginLeft="2dp"
-                  android:layout_marginRight="2dp"/>-->
-
-
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:text="还没有上传文件哦～"-->
+                        <!--android:textSize="7pt" />-->
+                <!--</android.support.v7.widget.CardView>-->
+            <!--</ViewSwitcher>-->
         </LinearLayout>
     </ScrollView>
 
