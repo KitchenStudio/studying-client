@@ -44,6 +44,7 @@ public class EditInfoActivity extends ActionBarActivity {
     String sexString;
     AppBase appBase;
     RadioButton manButton,womanButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +53,9 @@ public class EditInfoActivity extends ActionBarActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            toolbar.setNavigationIcon(R.drawable.ic_ab_drawer);
+//            toolbar.setNavigationIcon(R.drawable.backarrow);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.backarrow);
         }
         String nicknametext= AppBase.getApp().getDataStore().getString("nickname","昵称");
         sexString=AppBase.getApp().getDataStore().getString("sex","男");
@@ -234,7 +237,9 @@ public class EditInfoActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        if (id==android.R.id.home){
+            finish();
+        }
         //noinspection SimplifiableIfStatement
 
 

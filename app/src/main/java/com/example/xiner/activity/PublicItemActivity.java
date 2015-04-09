@@ -79,8 +79,10 @@ public class PublicItemActivity extends ActionBarActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            toolbar.setNavigationIcon(R.drawable.ic_ab_drawer);
+//            toolbar.setNavigationIcon(R.drawable.backarrow);
         }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.backarrow);
         mFileName = Environment.getExternalStorageDirectory().getAbsolutePath() + "/audiorecordxueyou.3gp";
         publicDocNetwork = new PublicDocNetwork(this);
         initImageLoader();
@@ -196,12 +198,6 @@ public class PublicItemActivity extends ActionBarActivity {
                     }
                     mStartPlaying = !mStartPlaying;
                     break;
-
-//                case R.id.public_filecard_upload://选择文件监听
-//                    intent = new Intent();
-//                    intent.setClass(PublicItemActivity.this, FileManagerActivity.class);
-//                    startActivityForResult(intent, 1);
-//                    break;
 
                 case R.id.uploadfile_image://选择文件监听
                     intent = new Intent();

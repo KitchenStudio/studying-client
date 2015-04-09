@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.xiner.R;
 import com.example.xiner.adapter.PictureAdapter;
@@ -22,7 +23,11 @@ import com.example.xiner.entity.FileItem;
 import com.example.xiner.entity.ListItem;
 import com.example.xiner.entity.User;
 import com.example.xiner.util.HttpUtil;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
+import org.apache.http.Header;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,6 +40,7 @@ import java.util.List;
 public class ShareDetailActivity extends ActionBarActivity {
     public TextView collectionText, praiseText, commentText, nicknametext, timetext, subjecttext, detailtext;
     private static final String TAG = "DetailShareActivity";
+//    private static final String collectionUrl=HttpUtil.baseUrl+
     private RecyclerView.LayoutManager mLayoutManager;
     Toolbar toolbar;
     List<FileItem> filesurl;
@@ -44,6 +50,7 @@ public class ShareDetailActivity extends ActionBarActivity {
     DetailItem item;
     List<Comment> commentList;
     ImageView zan,collection,comment;
+    Long id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +101,7 @@ public class ShareDetailActivity extends ActionBarActivity {
         String praiseNum = getIntent().getExtras().getString("praiseNum");
         String collectionNum = getIntent().getExtras().getString("collectionNum");
         String comments = getIntent().getExtras().getString("comments");
+        id = getIntent().getExtras().getLong("id");
         item = (DetailItem) getIntent().getSerializableExtra("detailitem");
         Log.v(TAG, item.getUserFigure() + "firgure");
         filesurl = item.getFiles();
@@ -127,6 +135,20 @@ public class ShareDetailActivity extends ActionBarActivity {
         public void onClick(View v) {
             switch (v.getId()){
                 case R.id.idima_collection:
+
+                    HttpUtil.post(HttpUtil.baseUrl+"/"+id+"/star",new JsonHttpResponseHandler(){
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                            super.onSuccess(statusCode, headers, response);
+                            Toast.makeText(ShareDetailActivity.this,"收藏成功",Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                            super.onFailure(statusCode, headers, responseString, throwable);
+                            Toast.makeText(ShareDetailActivity.this,"收藏失败",Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
                     break;
                 case R.id.idima_comment:

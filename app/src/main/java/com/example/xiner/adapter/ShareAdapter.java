@@ -94,7 +94,7 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
 
                             SimpleDateFormat myFmt2=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                             String time =myFmt2.format(shareitems.get(i).getCreatedTime());
-
+                            intent.putExtra("id",shareitems.get(i).getId());
                             intent.putExtra("time", time);
                             intent.putExtra("nickname", shareitems.get(i).getNickname());
                             intent.putExtra("content",shareitems.get(i).getContent());

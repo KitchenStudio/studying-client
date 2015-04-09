@@ -38,5 +38,6 @@
     <string name="edit_sex_text">性别</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_search">SearchActivity</string>
 
 </resources>
