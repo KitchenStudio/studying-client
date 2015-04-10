@@ -83,12 +83,12 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
                 @Override
                 public void onClick(View v) {
                     Long id = shareitems.get(i).getId();
+                    Log.v(TAG,"点击了");
                     HttpUtil.get(shareNetwork.getitemdetail+"/"+id, new JsonHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                             super.onSuccess(statusCode, headers, response);
                             DetailItem item = shareNetwork.ParseNet(response);
-                            Log.v(TAG,item.getUserFigure()+"firgure");
                             Intent intent = new Intent();
                             intent.putExtra("subject", shareitems.get(i).getSubject());
 

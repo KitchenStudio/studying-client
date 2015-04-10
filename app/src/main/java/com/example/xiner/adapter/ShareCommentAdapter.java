@@ -31,12 +31,12 @@ public class ShareCommentAdapter extends RecyclerView.Adapter<ShareCommentAdapte
 
     private static String TAG = "ShareCommentAdapter";
     Context mContext;
-    List<Comment>comments;
+//    List<Comment>comments;
     ArrayList<String>picturepath;
 
-    public ShareCommentAdapter(Context context,List<Comment>comments) {
+    public ShareCommentAdapter(Context context) {
         this.mContext = context;
-        this.comments = comments;
+//        this.comments = comments;
     }
 
     @Override
@@ -61,31 +61,31 @@ public class ShareCommentAdapter extends RecyclerView.Adapter<ShareCommentAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.nicknametext.setText(comments.get(position).getUsername());
-        holder.commenttext.setText(comments.get(position).getContent());
-        SimpleDateFormat myFmt2=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        holder.timetext.setText(myFmt2.format(comments.get(position).getCreatedTime()));// 可能会有问题，因为有图片下载可能没有处理好
-        new DownloadPicUtil(holder.head).execute(comments.get(position).getUserFigure());
-        List<FileItem>fileItems = comments.get(position).getFiles();
-        picturepath = new ArrayList<>();
-        for (int i =0;i< fileItems.size();i++){
-           String type = fileItems.get(i).getType();
-            if (type.equals("PICTURE")){
-               picturepath.add(fileItems.get(i).getUrl());
-
-            }
-        }
-        if (picturepath.size()!=0){
-            holder.gridView.setVisibility(View.VISIBLE);
-            PictureAdapter pictureAdapter = new PictureAdapter(mContext,picturepath);
-            holder.gridView.setAdapter(pictureAdapter);
-        }
+//        holder.nicknametext.setText(comments.get(position).getUsername());
+//        holder.commenttext.setText(comments.get(position).getContent());
+//        SimpleDateFormat myFmt2=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        holder.timetext.setText(myFmt2.format(comments.get(position).getCreatedTime()));// 可能会有问题，因为有图片下载可能没有处理好
+//        new DownloadPicUtil(holder.head).execute(comments.get(position).getUserFigure());
+//        List<FileItem>fileItems = comments.get(position).getFiles();
+//        picturepath = new ArrayList<>();
+//        for (int i =0;i< fileItems.size();i++){
+//           String type = fileItems.get(i).getType();
+//            if (type.equals("PICTURE")){
+//               picturepath.add(fileItems.get(i).getUrl());
+//
+//            }
+//        }
+//        if (picturepath.size()!=0){
+//            holder.gridView.setVisibility(View.VISIBLE);
+//            PictureAdapter pictureAdapter = new PictureAdapter(mContext,picturepath);
+//            holder.gridView.setAdapter(pictureAdapter);
+//        }
 
     }
 
     @Override
     public int getItemCount() {
-        return comments.size()+1;
+        return 2;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

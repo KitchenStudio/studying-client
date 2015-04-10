@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -20,16 +21,22 @@ import java.lang.ref.WeakReference;
  * Created by xiner on 15-3-25.
  */
 public class DownloadPicUtil extends AsyncTask<String, Void, Bitmap> {
+    private static final String TAG = "DownloadPicUtil";
+    private static final String USERNAME = "18366116016";
+    private static final String PASSWORD = "..xiao";
     private final WeakReference imageViewReference;
 
     public DownloadPicUtil(ImageView imageView) {
+        Log.v(TAG,"gouzaofangf");
         imageViewReference = new WeakReference(imageView);
+
     }
 
     @Override
     // Actual download method, run in the task thread
     protected Bitmap doInBackground(String... params) {
         // params comes from the execute() call: params[0] is the url.
+        Log.v(TAG,"gouzaofangf");
         return downloadBitmap(params[0]);
     }
 
@@ -37,6 +44,7 @@ public class DownloadPicUtil extends AsyncTask<String, Void, Bitmap> {
     // Once the image is downloaded, associates it to the imageView
     protected void onPostExecute(Bitmap bitmap) {
         if (isCancelled()) {
+            Log.v(TAG,"isCancle");
             bitmap = null;
         }
 
@@ -57,13 +65,19 @@ public class DownloadPicUtil extends AsyncTask<String, Void, Bitmap> {
 
 
     static Bitmap downloadBitmap(String url) {
-        final AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
+        Log.v(TAG,"DOWNLOADING"+url);
+        AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
+        String credentials = USERNAME + ":" + PASSWORD;
+        String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+
+
         final org.apache.http.client.methods.HttpGet getRequest = new org.apache.http.client.methods.HttpGet(url);
+        getRequest.addHeader("Authorization", "Basic " + base64EncodedCredentials);
         try {
             HttpResponse response = client.execute(getRequest);
             final int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                Log.w("ImageDownloader", "Error " + statusCode
+                Log.v(TAG, "Error " + statusCode
                         + " while retrieving bitmap from " + url);
                 return null;
             }

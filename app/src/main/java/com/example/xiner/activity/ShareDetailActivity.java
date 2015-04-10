@@ -39,7 +39,7 @@ import java.util.List;
  */
 public class ShareDetailActivity extends ActionBarActivity {
     public TextView collectionText, praiseText, commentText, nicknametext, timetext, subjecttext, detailtext;
-    private static final String TAG = "DetailShareActivity";
+    private static final String TAG = "ShareDetailActivity";
 //    private static final String collectionUrl=HttpUtil.baseUrl+
     private RecyclerView.LayoutManager mLayoutManager;
     Toolbar toolbar;
@@ -64,7 +64,7 @@ public class ShareDetailActivity extends ActionBarActivity {
         }
         RecyclerView mRecyclerview = (RecyclerView) findViewById(R.id.recyclerView_sharedetail);
 
-        ShareCommentAdapter shareCommentAdapter = new ShareCommentAdapter(this,commentList);
+        ShareCommentAdapter shareCommentAdapter = new ShareCommentAdapter(this);
         if (pictureurl != null) {
             PictureAdapter pictureAdapter = new PictureAdapter(this, pictureurl);
             GridView gridView = (GridView) findViewById(R.id.picturegridview);
@@ -105,17 +105,24 @@ public class ShareDetailActivity extends ActionBarActivity {
         item = (DetailItem) getIntent().getSerializableExtra("detailitem");
         Log.v(TAG, item.getUserFigure() + "firgure");
         filesurl = item.getFiles();
+        pictureurl = new ArrayList<>();
+        audiourl = new ArrayList<>();
+        other = new ArrayList<>();
         for (int i = 0; i < filesurl.size(); i++) {
-            if (filesurl.get(i).getType().equals("PICTURE")) {
-                pictureurl = new ArrayList<>();
-                pictureurl.add(filesurl.get(i).getUrl());
+            Log.v(TAG,filesurl.get(i).getType()+"typetype");
+            if (filesurl.get(i).getType()!=null) {
+                if (filesurl.get(i).getType().equals("PICTURE")) {
 
-            } else if (filesurl.get(i).getType().equals("AUDIO")) {
-                audiourl = new ArrayList<>();
-                audiourl.add(filesurl.get(i).getUrl());
-            } else {
-                other = new ArrayList<>();
-                other.add(filesurl.get(i).getUrl());
+                    pictureurl.add(filesurl.get(i).getUrl());
+                    Log.v(TAG, pictureurl.size() + "sizesizesize");
+
+                } else if (filesurl.get(i).getType().equals("AUDIO")) {
+
+                    audiourl.add(filesurl.get(i).getUrl());
+                } else {
+
+                    other.add(filesurl.get(i).getUrl());
+                }
             }
           commentList =  item.getComments();
         }

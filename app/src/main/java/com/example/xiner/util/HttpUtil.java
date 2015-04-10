@@ -22,15 +22,14 @@ import java.io.InputStream;
 import java.lang.ref.WeakReference;
 
 public class HttpUtil {
-    public static final String baseUrl="http://211.87.226.198:8080/api/v1/item";
+    public static final String baseUrl="http://192.168.1.125:8080/api/v1/item";
+    public static final String baseIp="http://192.168.1.125:8080";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
     static {
         client.setBasicAuth("18366116016", "..xiao");
     }
-
-
 
     public static void get(String URL,JsonHttpResponseHandler jsonHandler) {
         client.get(URL, jsonHandler);

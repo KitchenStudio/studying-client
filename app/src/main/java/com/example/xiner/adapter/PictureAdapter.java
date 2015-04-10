@@ -1,6 +1,7 @@
 package com.example.xiner.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 
 import com.example.xiner.R;
 import com.example.xiner.util.DownloadPicUtil;
+import com.example.xiner.util.HttpUtil;
 
 import java.util.ArrayList;
 
@@ -19,6 +21,7 @@ public class PictureAdapter extends BaseAdapter {
     Context context;
     ArrayList<String> items;
     LayoutInflater layoutInflater;
+    private static final String TAG="PictureAdapter";
 
     public PictureAdapter(Context context, ArrayList<String> items) {
         layoutInflater = LayoutInflater.from(context);
@@ -45,7 +48,7 @@ public class PictureAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            convertView = layoutInflater.inflate(R.layout.gridview_picture, null);
+            convertView = layoutInflater.inflate(R.layout.gridview_picture, parent,false);
             holder = new ViewHolder();
 
             holder.imageView = (ImageView) convertView.findViewById(R.id.gridview_nopic);
@@ -53,11 +56,12 @@ public class PictureAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        if (holder.imageView != null) {
+
+            Log.v(TAG,"imageview"+items.get(position));
+        DownloadPicUtil downloadPicUtil = new DownloadPicUtil(holder.imageView);
+        downloadPicUtil.execute(HttpUtil.baseIp+items.get(position));
 
 
-            new DownloadPicUtil(holder.imageView).execute(items.get(position));
-        }
         return convertView;
     }
 

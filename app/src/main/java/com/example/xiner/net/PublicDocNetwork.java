@@ -41,8 +41,6 @@ public class PublicDocNetwork {
         RequestParams params = new RequestParams();
         params.put("content", content);
         params.put("subject", subject);
-        Log.v(TAG,subject+"subject");
-
 
         for (int i = 0; i < file.size(); i++) {
             try {
