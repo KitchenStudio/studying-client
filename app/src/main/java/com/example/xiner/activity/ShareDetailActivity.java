@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xiner.R;
+import com.example.xiner.adapter.FilenameAdapter;
 import com.example.xiner.adapter.PictureAdapter;
 import com.example.xiner.adapter.ShareCommentAdapter;
 import com.example.xiner.entity.Comment;
@@ -70,6 +71,16 @@ public class ShareDetailActivity extends ActionBarActivity {
             GridView gridView = (GridView) findViewById(R.id.picturegridview);
             gridView.setAdapter(pictureAdapter);
         }
+//        else if(other !=null){
+//            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.filenameother_recycler);
+//            FilenameAdapter filenameotherAdapter = new FilenameAdapter(this,other);
+//            recyclerView.setAdapter(filenameotherAdapter);
+//        }else if (audiourl !=null){
+//            Log.v(TAG,audiourl.size()+"size");
+//            RecyclerView audiorecycler =(RecyclerView)findViewById(R.id.filenameaudio_recycler);
+//            FilenameAdapter filenameaudioAdapter = new FilenameAdapter(this,audiourl);
+//            audiorecycler.setAdapter(filenameaudioAdapter);
+//        }
         mRecyclerview.setAdapter(shareCommentAdapter);
         mRecyclerview.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
@@ -112,10 +123,7 @@ public class ShareDetailActivity extends ActionBarActivity {
             Log.v(TAG,filesurl.get(i).getType()+"typetype");
             if (filesurl.get(i).getType()!=null) {
                 if (filesurl.get(i).getType().equals("PICTURE")) {
-
                     pictureurl.add(filesurl.get(i).getUrl());
-                    Log.v(TAG, pictureurl.size() + "sizesizesize");
-
                 } else if (filesurl.get(i).getType().equals("AUDIO")) {
 
                     audiourl.add(filesurl.get(i).getUrl());

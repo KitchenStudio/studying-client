@@ -83,7 +83,7 @@ public class PublicItemActivity extends ActionBarActivity {
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.backarrow);
-        mFileName = Environment.getExternalStorageDirectory().getAbsolutePath() + "/audiorecordxueyou.3gp";
+        mFileName = Environment.getExternalStorageDirectory().getAbsolutePath() + "/audiorecordxueyou.mp4";
         publicDocNetwork = new PublicDocNetwork(this);
         initImageLoader();
         init();

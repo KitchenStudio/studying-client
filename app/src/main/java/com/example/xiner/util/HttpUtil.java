@@ -42,6 +42,10 @@ public class HttpUtil {
     public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.post(url, params, responseHandler);
     }
+    public static void post(String url, RequestParams params, TextHttpResponseHandler responseHandler) {
+        client.post(url, params, responseHandler);
+    }
+
 
     public static void post(String url, AsyncHttpResponseHandler responseHandler) {
         client.post(url, responseHandler);
