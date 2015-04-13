@@ -89,7 +89,7 @@ public class GalleryAdapter extends BaseAdapter {
         }
         holder.imgQueue.setTag(position);
         try {
-
+            //显示图片
             imageLoader.displayImage("file://" + data.get(position).sdcardPath,
                     holder.imgQueue, new SimpleImageLoadingListener() {
                         @Override
@@ -114,7 +114,7 @@ public class GalleryAdapter extends BaseAdapter {
     }
 
 
-
+    //把数据加到list中
     public void addAll(ArrayList<CustomGallery> files) {
 
         try {
@@ -128,6 +128,7 @@ public class GalleryAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    //获得选中的图片
     public ArrayList<CustomGallery> getSelected() {
         ArrayList<CustomGallery> dataT = new ArrayList<CustomGallery>();
 

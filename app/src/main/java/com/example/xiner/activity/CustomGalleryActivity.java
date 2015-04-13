@@ -48,14 +48,14 @@ public class CustomGalleryActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);//
+		requestWindowFeature(Window.FEATURE_NO_TITLE);//设置窗口没有标题
 		setContentView(R.layout.gallery);
 
 		action = getIntent().getAction();
 		if (action == null) {
 			finish();
 		}
-		initImageLoader();
+		initImageLoader();//初始化imageoader，一定要在init之前调用
 		init();
 	}
 
@@ -97,13 +97,13 @@ public class CustomGalleryActivity extends Activity {
 				true, true);
 		gridGallery.setOnScrollListener(listener);
 
-		if (action.equalsIgnoreCase(Action.ACTION_MULTIPLE_PICK)) {
+		if (action.equalsIgnoreCase(Action.ACTION_MULTIPLE_PICK)) {//如果选择了多张图片，加载gridview
 
 			findViewById(R.id.llBottomContainer).setVisibility(View.VISIBLE);
 			gridGallery.setOnItemClickListener(mItemMulClickListener);
 			adapter.setActionMultiplePick(true);
 
-		} else if (action.equalsIgnoreCase(Action.ACTION_PICK)) {
+		} else if (action.equalsIgnoreCase(Action.ACTION_PICK)) {//如果选择了单张图片，就加载图片在中间的布局
 
 			findViewById(R.id.llBottomContainer).setVisibility(View.GONE);
 			gridGallery.setOnItemClickListener(mItemSingleClickListener);
@@ -122,11 +122,11 @@ public class CustomGalleryActivity extends Activity {
 			@Override
 			public void run() {
 				Looper.prepare();
-				handler.post(new Runnable() {
+				handler.post(new Runnable() {//加载图片是一个耗时的操作，所以单独放在一个线程里
 
 					@Override
 					public void run() {
-						adapter.addAll(getGalleryPhotos());
+						adapter.addAll(getGalleryPhotos());//把从内存读取的图片传到adapter里面
 						checkImageStatus();
 					}
 				});
@@ -138,7 +138,7 @@ public class CustomGalleryActivity extends Activity {
 	}
 
 	private void checkImageStatus() {
-		if (adapter.isEmpty()) {
+		if (adapter.isEmpty()) {//判断是否是空的布局
 			imgNoMedia.setVisibility(View.VISIBLE);
 		} else {
 			imgNoMedia.setVisibility(View.GONE);
@@ -148,7 +148,7 @@ public class CustomGalleryActivity extends Activity {
 	View.OnClickListener mOkClickListener = new View.OnClickListener() {
 
 		@Override
-		public void onClick(View v) {
+		public void onClick(View v) {//对选择的图片进行处理
 			ArrayList<CustomGallery> selected = adapter.getSelected();
 
 			String[] allPath = new String[selected.size()];
@@ -166,13 +166,13 @@ public class CustomGalleryActivity extends Activity {
 
 		@Override
 		public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-			adapter.changeSelection(v, position);
+			adapter.changeSelection(v, position);//改变图片的选择状态
 
 		}
 	};
 
 	AdapterView.OnItemClickListener mItemSingleClickListener = new AdapterView.OnItemClickListener() {
-
+		//选中单张图片返回
 		@Override
 		public void onItemClick(AdapterView<?> l, View v, int position, long id) {
 			CustomGallery item =(CustomGallery)adapter.getItem(position);
@@ -182,7 +182,7 @@ public class CustomGalleryActivity extends Activity {
 		}
 	};
 
-	private ArrayList<CustomGallery> getGalleryPhotos() {
+	private ArrayList<CustomGallery> getGalleryPhotos() {//得到图库里面的图片
 		ArrayList<CustomGallery> galleryList = new ArrayList<CustomGallery>();
 
 		try {

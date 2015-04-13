@@ -63,7 +63,7 @@ public class PictureAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-
+        //下载图片
         DownloadPicUtil downloadPicUtil = new DownloadPicUtil(holder.imageView);
         downloadPicUtil.execute(HttpUtil.baseIp+items.get(position).split("\\.")[0]+"resizecut."+items.get(position).split("\\.")[1]);
 //        convertView.setLayoutParams(new GridView.LayoutParams(gridwidth, gridheight));

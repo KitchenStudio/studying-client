@@ -94,7 +94,7 @@ public final class FileManagerActivity extends ActionBarActivity {
         ListView listView = (ListView) findViewById(android.R.id.list);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
+        if (toolbar != null) {//设置toolbar
             setSupportActionBar(toolbar);
             toolbar.setNavigationIcon(R.drawable.ic_ab_drawer);
         }
@@ -148,7 +148,6 @@ public final class FileManagerActivity extends ActionBarActivity {
         if (intent.getAction() != null) {
 
             if (intent.getAction().equals(Intent.ACTION_GET_CONTENT)) {
-//                bimg[5].setVisibility(View.GONE);
                 mReturnIntent = true;
 
             } else if (intent.getAction().equals(ACTION_WIDGET)) {

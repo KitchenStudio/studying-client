@@ -83,7 +83,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                switch (position) {
+                switch (position) {//更换主题
                     case 0:
                         mDrawerList.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
                         toolbar.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
@@ -149,81 +149,6 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-//    class ImageDownloaderTask extends AsyncTask<String, Void, Bitmap> {
-//        private final WeakReference imageViewReference;
-//
-//        public ImageDownloaderTask(ImageView imageView) {
-//            imageViewReference = new WeakReference(imageView);
-//        }
-//
-//        @Override
-//        // Actual download method, run in the task thread
-//        protected Bitmap doInBackground(String... params) {
-//            // params comes from the execute() call: params[0] is the url.
-//            return downloadBitmap(params[0]);
-//        }
-//
-//        @Override
-//        // Once the image is downloaded, associates it to the imageView
-//        protected void onPostExecute(Bitmap bitmap) {
-//            if (isCancelled()) {
-//                bitmap = null;
-//            }
-//
-//            if (imageViewReference != null) {
-//                ImageView imageView = (ImageView) imageViewReference.get();
-//                if (imageView != null) {
-//
-//                    if (bitmap != null) {
-//                        imageView.setImageBitmap(bitmap);
-//                    } else {
-//                        imageView.setImageDrawable(imageView.getContext().getResources()
-//                                .getDrawable(R.drawable.list_placeholder));
-//                    }
-//                }
-//
-//            }
-//        }
-//
-//    }
-//
-//    static Bitmap downloadBitmap(String url) {
-//        final AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
-//        final HttpGet getRequest = new HttpGet(url);
-//        try {
-//            HttpResponse response = client.execute(getRequest);
-//            final int statusCode = response.getStatusLine().getStatusCode();
-//            if (statusCode != HttpStatus.SC_OK) {
-//                Log.w("ImageDownloader", "Error " + statusCode
-//                        + " while retrieving bitmap from " + url);
-//                return null;
-//            }
-//
-//            final HttpEntity entity = response.getEntity();
-//            if (entity != null) {
-//                InputStream inputStream = null;
-//                try {
-//                    inputStream = entity.getContent();
-//                    final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-//                    return bitmap;
-//                } finally {
-//                    if (inputStream != null) {
-//                        inputStream.close();
-//                    }
-//                    entity.consumeContent();
-//                }
-//            }
-//        } catch (Exception e) {
-//            // Could provide a more explicit error message for IOException or
-//            // IllegalStateException
-//            getRequest.abort();
-//            Log.w("ImageDownloader", "Error while retrieving bitmap from " + url);
-//        } finally {
-//            if (client != null) {
-//                client.close();
-//            }
-//        }
-//        return null;
-//    }
+
 
 }

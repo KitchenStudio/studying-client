@@ -53,7 +53,6 @@ public class EditInfoActivity extends ActionBarActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-//            toolbar.setNavigationIcon(R.drawable.backarrow);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.backarrow);
         }
@@ -175,6 +174,7 @@ public class EditInfoActivity extends ActionBarActivity {
         }
     }
 
+    //裁剪图片
     public void cropPhoto(Uri uri) {
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(uri, "image/*");
