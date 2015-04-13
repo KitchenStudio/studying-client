@@ -11,15 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.xiner.R;
 import com.example.xiner.activity.ShareDetailActivity;
+
+import com.example.xiner.R;
 import com.example.xiner.entity.DetailItem;
 import com.example.xiner.entity.ListItem;
 import com.example.xiner.fragment.ShareFragment;
 import com.example.xiner.net.ShareNetwork;
 import com.example.xiner.util.HttpUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 
 import org.apache.http.Header;
@@ -40,6 +40,10 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
 
     public ShareAdapter(Context context, ArrayList<ListItem> shareitems,ShareFragment shareFragment) {
         this.shareFragment = shareFragment;
+        this.mContext = context;
+        this.shareitems = shareitems;
+    }
+    public ShareAdapter(Context context, ArrayList<ListItem> shareitems) {
         this.mContext = context;
         this.shareitems = shareitems;
     }
@@ -89,6 +93,7 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                             super.onSuccess(statusCode, headers, response);
                             DetailItem item = shareNetwork.ParseNet(response);
+                            Log.v("TAG",item.getFiles().size()+"size");
                             Intent intent = new Intent();
                             intent.putExtra("subject", shareitems.get(i).getSubject());
 

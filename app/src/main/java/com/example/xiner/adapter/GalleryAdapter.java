@@ -89,7 +89,7 @@ public class GalleryAdapter extends BaseAdapter {
         }
         holder.imgQueue.setTag(position);
         try {
-            Log.v("TAG",imageLoader+"imageloader");
+
             imageLoader.displayImage("file://" + data.get(position).sdcardPath,
                     holder.imgQueue, new SimpleImageLoadingListener() {
                         @Override

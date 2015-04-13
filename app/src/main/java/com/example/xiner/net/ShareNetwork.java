@@ -58,6 +58,12 @@ public class ShareNetwork {
         this.adpterlist = list;
         this.layout = layout;
     }
+    public ShareNetwork(Context context, ShareAdapter shareAdapter, ArrayList<ListItem> list) {
+        this.context = context;
+        this.adapter = shareAdapter;
+        this.adpterlist = list;
+
+    }
 
 
     public DetailItem ParseNet(JSONObject jsonObject) {

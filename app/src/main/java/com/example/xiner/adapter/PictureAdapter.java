@@ -2,15 +2,19 @@ package com.example.xiner.adapter;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.example.xiner.R;
 import com.example.xiner.util.DownloadPicUtil;
 import com.example.xiner.util.HttpUtil;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
 import java.util.ArrayList;
 
@@ -23,10 +27,12 @@ public class PictureAdapter extends BaseAdapter {
     LayoutInflater layoutInflater;
     private static final String TAG="PictureAdapter";
 
+
     public PictureAdapter(Context context, ArrayList<String> items) {
         layoutInflater = LayoutInflater.from(context);
         this.context = context;
         this.items = items;
+
     }
 
     @Override
@@ -46,7 +52,7 @@ public class PictureAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+        final ViewHolder holder;
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.gridview_picture, parent,false);
             holder = new ViewHolder();
@@ -57,10 +63,11 @@ public class PictureAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-            Log.v(TAG,"imageview"+items.get(position));
-        DownloadPicUtil downloadPicUtil = new DownloadPicUtil(holder.imageView);
-        downloadPicUtil.execute(HttpUtil.baseIp+items.get(position));
 
+        DownloadPicUtil downloadPicUtil = new DownloadPicUtil(holder.imageView);
+        downloadPicUtil.execute(HttpUtil.baseIp+items.get(position).split("\\.")[0]+"resizecut."+items.get(position).split("\\.")[1]);
+//        convertView.setLayoutParams(new GridView.LayoutParams(gridwidth, gridheight));
+//        holder.imageView.setGravity(Gravity.CENTER);
 
         return convertView;
     }

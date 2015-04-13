@@ -1,15 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
 
-    android:orientation="vertical">
-
-    <ImageView
-        android:id="@+id/gridview_nopic"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="24dp"
 
 
-        />
-</LinearLayout>
+
+
+
+                android:id="@+id/gridview_nopic"
+                android:layout_width="@dimen/photo_width"
+                android:layout_height="@dimen/photo_height"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerCrop"
+                android:src="@drawable/no_media"/>
+
+
+

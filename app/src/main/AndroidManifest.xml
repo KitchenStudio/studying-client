@@ -92,6 +92,10 @@
             android:name=".activity.SearchActivity"
             android:label="@string/title_activity_search" >
         </activity>
+        <activity
+            android:name=".activity.PictureDetailActivity"
+            android:label="@string/title_activity_picture_detail" >
+        </activity>
     </application>
 
 </manifest>

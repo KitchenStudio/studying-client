@@ -101,36 +101,40 @@
 
                 <GridView
                     android:id="@+id/picturegridview"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="top"
-                    android:layout_marginBottom="-10dp"
-                    android:layout_marginLeft="-10dp"
-                    android:layout_marginRight="-10dp"
-                    android:layout_marginTop="-10dp"
-                    android:horizontalSpacing="-15dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:horizontalSpacing="10dp"
                     android:numColumns="3"
                     android:padding="0dp"
+                    android:verticalSpacing="10dp"
+                    tools:listitem="@layout/gallery_item" >
+                </GridView>
 
-                    android:verticalSpacing="-15dp"></GridView>
+
+
             </RelativeLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/filenameother_recycler"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/white"
-                >
+            <!--<android.support.v7.widget.RecyclerView-->
+                <!--android:id="@+id/filenameother_recycler"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:background="@android:color/white"-->
+                <!-->-->
 
-                </android.support.v7.widget.RecyclerView>
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/filenameaudio_recycler"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/white"
-                >
+                <!--</android.support.v7.widget.RecyclerView>-->
+            <!--<android.support.v7.widget.RecyclerView-->
+                <!--android:id="@+id/filenameaudio_recycler"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:background="@android:color/white"-->
+                <!-->-->
 
-            </android.support.v7.widget.RecyclerView>
+            <!--</android.support.v7.widget.RecyclerView>-->
 
             <RelativeLayout
                 android:layout_width="match_parent"

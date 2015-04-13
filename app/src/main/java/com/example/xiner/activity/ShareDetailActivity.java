@@ -1,7 +1,10 @@
 package com.example.xiner.activity;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.PersistableBundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,10 +30,18 @@ import com.example.xiner.entity.User;
 import com.example.xiner.util.HttpUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.utils.StorageUtils;
 
 import org.apache.http.Header;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,10 +65,12 @@ public class ShareDetailActivity extends ActionBarActivity {
     ImageView zan,collection,comment;
     Long id;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share_detail);
+
         init();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -70,6 +84,16 @@ public class ShareDetailActivity extends ActionBarActivity {
             PictureAdapter pictureAdapter = new PictureAdapter(this, pictureurl);
             GridView gridView = (GridView) findViewById(R.id.picturegridview);
             gridView.setAdapter(pictureAdapter);
+            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    String path = pictureurl.get(position);
+                    Intent intent = new Intent();
+                    intent.setClass(ShareDetailActivity.this,PictureDetailActivity.class);
+                    intent.putExtra("picturepath",path);
+                    startActivity(intent);
+                }
+            });
         }
 //        else if(other !=null){
 //            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.filenameother_recycler);
@@ -85,8 +109,10 @@ public class ShareDetailActivity extends ActionBarActivity {
         mRecyclerview.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerview.setLayoutManager(mLayoutManager);
+        Log.v(TAG, "hellonihao");
 
     }
+
 
     private void init() {
 
@@ -124,15 +150,15 @@ public class ShareDetailActivity extends ActionBarActivity {
             if (filesurl.get(i).getType()!=null) {
                 if (filesurl.get(i).getType().equals("PICTURE")) {
                     pictureurl.add(filesurl.get(i).getUrl());
-                } else if (filesurl.get(i).getType().equals("AUDIO")) {
-
-                    audiourl.add(filesurl.get(i).getUrl());
-                } else {
-
-                    other.add(filesurl.get(i).getUrl());
                 }
+//                else if (filesurl.get(i).getType().equals("AUDIO")) {
+//                    audiourl.add(filesurl.get(i).getUrl());
+//                } else {
+//
+//                    other.add(filesurl.get(i).getUrl());
+//                }
             }
-          commentList =  item.getComments();
+//          commentList =  item.getComments();
         }
 
         nicknametext.setText(nickname);
@@ -142,6 +168,7 @@ public class ShareDetailActivity extends ActionBarActivity {
         collectionText.setText("(" + collectionNum + ")");
         commentText.setText("(" + comments + ")");
         praiseText.setText("(" + praiseNum + ")");
+        Log.v(TAG,"nihao");
     }
 
     class  ClickListener implements View.OnClickListener{
