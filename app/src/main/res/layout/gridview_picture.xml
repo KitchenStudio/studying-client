@@ -1,18 +1,11 @@
-
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="24dp"
-
-
-
-
-
-                android:id="@+id/gridview_nopic"
-                android:layout_width="@dimen/photo_width"
-                android:layout_height="@dimen/photo_height"
-                android:contentDescription="@string/app_name"
-                android:scaleType="centerCrop"
-                android:src="@drawable/no_media"/>
+    android:id="@+id/gridview_nopic"
+    android:layout_width="@dimen/photo_width"
+    android:layout_height="@dimen/photo_height"
+    android:contentDescription="@string/app_name"
+    android:scaleType="centerCrop"
+    android:src="@drawable/no_media" />
 
 
 

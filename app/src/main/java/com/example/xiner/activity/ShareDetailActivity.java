@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -75,8 +76,10 @@ public class ShareDetailActivity extends ActionBarActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            toolbar.setNavigationIcon(R.drawable.ic_ab_drawer);
+//            toolbar.setNavigationIcon(R.drawable.backarrow);
         }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.backarrow);
         RecyclerView mRecyclerview = (RecyclerView) findViewById(R.id.recyclerView_sharedetail);
 
         ShareCommentAdapter shareCommentAdapter = new ShareCommentAdapter(this);
@@ -113,6 +116,14 @@ public class ShareDetailActivity extends ActionBarActivity {
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (android.R.id.home == item.getItemId()) {
+            finish();
+            return false;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     private void init() {
 

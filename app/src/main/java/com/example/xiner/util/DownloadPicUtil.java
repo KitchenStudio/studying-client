@@ -1,5 +1,7 @@
 package com.example.xiner.util;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.http.AndroidHttpClient;
@@ -9,16 +11,20 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.example.xiner.R;
+import com.example.xiner.main.AppBase;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.ref.WeakReference;
 
 /**
@@ -29,18 +35,22 @@ public class DownloadPicUtil extends AsyncTask<String, Void, Bitmap> {
     private static final String USERNAME = "18366116016";
     private static final String PASSWORD = "..xiao";
     private final WeakReference imageViewReference;
+    AppBase app;
 
-    public DownloadPicUtil(ImageView imageView) {
-        Log.v(TAG,"gouzaofangf");
+    int width,height;
+    File file ;
+    public DownloadPicUtil(ImageView imageView, File file,int width,int height) {
         imageViewReference = new WeakReference(imageView);
-
+        this.file = file;
+        this.width =width;
+        this.height = height;
+        app = AppBase.getApp();
     }
 
     @Override
     // Actual download method, run in the task thread
     protected Bitmap doInBackground(String... params) {
         // params comes from the execute() call: params[0] is the url.
-        Log.v(TAG,"gouzaofangf");
         return downloadBitmap(params[0]);
     }
 
@@ -48,7 +58,6 @@ public class DownloadPicUtil extends AsyncTask<String, Void, Bitmap> {
     // Once the image is downloaded, associates it to the imageView
     protected void onPostExecute(Bitmap bitmap) {
         if (isCancelled()) {
-            Log.v(TAG,"isCancle");
             bitmap = null;
         }
 
@@ -68,7 +77,7 @@ public class DownloadPicUtil extends AsyncTask<String, Void, Bitmap> {
     }
 
 
-    static Bitmap downloadBitmap(String url) {
+     Bitmap downloadBitmap(String url) {
         Log.v(TAG,"DOWNLOADING"+url);
         AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
         String credentials = USERNAME + ":" + PASSWORD;
@@ -90,22 +99,20 @@ public class DownloadPicUtil extends AsyncTask<String, Void, Bitmap> {
             if (entity != null) {
                 InputStream inputStream = null;
                 try {
-//                    BitmapFactory.Options opts = new BitmapFactory.Options();
-//                    opts.inJustDecodeBounds = true;// 设置成了true,不占用内存，只获取bitmap宽高
-//                    opts.inSampleSize = computeSampleSize(opts, -1, 1024 * 800);
-//                    opts.inJustDecodeBounds = false;// 这里一定要将其设置回false，因为之前我们将其设置成了true
-//                    opts.inPurgeable = true;
-//                    opts.inInputShareable = true;
-//                    opts.inDither = false;
-//                    opts.inPurgeable = true;
-//                    opts.inTempStorage = new byte[16 * 1024];
                     inputStream = entity.getContent();
-                    final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                    inputTofile(inputStream,file);
+                    BitmapFactory.Options opts = new BitmapFactory.Options();
+                    opts.inJustDecodeBounds = true;// 设置成了true,不占用内存，只获取bitmap宽高
+
+                    BitmapFactory.decodeFile(file.getPath(),opts);
+
+                    opts.inJustDecodeBounds=false;
+
+                    opts.inSampleSize =app.calculateInSampleSize(opts,width,height);
+                    final Bitmap bitmap = BitmapFactory.decodeFile(file.getPath(),opts);
                     return bitmap;
                 } finally {
-                    if (inputStream != null) {
-                        inputStream.close();
-                    }
+
                     entity.consumeContent();
                 }
             }
@@ -121,6 +128,40 @@ public class DownloadPicUtil extends AsyncTask<String, Void, Bitmap> {
         }
         return null;
     }
+
+    private void inputTofile(InputStream inputStream,File file){
+        OutputStream out=null;
+        try {
+            out = new FileOutputStream(file);
+            int byteRead=0;
+            byte [] buffer = new byte[8192];
+            while((byteRead=inputStream.read(buffer,0,8192))!=-1){
+                out.write(buffer,0,byteRead);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            if (out!=null){
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (inputStream!=null){
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+
     public static byte[] decodeBitmap(String path) {
         BitmapFactory.Options opts = new BitmapFactory.Options();
         opts.inJustDecodeBounds = true;// 设置成了true,不占用内存，只获取bitmap宽高

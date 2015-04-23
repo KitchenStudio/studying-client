@@ -3,6 +3,7 @@ package com.example.xiner.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,6 +17,7 @@ import com.example.xiner.activity.ShareDetailActivity;
 import com.example.xiner.R;
 import com.example.xiner.entity.DetailItem;
 import com.example.xiner.entity.ListItem;
+import com.example.xiner.fragment.CollectionFragment;
 import com.example.xiner.fragment.ShareFragment;
 import com.example.xiner.net.ShareNetwork;
 import com.example.xiner.util.HttpUtil;
@@ -37,6 +39,7 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
     ArrayList<ListItem> shareitems;
     ShareNetwork shareNetwork = new ShareNetwork();
     ShareFragment shareFragment;
+    CollectionFragment collectionFragment;
 
     public ShareAdapter(Context context, ArrayList<ListItem> shareitems,ShareFragment shareFragment) {
         this.shareFragment = shareFragment;
@@ -48,6 +51,11 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
         this.shareitems = shareitems;
     }
 
+    public ShareAdapter(Context context, ArrayList<ListItem> shareItemlist, CollectionFragment collectionFragment) {
+        this.collectionFragment = collectionFragment;
+        this.shareitems = shareItemlist;
+        this.mContext = context;
+    }
 
 
     @Override

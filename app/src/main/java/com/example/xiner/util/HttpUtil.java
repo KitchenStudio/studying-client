@@ -22,8 +22,8 @@ import java.io.InputStream;
 import java.lang.ref.WeakReference;
 
 public class HttpUtil {
-    public static final String baseUrl="http://211.87.226.172:8080/api/v1/item";
-    public static final String baseIp="http://211.87.226.172:8080";
+    public static final String baseUrl="http://211.87.226.245:8080/api/v1/item";
+    public static final String baseIp="http://211.87.226.245:8080";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
