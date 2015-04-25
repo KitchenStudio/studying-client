@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.xiner.R;
+import com.example.xiner.adapter.CollectionAdapter;
 import com.example.xiner.adapter.ShareAdapter;
 import com.example.xiner.entity.ListItem;
 import com.example.xiner.net.ShareNetwork;
@@ -30,6 +32,7 @@ import java.util.ArrayList;
 
 public class SearchActivity extends ActionBarActivity {
 
+    private static final String TAG = "SearchActivity";
     Toolbar toolbar;
     ImageView backArraw;
     Button searchButton;
@@ -48,25 +51,23 @@ public class SearchActivity extends ActionBarActivity {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayShowCustomEnabled(true);
             getSupportActionBar().setCustomView(R.layout.activity_search_customview);
+
         }
-        recyclerView =(RecyclerView)findViewById(R.id.recyclerView_search);
-        linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        shareAdapter = new ShareAdapter(this,searchlist);
-        shareNetwork = new ShareNetwork(this, shareAdapter, searchlist);
         searchListener searchListener = new searchListener();
         searchButton =(Button)findViewById(R.id.search_button);
         searchButton.setOnClickListener(searchListener);
         searchEdit =(EditText)findViewById(R.id.seach_edittext);
 
-        backArraw =(ImageView)findViewById(R.id.back_arrow);
-        backArraw.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        backArraw =(ImageView)findViewById(R.id.search_back_arrow);
+        backArraw.setOnClickListener(searchListener);
+        recyclerView =(RecyclerView)findViewById(R.id.recyclerView_search);
+        linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        shareAdapter = new ShareAdapter(this,searchlist);
+        recyclerView.setAdapter(shareAdapter);
+        shareNetwork = new ShareNetwork(this, shareAdapter, searchlist);
+
     }
 
 
@@ -97,11 +98,13 @@ public class SearchActivity extends ActionBarActivity {
 
             switch (v.getId()){
                 case R.id.search_button:
+                    String keyword = searchEdit.getText().toString();
                     if (searchEdit.getText().toString()!=null) {
-                        RequestParams params = new RequestParams();
-                        params.put("keyword", searchEdit.getText().toString());
+//                        RequestParams params = new RequestParams();
 
-                        HttpUtil.post(HttpUtil.baseUrl,params,new JsonHttpResponseHandler(){
+//                        params.put("keyword", searchEdit.getText().toString());
+
+                        HttpUtil.get(HttpUtil.baseUrl+"/search?keyword="+keyword,new JsonHttpResponseHandler(){
                             @Override
                             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                                 super.onSuccess(statusCode, headers, response);
@@ -119,6 +122,10 @@ public class SearchActivity extends ActionBarActivity {
                     }
 
                     break;
+                case R.id.search_back_arrow:
+                    Log.v(TAG,"click back arrow");
+                    finish();
+                break;
             }
 
 

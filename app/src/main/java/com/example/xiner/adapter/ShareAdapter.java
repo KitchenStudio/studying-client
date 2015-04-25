@@ -133,9 +133,11 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
             viewHolder.load.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    viewHolder.load.setClickable(false);
+                    if (shareFragment!=null) {
+                        viewHolder.load.setClickable(false);
 
-                    shareFragment.LoadMore();
+                        shareFragment.LoadMore();
+                    }
 
                 }
             });

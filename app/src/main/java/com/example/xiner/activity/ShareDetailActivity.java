@@ -16,10 +16,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xiner.R;
+import com.example.xiner.adapter.FileAdapter;
 import com.example.xiner.adapter.FilenameAdapter;
 import com.example.xiner.adapter.PictureAdapter;
 import com.example.xiner.adapter.ShareCommentAdapter;
@@ -54,18 +56,19 @@ import java.util.List;
 public class ShareDetailActivity extends ActionBarActivity {
     public TextView collectionText, praiseText, commentText, nicknametext, timetext, subjecttext, detailtext;
     private static final String TAG = "ShareDetailActivity";
-//    private static final String collectionUrl=HttpUtil.baseUrl+
     private RecyclerView.LayoutManager mLayoutManager;
     Toolbar toolbar;
-    List<FileItem> filesurl;
-    ArrayList<String> pictureurl;
-    ArrayList<String> audiourl;
-    ArrayList<String> other;
+    List<FileItem> filesurl = new ArrayList<>();
+    ArrayList<String> pictureurl = new ArrayList<>();
+    ArrayList<String> audiourl = new ArrayList<>();
+    ArrayList<String> other = new ArrayList<>();
     DetailItem item;
     List<Comment> commentList;
     ImageView zan,collection,comment;
     Long id;
-
+    String praiseNum ;
+    String collectionNum ;
+    String comments ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +79,6 @@ public class ShareDetailActivity extends ActionBarActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-//            toolbar.setNavigationIcon(R.drawable.backarrow);
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.backarrow);
@@ -98,22 +100,30 @@ public class ShareDetailActivity extends ActionBarActivity {
                 }
             });
         }
-//        else if(other !=null){
+//        if(other.size()!=0){
 //            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.filenameother_recycler);
 //            FilenameAdapter filenameotherAdapter = new FilenameAdapter(this,other);
 //            recyclerView.setAdapter(filenameotherAdapter);
-//        }else if (audiourl !=null){
-//            Log.v(TAG,audiourl.size()+"size");
-//            RecyclerView audiorecycler =(RecyclerView)findViewById(R.id.filenameaudio_recycler);
-//            FilenameAdapter filenameaudioAdapter = new FilenameAdapter(this,audiourl);
-//            audiorecycler.setAdapter(filenameaudioAdapter);
 //        }
+         if (audiourl.size()!=0) {
+             ListView list = (ListView)findViewById(R.id.filenameaudio_list);
+             FileAdapter fileAdapter = new FileAdapter(this,audiourl);
+             list.setAdapter(fileAdapter);
+
+
+
+         }
+
         mRecyclerview.setAdapter(shareCommentAdapter);
         mRecyclerview.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerview.setLayoutManager(mLayoutManager);
-        Log.v(TAG, "hellonihao");
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override
@@ -146,28 +156,29 @@ public class ShareDetailActivity extends ActionBarActivity {
         String time = getIntent().getExtras().getString("time");
         String nickname = getIntent().getExtras().getString("nickname");
         String content = getIntent().getExtras().getString("content");
-        String praiseNum = getIntent().getExtras().getString("praiseNum");
-        String collectionNum = getIntent().getExtras().getString("collectionNum");
-        String comments = getIntent().getExtras().getString("comments");
+        praiseNum = getIntent().getExtras().getString("praiseNum");
+        collectionNum = getIntent().getExtras().getString("collectionNum");
+        comments = getIntent().getExtras().getString("comments");
         id = getIntent().getExtras().getLong("id");
         item = (DetailItem) getIntent().getSerializableExtra("detailitem");
         Log.v(TAG, item.getUserFigure() + "firgure");
         filesurl = item.getFiles();
-        pictureurl = new ArrayList<>();
-        audiourl = new ArrayList<>();
-        other = new ArrayList<>();
+
         for (int i = 0; i < filesurl.size(); i++) {
             Log.v(TAG,filesurl.get(i).getType()+"typetype");
             if (filesurl.get(i).getType()!=null) {
                 if (filesurl.get(i).getType().equals("PICTURE")) {
                     pictureurl.add(filesurl.get(i).getUrl());
                 }
-//                else if (filesurl.get(i).getType().equals("AUDIO")) {
-//                    audiourl.add(filesurl.get(i).getUrl());
-//                } else {
-//
-//                    other.add(filesurl.get(i).getUrl());
-//                }
+                else if (filesurl.get(i).getType().equals("AUDIO")) {
+
+                    audiourl.add(filesurl.get(i).getUrl());
+                    Log.v(TAG, "hellohello"+audiourl.size());
+                }
+                else {
+
+                    audiourl.add(filesurl.get(i).getUrl());
+                }
             }
 //          commentList =  item.getComments();
         }
@@ -179,7 +190,6 @@ public class ShareDetailActivity extends ActionBarActivity {
         collectionText.setText("(" + collectionNum + ")");
         commentText.setText("(" + comments + ")");
         praiseText.setText("(" + praiseNum + ")");
-        Log.v(TAG,"nihao");
     }
 
     class  ClickListener implements View.OnClickListener{
@@ -193,6 +203,9 @@ public class ShareDetailActivity extends ActionBarActivity {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                             super.onSuccess(statusCode, headers, response);
+                           collectionNum= collectionNum+1;
+                            collectionText.setText("(" + collectionNum + ")");
+
                             Toast.makeText(ShareDetailActivity.this,"收藏成功",Toast.LENGTH_SHORT).show();
                         }
 
