@@ -31,6 +31,7 @@ import com.example.xiner.entity.FileItem;
 import com.example.xiner.entity.ListItem;
 import com.example.xiner.entity.User;
 import com.example.xiner.util.HttpUtil;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
@@ -64,11 +65,11 @@ public class ShareDetailActivity extends ActionBarActivity {
     ArrayList<String> other = new ArrayList<>();
     DetailItem item;
     List<Comment> commentList;
-    ImageView zan,collection,comment;
+    ImageView zan, collection, comment;
     Long id;
-    String praiseNum ;
-    String collectionNum ;
-    String comments ;
+    String praiseNum;
+    String collectionNum;
+    String comments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +85,33 @@ public class ShareDetailActivity extends ActionBarActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.backarrow);
         RecyclerView mRecyclerview = (RecyclerView) findViewById(R.id.recyclerView_sharedetail);
 
+        datainit();
         ShareCommentAdapter shareCommentAdapter = new ShareCommentAdapter(this);
+
+        mRecyclerview.setAdapter(shareCommentAdapter);
+        mRecyclerview.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerview.setLayoutManager(mLayoutManager);
+
+    }
+
+    private void datainit() {
+        for (int i = 0; i < filesurl.size(); i++) {
+            Log.v(TAG, filesurl.get(i).getType() + "typetype");
+            if (filesurl.get(i).getType() != null) {
+                if (filesurl.get(i).getType().equals("PICTURE")) {
+                    pictureurl.add(filesurl.get(i).getUrl());
+                } else if (filesurl.get(i).getType().equals("AUDIO")) {
+
+                    audiourl.add(filesurl.get(i).getUrl());
+                    Log.v(TAG, "hellohello" + audiourl.size());
+                } else {
+
+                    audiourl.add(filesurl.get(i).getUrl());
+                }
+            }
+//          commentList =  item.getComments();
+        }
         if (pictureurl != null) {
             PictureAdapter pictureAdapter = new PictureAdapter(this, pictureurl);
             GridView gridView = (GridView) findViewById(R.id.picturegridview);
@@ -94,30 +121,19 @@ public class ShareDetailActivity extends ActionBarActivity {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     String path = pictureurl.get(position);
                     Intent intent = new Intent();
-                    intent.setClass(ShareDetailActivity.this,PictureDetailActivity.class);
-                    intent.putExtra("picturepath",path);
+                    intent.setClass(ShareDetailActivity.this, PictureDetailActivity.class);
+                    intent.putExtra("picturepath", path);
                     startActivity(intent);
                 }
             });
         }
-//        if(other.size()!=0){
-//            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.filenameother_recycler);
-//            FilenameAdapter filenameotherAdapter = new FilenameAdapter(this,other);
-//            recyclerView.setAdapter(filenameotherAdapter);
-//        }
-         if (audiourl.size()!=0) {
-             ListView list = (ListView)findViewById(R.id.filenameaudio_list);
-             FileAdapter fileAdapter = new FileAdapter(this,audiourl);
-             list.setAdapter(fileAdapter);
+        if (audiourl.size() != 0) {
+            ListView list = (ListView) findViewById(R.id.filenameaudio_list);
+            FileAdapter fileAdapter = new FileAdapter(this, audiourl);
+            list.setAdapter(fileAdapter);
 
 
-
-         }
-
-        mRecyclerview.setAdapter(shareCommentAdapter);
-        mRecyclerview.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerview.setLayoutManager(mLayoutManager);
+        }
 
     }
 
@@ -145,11 +161,11 @@ public class ShareDetailActivity extends ActionBarActivity {
         subjecttext = (TextView) findViewById(R.id.subject_text);
         detailtext = (TextView) findViewById(R.id.detail_text);
         ClickListener clickListener = new ClickListener();
-        zan =(ImageView)findViewById(R.id.idima_praise);
+        zan = (ImageView) findViewById(R.id.idima_praise);
         zan.setOnClickListener(clickListener);
-        collection =(ImageView)findViewById(R.id.idima_collection);
+        collection = (ImageView) findViewById(R.id.idima_collection);
         collection.setOnClickListener(clickListener);
-        comment =(ImageView)findViewById(R.id.idima_comment);
+        comment = (ImageView) findViewById(R.id.idima_comment);
         comment.setOnClickListener(clickListener);
 
         String subject = getIntent().getExtras().getString("subject");
@@ -161,27 +177,9 @@ public class ShareDetailActivity extends ActionBarActivity {
         comments = getIntent().getExtras().getString("comments");
         id = getIntent().getExtras().getLong("id");
         item = (DetailItem) getIntent().getSerializableExtra("detailitem");
-        Log.v(TAG, item.getUserFigure() + "firgure");
         filesurl = item.getFiles();
 
-        for (int i = 0; i < filesurl.size(); i++) {
-            Log.v(TAG,filesurl.get(i).getType()+"typetype");
-            if (filesurl.get(i).getType()!=null) {
-                if (filesurl.get(i).getType().equals("PICTURE")) {
-                    pictureurl.add(filesurl.get(i).getUrl());
-                }
-                else if (filesurl.get(i).getType().equals("AUDIO")) {
 
-                    audiourl.add(filesurl.get(i).getUrl());
-                    Log.v(TAG, "hellohello"+audiourl.size());
-                }
-                else {
-
-                    audiourl.add(filesurl.get(i).getUrl());
-                }
-            }
-//          commentList =  item.getComments();
-        }
 
         nicknametext.setText(nickname);
         timetext.setText(time);
@@ -192,27 +190,33 @@ public class ShareDetailActivity extends ActionBarActivity {
         praiseText.setText("(" + praiseNum + ")");
     }
 
-    class  ClickListener implements View.OnClickListener{
+    class ClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
-            switch (v.getId()){
+            switch (v.getId()) {
                 case R.id.idima_collection:
 
-                    HttpUtil.post(HttpUtil.baseUrl+"/"+id+"/star",new JsonHttpResponseHandler(){
+                    HttpUtil.post(HttpUtil.baseUrl + "/" + id + "/star", new AsyncHttpResponseHandler() {
                         @Override
-                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                            super.onSuccess(statusCode, headers, response);
-                           collectionNum= collectionNum+1;
-                            collectionText.setText("(" + collectionNum + ")");
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                           String str= new String(responseBody);
+                            if (str.equals("has been starred")){
+                                Toast.makeText(ShareDetailActivity.this, "已经收藏过", Toast.LENGTH_SHORT).show();
+                                return;
 
-                            Toast.makeText(ShareDetailActivity.this,"收藏成功",Toast.LENGTH_SHORT).show();
+                            }else {
+                                collectionNum = String.valueOf(Integer.parseInt(collectionNum) + 1);
+                                collectionText.setText("(" + collectionNum + ")");
+
+                                Toast.makeText(ShareDetailActivity.this, "收藏成功", Toast.LENGTH_SHORT).show();
+                            }
                         }
 
                         @Override
-                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                            super.onFailure(statusCode, headers, responseString, throwable);
-                            Toast.makeText(ShareDetailActivity.this,"收藏失败",Toast.LENGTH_SHORT).show();
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            Toast.makeText(ShareDetailActivity.this, "收藏失败", Toast.LENGTH_SHORT).show();
+
                         }
                     });
 

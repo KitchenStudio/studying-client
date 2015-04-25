@@ -100,10 +100,6 @@ public class SearchActivity extends ActionBarActivity {
                 case R.id.search_button:
                     String keyword = searchEdit.getText().toString();
                     if (searchEdit.getText().toString()!=null) {
-//                        RequestParams params = new RequestParams();
-
-//                        params.put("keyword", searchEdit.getText().toString());
-
                         HttpUtil.get(HttpUtil.baseUrl+"/search?keyword="+keyword,new JsonHttpResponseHandler(){
                             @Override
                             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
@@ -123,7 +119,6 @@ public class SearchActivity extends ActionBarActivity {
 
                     break;
                 case R.id.search_back_arrow:
-                    Log.v(TAG,"click back arrow");
                     finish();
                 break;
             }
