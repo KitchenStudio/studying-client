@@ -73,40 +73,40 @@ public class ShareNetwork {
         for (Iterator iterator = jsonObject.keys(); iterator.hasNext();) {
             String key = (String) iterator.next();
             if (key.equals("userFigure")) {
-                Log.v(TAG, "haha11");
+
                 try {
                     String userFigure = jsonObject.getString("userFigure");
                     if (userFigure != null) {
                         detailItem.setUserFigure(userFigure);
                     }
-                    Log.v(TAG, "haha1");
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             } else if (key.equals("files")) {
-                Log.v(TAG, "haha22");
+
                 List<FileItem> fileItems = new ArrayList<>();
                 try {
                     JSONArray array = jsonObject.getJSONArray("files");
                     if (array.length()!=0) {
-                        Log.v(TAG,"haha6");
+
                         for (int i = 0; i < array.length(); i++) {
-                            Log.v(TAG,"haha7");
+
                             JSONObject object = array.getJSONObject(i);
                             FileItem fileItem = new FileItem();
                             for (Iterator iter = object.keys(); iter.hasNext(); ) {
-                                Log.v(TAG,"haha8");
+
                                 String keyyy = (String) iter.next();
                                 if (keyyy.equals("filename")) {
-                                    Log.v(TAG,"haha3");
+
                                     String filename = object.getString("filename");
                                     fileItem.setFilename(filename);
                                 } else if (keyyy.equals("url")) {
-                                    Log.v(TAG,"haha4");
+
                                     String url = object.getString("url");
                                     fileItem.setUrl(url);
                                 } else if (keyyy.equals("type")) {
-                                    Log.v(TAG,"haha5");
+
                                     String type = object.getString("type");
                                     fileItem.setType(type);
                                     Log.v(TAG,fileItem.getType());
@@ -117,74 +117,85 @@ public class ShareNetwork {
                         }
 
                     }
-                    Log.v(TAG, "haha2");
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 detailItem.setFiles(fileItems);
             }
-//            else if (key.equals("comments")){
-//                List<Comment>commentList = new ArrayList<>();
-//                try {
-//                    JSONArray commentArray = jsonObject.getJSONArray("comments");
-//                    if (commentArray!=null){
-//                        for (int a=0;a<commentArray.length();a++){
-//                            Comment comment = new Comment();
-//                            JSONObject commentObject = commentArray.getJSONObject(a);
-//                            for (Iterator commentiter = commentObject.keys();commentiter.hasNext();){
-//                                if (commentiter.equals("username")){
-//                                    String username = commentObject.getString("username");
-//                                    comment.setUsername(username);
-//                                }else if (commentiter.equals("userFigure")){
-//                                    String userFigure = commentObject.getString("userFigure");
-//                                    comment.setUserFigure(userFigure);
-//                                }else if (commentiter.equals("createdTime")){
-//                                    String createTime = commentObject.getString("createdTime");
-//                                    comment.setCreatedTime(new Date(Long.parseLong(createTime)));
-//                                }else if (commentiter.equals("content")){
-//                                    String content = commentObject.getString("content");
-//                                    comment.setContent(content);
-//
-//                                }else if (commentiter.equals("files")){
-//                                    List<FileItem> commentfileItems = new ArrayList<>();
-//                                    try {
-//                                        JSONArray array = jsonObject.getJSONArray("files");
-//                                        if (array!=null){
-//                                            for (int i =0;i< array.length();i++){
-//                                                JSONObject object = array.getJSONObject(i);
-//                                                FileItem fileItem = new FileItem();
-//                                                for (Iterator iter = object.keys();iter.hasNext();){
-//                                                    if (iter.equals("filename")){
-//                                                        String filename = object.getString("filename");
-//                                                        fileItem.setFilename(filename);
-//                                                    }else if (iter.equals("url")){
-//                                                        String url = object.getString("url");
-//                                                        fileItem.setUrl(url);
-//                                                    }else if (iter.equals("type")){
-//                                                        String type = object.getString("type");
-//                                                        fileItem.setType(type);
-//                                                    }
-//
-//                                                }
-//                                                commentfileItems.add(fileItem);
-//                                            }
-//
-//                                        }
-//                                    } catch (JSONException e) {
-//                                        e.printStackTrace();
-//                                    }
-//                                    comment.setFiles(commentfileItems);
-//                                }
-//                            }
-//                            commentList.add(comment);
-//
-//                        }
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//                detailItem.setComments(commentList);
-//            }
+            else if (key.equals("comments")){
+                List<Comment>commentList = new ArrayList<>();
+                try {
+                    JSONArray commentArray = jsonObject.getJSONArray("comments");
+                    if (commentArray.length()!=0){
+                        for (int a=0;a<commentArray.length();a++){
+                            Log.v(TAG, "haha2");
+                            Comment comment = new Comment();
+                            JSONObject commentObject = commentArray.getJSONObject(a);
+                            for (Iterator commentiter = commentObject.keys();commentiter.hasNext();){
+                                String keycomment = (String) commentiter.next();
+                                if (keycomment.equals("username")){
+                                    Log.v(TAG,"haha5");
+                                    String username = commentObject.getString("username");
+                                    comment.setUsername(username);
+                                }else if (keycomment.equals("userFigure")){
+                                    Log.v(TAG,"haha6");
+                                    String userFigure = commentObject.getString("userFigure");
+                                    comment.setUserFigure(userFigure);
+                                }else if (keycomment.equals("createdTime")){
+                                    Log.v(TAG,"haha7");
+                                    String createTime = commentObject.getString("createdTime");
+                                    comment.setCreatedTime(new Date(Long.parseLong(createTime)));
+                                }else if (keycomment.equals("content")){
+                                    Log.v(TAG,"haha8");
+                                    String content = commentObject.getString("content");
+                                    comment.setContent(content);
+
+                                }else if (keycomment.equals("files")){
+                                    Log.v(TAG,"haha9");
+                                    List<FileItem> commentfileItems = new ArrayList<>();
+                                    try {
+                                        JSONArray array = jsonObject.getJSONArray("files");
+                                        if (array!=null){
+                                            for (int i =0;i< array.length();i++){
+                                                Log.v(TAG,"haha10");
+                                                JSONObject object = array.getJSONObject(i);
+                                                FileItem fileItem = new FileItem();
+                                                for (Iterator iter = object.keys();iter.hasNext();){
+                                                    if (iter.equals("filename")){
+                                                        Log.v(TAG,"haha11");
+                                                        String filename = object.getString("filename");
+                                                        fileItem.setFilename(filename);
+                                                    }else if (iter.equals("url")){
+                                                        Log.v(TAG,"haha12");
+                                                        String url = object.getString("url");
+                                                        fileItem.setUrl(url);
+                                                    }else if (iter.equals("type")){
+                                                        Log.v(TAG,"haha13");
+                                                        String type = object.getString("type");
+                                                        fileItem.setType(type);
+                                                    }
+
+                                                }
+                                                commentfileItems.add(fileItem);
+                                            }
+
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    comment.setFiles(commentfileItems);
+                                }
+                            }
+                            commentList.add(comment);
+
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                detailItem.setComments(commentList);
+            }
         }
 
         return detailItem;

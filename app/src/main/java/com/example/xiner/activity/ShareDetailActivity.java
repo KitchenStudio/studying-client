@@ -25,6 +25,7 @@ import com.example.xiner.adapter.FileAdapter;
 import com.example.xiner.adapter.FilenameAdapter;
 import com.example.xiner.adapter.PictureAdapter;
 import com.example.xiner.adapter.ShareCommentAdapter;
+import com.example.xiner.adapter.ShareDetailAdapter;
 import com.example.xiner.entity.Comment;
 import com.example.xiner.entity.DetailItem;
 import com.example.xiner.entity.FileItem;
@@ -63,20 +64,20 @@ public class ShareDetailActivity extends ActionBarActivity {
     ArrayList<String> pictureurl = new ArrayList<>();
     ArrayList<String> audiourl = new ArrayList<>();
     ArrayList<String> other = new ArrayList<>();
-    DetailItem item;
+    DetailItem detailItem;
     List<Comment> commentList;
     ImageView zan, collection, comment;
     Long id;
-    String praiseNum;
-    String collectionNum;
-    String comments;
-
+    int praiseNum;
+    int collectionNum;
+    int comments;
+    ListItem listitem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_share_detail);
+        setContentView(R.layout.activity_sharedetail);
 
-        init();
+//        init();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -85,13 +86,21 @@ public class ShareDetailActivity extends ActionBarActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.backarrow);
         RecyclerView mRecyclerview = (RecyclerView) findViewById(R.id.recyclerView_sharedetail);
 
-        datainit();
-        ShareCommentAdapter shareCommentAdapter = new ShareCommentAdapter(this);
+        listitem = (ListItem) getIntent().getSerializableExtra("listitem");
+        Log.v(TAG, listitem.getContent() + "contentcontent");
+        detailItem = (DetailItem) getIntent().getSerializableExtra("detailitem");
+        commentList = detailItem.getComments();
+        Log.v(TAG,commentList.size()+"commentcommentcommentsize");
+//
+////        datainit();
 
-        mRecyclerview.setAdapter(shareCommentAdapter);
-        mRecyclerview.setHasFixedSize(true);
+//        ShareCommentAdapter shareCommentAdapter = new ShareCommentAdapter(this);
+//mRecyclerview.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerview.setLayoutManager(mLayoutManager);
+        ShareDetailAdapter shareDetailAdapter = new ShareDetailAdapter(this,commentList,detailItem,listitem);
+
+        mRecyclerview.setAdapter(shareDetailAdapter);
 
     }
 
@@ -104,7 +113,6 @@ public class ShareDetailActivity extends ActionBarActivity {
                 } else if (filesurl.get(i).getType().equals("AUDIO")) {
 
                     audiourl.add(filesurl.get(i).getUrl());
-                    Log.v(TAG, "hellohello" + audiourl.size());
                 } else {
 
                     audiourl.add(filesurl.get(i).getUrl());
@@ -131,8 +139,6 @@ public class ShareDetailActivity extends ActionBarActivity {
             ListView list = (ListView) findViewById(R.id.filenameaudio_list);
             FileAdapter fileAdapter = new FileAdapter(this, audiourl);
             list.setAdapter(fileAdapter);
-
-
         }
 
     }
@@ -167,24 +173,21 @@ public class ShareDetailActivity extends ActionBarActivity {
         collection.setOnClickListener(clickListener);
         comment = (ImageView) findViewById(R.id.idima_comment);
         comment.setOnClickListener(clickListener);
-
-        String subject = getIntent().getExtras().getString("subject");
-        String time = getIntent().getExtras().getString("time");
-        String nickname = getIntent().getExtras().getString("nickname");
-        String content = getIntent().getExtras().getString("content");
-        praiseNum = getIntent().getExtras().getString("praiseNum");
-        collectionNum = getIntent().getExtras().getString("collectionNum");
-        comments = getIntent().getExtras().getString("comments");
-        id = getIntent().getExtras().getLong("id");
-        item = (DetailItem) getIntent().getSerializableExtra("detailitem");
-        filesurl = item.getFiles();
+        listitem = (ListItem) getIntent().getSerializableExtra("listitem");
+        detailItem = (DetailItem) getIntent().getSerializableExtra("detailitem");
+        filesurl = detailItem.getFiles();
 
 
 
-        nicknametext.setText(nickname);
-        timetext.setText(time);
-        subjecttext.setText(subject);
-        detailtext.setText(content);
+        nicknametext.setText(listitem.getNickname());
+        SimpleDateFormat myFmt2=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        timetext.setText(myFmt2.format(listitem.getCreatedTime()));
+        subjecttext.setText(listitem.getSubject());
+        detailtext.setText(listitem.getContent());
+        collectionNum = listitem.getStars();
+        comments = listitem.getComments();
+        praiseNum = listitem.getUps();
+        id= listitem.getId();
         collectionText.setText("(" + collectionNum + ")");
         commentText.setText("(" + comments + ")");
         praiseText.setText("(" + praiseNum + ")");
@@ -206,7 +209,7 @@ public class ShareDetailActivity extends ActionBarActivity {
                                 return;
 
                             }else {
-                                collectionNum = String.valueOf(Integer.parseInt(collectionNum) + 1);
+                                collectionNum = collectionNum + 1;
                                 collectionText.setText("(" + collectionNum + ")");
 
                                 Toast.makeText(ShareDetailActivity.this, "收藏成功", Toast.LENGTH_SHORT).show();
@@ -215,6 +218,7 @@ public class ShareDetailActivity extends ActionBarActivity {
 
                         @Override
                         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            Log.v(TAG,error.toString()+"error"+statusCode);
                             Toast.makeText(ShareDetailActivity.this, "收藏失败", Toast.LENGTH_SHORT).show();
 
                         }

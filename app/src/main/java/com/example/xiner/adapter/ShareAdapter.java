@@ -61,7 +61,6 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
 
-        Log.v(TAG, i + "type");
         ViewHolder holder;
         if (i == 0) {
             View view1 = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_detail_last, viewGroup, false);
@@ -77,47 +76,38 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
-        Log.v(TAG, i + "position");
         if (shareitems.size() != 0 && i < shareitems.size()) {
 
-            viewHolder.subject.setText(shareitems.get(i).getSubject());
-            SimpleDateFormat myFmt2=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            viewHolder.time.setText(myFmt2.format(shareitems.get(i).getCreatedTime()));
-            viewHolder.nickname.setText(shareitems.get(i).getNickname());
-            viewHolder.detail.setText(shareitems.get(i).getContent());
+            final ListItem listItem = shareitems.get(i);
 
-            viewHolder.collection.setText("("+shareitems.get(i).getStars().toString()+")");
-            viewHolder.praise.setText("("+shareitems.get(i).getUps().toString()+")");
-            viewHolder.comment.setText("("+shareitems.get(i).getComments().toString()+")");
+            viewHolder.subject.setText(listItem.getSubject());
+            SimpleDateFormat myFmt2=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            viewHolder.time.setText(myFmt2.format(listItem.getCreatedTime()));
+            viewHolder.nickname.setText(listItem.getNickname());
+            viewHolder.detail.setText(listItem.getContent());
+            viewHolder.collection.setText("("+listItem.getStars().toString()+")");
+            viewHolder.praise.setText("("+listItem.getUps().toString()+")");
+            viewHolder.comment.setText("("+listItem.getComments().toString()+")");
 
 
             viewHolder.mCardview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Long id = shareitems.get(i).getId();
+                    Long id = listItem.getId();
                     Log.v(TAG,"点击了");
                     HttpUtil.get(shareNetwork.getitemdetail+"/"+id, new JsonHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                             super.onSuccess(statusCode, headers, response);
                             DetailItem item = shareNetwork.ParseNet(response);
-                            Log.v("TAG",item.getFiles().size()+"size");
                             Intent intent = new Intent();
-                            intent.putExtra("subject", shareitems.get(i).getSubject());
-
-                            SimpleDateFormat myFmt2=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                            String time =myFmt2.format(shareitems.get(i).getCreatedTime());
-                            intent.putExtra("id",shareitems.get(i).getId());
-                            intent.putExtra("time", time);
-                            intent.putExtra("nickname", shareitems.get(i).getNickname());
-                            intent.putExtra("content",shareitems.get(i).getContent());
-                            intent.putExtra("praiseNum",shareitems.get(i).getUps().toString());
-                            intent.putExtra("collectionNum",shareitems.get(i).getStars().toString());
-                            intent.putExtra("comments",shareitems.get(i).getComments().toString());
                             intent.setClass(mContext, ShareDetailActivity.class);
                             Bundle bundle = new Bundle();
                             bundle.putSerializable("detailitem",item);
+                            bundle.putSerializable("listitem",listItem);
+                            Log.v(TAG,listItem.getContent()+"listitemlistitem");
                             intent.putExtras(bundle);
+
                             mContext.startActivity(intent);
                         }
 

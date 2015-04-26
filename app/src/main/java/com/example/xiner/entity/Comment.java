@@ -1,10 +1,11 @@
 package com.example.xiner.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Comment {
+public class Comment implements Serializable{
 
 	private String username;
 	private String userFigure;

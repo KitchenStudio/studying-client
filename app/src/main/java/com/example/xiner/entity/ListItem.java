@@ -1,8 +1,9 @@
 package com.example.xiner.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class ListItem {
+public class ListItem implements Serializable{
 
 	private Long id;
 	private String content;
@@ -11,9 +12,9 @@ public class ListItem {
 	private String nickname;
 	private Date createdTime;
 
-	private Integer ups;
-	private Integer stars;
-	private Integer comments;
+	private int ups;
+	private int stars;
+	private int comments;
 
 	public Long getId() {
 		return id;
