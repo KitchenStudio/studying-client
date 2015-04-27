@@ -8,8 +8,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimaryDark"
-        />
+        android:background="?attr/colorPrimaryDark" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -33,19 +32,18 @@
                 android:src="@drawable/faceimage" />
 
 
-
-
-
-
             <EditText
+                android:textColor="@color/black_translucent"
                 android:id="@+id/email_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/face_registerimg"
                 android:layout_marginTop="20dp"
-                android:hint="请输入邮箱" />
+                android:hint="请输入电话号码" />
 
             <EditText
+                android:textColor="@color/black_translucent"
+
                 android:id="@+id/password_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -53,7 +51,10 @@
                 android:layout_marginTop="20dp"
                 android:hint="请输入密码"
                 android:password="true" />
+
             <EditText
+                android:textColor="@color/black_translucent"
+
                 android:id="@+id/passwordagain_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -68,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/passwordagain_register"
                 android:layout_marginTop="20dp"
-                android:background="@color/blue"
+                android:background="@color/material_deep_teal_500"
                 android:text="注册"
                 android:textColor="@android:color/white" />
         </RelativeLayout>

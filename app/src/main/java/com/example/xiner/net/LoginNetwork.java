@@ -10,6 +10,7 @@ import com.example.xiner.activity.MainActivity;
 import com.example.xiner.entity.User;
 import com.example.xiner.util.HttpUtil;
 import com.example.xiner.util.LoadingDialog;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -21,7 +22,7 @@ import org.json.JSONObject;
  */
 public class LoginNetwork {
 
-    public static final String loginurl ="";
+    public static final String loginurl =HttpUtil.baseUserUrl+"/login";
 
     Context context;
     public LoginNetwork(Context context){
@@ -38,25 +39,53 @@ public class LoginNetwork {
         User user = new User();
         user.setMail(email);
         user.setPassword(password);
-        params.put("user", user);
+        params.put("username", email);
+        params.put("password",password);
+        HttpUtil.post(loginurl, params, new AsyncHttpResponseHandler() {
 
-        HttpUtil.post(loginurl, params, new JsonHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 dialog.dismiss();
-                Toast.makeText(context, "上传成功", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent();
-                intent.setClass(context, MainActivity.class);
-                context.startActivity(intent);
+                String result = new String(responseBody);
+                if (result.equals("login success")){
+                    Toast.makeText(context, "登陆成功", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent();
+                    intent.setClass(context, MainActivity.class);
+                    context.startActivity(intent);
+                }else if (result.equals("password error")){
+                    Toast.makeText(context, "密码错误", Toast.LENGTH_SHORT).show();
+
+                }else {
+                    Toast.makeText(context, "用户不存在", Toast.LENGTH_SHORT).show();
+
+                }
+
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                super.onFailure(statusCode, headers, responseString, throwable);
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 dialog.dismiss();
-                Toast.makeText(context, "上传失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "登陆失败", Toast.LENGTH_SHORT).show();
+
             }
+
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                super.onSuccess(statusCode, headers, response);
+//                dialog.dismiss();
+//
+//                Toast.makeText(context, "上传成功", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent();
+//                intent.setClass(context, MainActivity.class);
+//                context.startActivity(intent);
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+//                super.onFailure(statusCode, headers, responseString, throwable);
+//                dialog.dismiss();
+//                Toast.makeText(context, "上传失败", Toast.LENGTH_SHORT).show();
+//            }
         });
     }
 }

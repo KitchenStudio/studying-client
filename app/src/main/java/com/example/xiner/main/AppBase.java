@@ -20,7 +20,7 @@ import java.io.IOException;
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
  */
 public class AppBase extends Application {
-
+    private static final String APP_NAME="study";
     private static final String TAG ="AppBase" ;
     SqliteBase sqliteBase;
 
@@ -29,7 +29,7 @@ public class AppBase extends Application {
 
 
    public SharedPreferences getDataStore(){
-       return this.getSharedPreferences("xueyou",MODE_PRIVATE);
+       return this.getSharedPreferences(APP_NAME,MODE_PRIVATE);
    }
 
     @Override
@@ -118,6 +118,5 @@ public class AppBase extends Application {
         Log.v(TAG, inSampleSize + "sample");
         return inSampleSize;
     }
-
 
 }

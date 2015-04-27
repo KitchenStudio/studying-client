@@ -36,10 +36,11 @@
     <string name="edit_grade_text">年级</string>
     <string name="saveedit">保存</string>
     <string name="edit_sex_text">性别</string>
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_login">登陆</string>
+    <string name="title_activity_register">注册</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="title_activity_hello">hello</string>
     <string name="title_activity_picture_detail">PictureDetailActivity</string>
+    <string name="title_activity_splash">注册</string>
 
 </resources>
