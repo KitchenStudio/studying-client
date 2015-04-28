@@ -92,7 +92,7 @@
                     android:layout_height="wrap_content"
 
                     android:layout_margin="4dp"
-                    android:src="@drawable/collection" />
+                    android:src="@drawable/comm" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -136,7 +136,7 @@
                     android:layout_height="wrap_content"
 
                     android:layout_margin="4dp"
-                    android:src="@drawable/image_comment" />
+                    android:src="@drawable/star" />
 
                 <TextView
                     android:layout_width="wrap_content"

@@ -56,28 +56,19 @@ import java.util.List;
  * Created by xiner on 14-12-22.
  */
 public class ShareDetailActivity extends ActionBarActivity {
-    public TextView collectionText, praiseText, commentText, nicknametext, timetext, subjecttext, detailtext;
     private static final String TAG = "ShareDetailActivity";
     private RecyclerView.LayoutManager mLayoutManager;
     Toolbar toolbar;
-    List<FileItem> filesurl = new ArrayList<>();
-    ArrayList<String> pictureurl = new ArrayList<>();
-    ArrayList<String> audiourl = new ArrayList<>();
-    ArrayList<String> other = new ArrayList<>();
+
     DetailItem detailItem;
     List<Comment> commentList;
-    ImageView zan, collection, comment;
     Long id;
-    int praiseNum;
-    int collectionNum;
-    int comments;
     ListItem listitem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sharedetail);
 
-//        init();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -91,57 +82,13 @@ public class ShareDetailActivity extends ActionBarActivity {
         detailItem = (DetailItem) getIntent().getSerializableExtra("detailitem");
         commentList = detailItem.getComments();
         Log.v(TAG,commentList.size()+"commentcommentcommentsize");
-//
-////        datainit();
-
-//        ShareCommentAdapter shareCommentAdapter = new ShareCommentAdapter(this);
-//mRecyclerview.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerview.setLayoutManager(mLayoutManager);
         ShareDetailAdapter shareDetailAdapter = new ShareDetailAdapter(this,commentList,detailItem,listitem);
-
         mRecyclerview.setAdapter(shareDetailAdapter);
 
     }
 
-    private void datainit() {
-        for (int i = 0; i < filesurl.size(); i++) {
-            Log.v(TAG, filesurl.get(i).getType() + "typetype");
-            if (filesurl.get(i).getType() != null) {
-                if (filesurl.get(i).getType().equals("PICTURE")) {
-                    pictureurl.add(filesurl.get(i).getUrl());
-                } else if (filesurl.get(i).getType().equals("AUDIO")) {
-
-                    audiourl.add(filesurl.get(i).getUrl());
-                } else {
-
-                    audiourl.add(filesurl.get(i).getUrl());
-                }
-            }
-//          commentList =  item.getComments();
-        }
-        if (pictureurl != null) {
-            PictureAdapter pictureAdapter = new PictureAdapter(this, pictureurl);
-            GridView gridView = (GridView) findViewById(R.id.picturegridview);
-            gridView.setAdapter(pictureAdapter);
-            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    String path = pictureurl.get(position);
-                    Intent intent = new Intent();
-                    intent.setClass(ShareDetailActivity.this, PictureDetailActivity.class);
-                    intent.putExtra("picturepath", path);
-                    startActivity(intent);
-                }
-            });
-        }
-        if (audiourl.size() != 0) {
-            ListView list = (ListView) findViewById(R.id.filenameaudio_list);
-            FileAdapter fileAdapter = new FileAdapter(this, audiourl);
-            list.setAdapter(fileAdapter);
-        }
-
-    }
 
     @Override
     protected void onPause() {
@@ -156,83 +103,5 @@ public class ShareDetailActivity extends ActionBarActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    private void init() {
-
-        collectionText = (TextView) findViewById(R.id.collectionnum_text);
-        praiseText = (TextView) findViewById(R.id.praisenum_text);
-        commentText = (TextView) findViewById(R.id.commentnum_text);
-        nicknametext = (TextView) findViewById(R.id.nickname_text);
-        timetext = (TextView) findViewById(R.id.time_text);
-        subjecttext = (TextView) findViewById(R.id.subject_text);
-        detailtext = (TextView) findViewById(R.id.detail_text);
-        ClickListener clickListener = new ClickListener();
-        zan = (ImageView) findViewById(R.id.idima_praise);
-        zan.setOnClickListener(clickListener);
-        collection = (ImageView) findViewById(R.id.idima_collection);
-        collection.setOnClickListener(clickListener);
-        comment = (ImageView) findViewById(R.id.idima_comment);
-        comment.setOnClickListener(clickListener);
-        listitem = (ListItem) getIntent().getSerializableExtra("listitem");
-        detailItem = (DetailItem) getIntent().getSerializableExtra("detailitem");
-        filesurl = detailItem.getFiles();
-
-
-
-        nicknametext.setText(listitem.getNickname());
-        SimpleDateFormat myFmt2=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        timetext.setText(myFmt2.format(listitem.getCreatedTime()));
-        subjecttext.setText(listitem.getSubject());
-        detailtext.setText(listitem.getContent());
-        collectionNum = listitem.getStars();
-        comments = listitem.getComments();
-        praiseNum = listitem.getUps();
-        id= listitem.getId();
-        collectionText.setText("(" + collectionNum + ")");
-        commentText.setText("(" + comments + ")");
-        praiseText.setText("(" + praiseNum + ")");
-    }
-
-    class ClickListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.idima_collection:
-
-                    HttpUtil.post(HttpUtil.baseUrl + "/" + id + "/star", new AsyncHttpResponseHandler() {
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                           String str= new String(responseBody);
-                            if (str.equals("has been starred")){
-                                Toast.makeText(ShareDetailActivity.this, "已经收藏过", Toast.LENGTH_SHORT).show();
-                                return;
-
-                            }else {
-                                collectionNum = collectionNum + 1;
-                                collectionText.setText("(" + collectionNum + ")");
-
-                                Toast.makeText(ShareDetailActivity.this, "收藏成功", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                            Log.v(TAG,error.toString()+"error"+statusCode);
-                            Toast.makeText(ShareDetailActivity.this, "收藏失败", Toast.LENGTH_SHORT).show();
-
-                        }
-                    });
-
-                    break;
-                case R.id.idima_comment:
-                    break;
-                case R.id.idima_praise:
-                    break;
-            }
-
-        }
-    }
-
 
 }

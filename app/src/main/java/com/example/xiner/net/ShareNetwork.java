@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.example.xiner.adapter.ShareAdapter;
 import com.example.xiner.entity.Comment;
 import com.example.xiner.entity.DetailItem;
+import com.example.xiner.entity.FileFigure;
 import com.example.xiner.entity.FileItem;
 import com.example.xiner.entity.ListItem;
 import com.example.xiner.entity.User;
@@ -199,6 +200,87 @@ public class ShareNetwork {
         }
 
         return detailItem;
+    }
+    public User ParseUser(JSONObject jsonObject) {
+        Log.v(TAG, jsonObject + "object");
+
+        User user = new User();
+        for (Iterator iterator = jsonObject.keys(); iterator.hasNext(); ) {
+            String key = (String) iterator.next();
+            if (key.equals("nickname")) {
+
+                try {
+                    String nickname = jsonObject.getString("nickname");
+                    if (nickname != null) {
+                        user.setNickname(nickname);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else if (key.equals("age")) {
+                try {
+                    int age = jsonObject.getInt("age");
+//                    if (nickname != null) {
+                    user.setAge(age);
+//                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            } else if (key.equals("username")) {
+                try {
+                    String username = jsonObject.getString("username");
+                    if (username != null) {
+                        user.setUsername(username);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+//                List<FileItem> fileItems = new ArrayList<>();
+            try {
+                JSONArray array = jsonObject.getJSONArray("fileFigure");
+                if (array.length() != 0) {
+
+                    for (int i = 0; i < array.length(); i++) {
+
+                        JSONObject object = array.getJSONObject(i);
+                        FileFigure fileItem = new FileFigure();
+                        for (Iterator iter = object.keys(); iter.hasNext(); ) {
+
+                            String keyyy = (String) iter.next();
+                            if (keyyy.equals("filename")) {
+
+                                String filename = object.getString("filename");
+                                fileItem.setFilename(filename);
+                            } else if (keyyy.equals("url")) {
+
+                                String url = object.getString("url");
+                                fileItem.setUrl(url);
+                            } else if (keyyy.equals("type")) {
+
+                                String type = object.getString("type");
+                                fileItem.setType(type);
+                                Log.v(TAG, fileItem.getType());
+                            }
+
+                        }
+                        user.setFileFigure(fileItem);
+//                            fileItems.add(fileItem);
+                    }
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return user;
     }
 
     public ArrayList<ListItem> ParseNet(JSONArray jsonArray) {

@@ -26,14 +26,14 @@ public class SplashActivity extends ActionBarActivity {
             public void run() {
                 // TODO Auto-generated method stub
                 Intent intent = new Intent();
-                if (ifRegister()) {
-                    //
-                    intent.setClass(SplashActivity.this,
-                            LoginActivity.class);
-                } else {
+//                if (ifRegister()) {
+//                    //
+//                    intent.setClass(SplashActivity.this,
+//                            LoginActivity.class);
+//                } else {
 
                     intent.setClass(SplashActivity.this, RegisterActivity.class);
-                }
+//                }
                 startActivity(intent);
                 finish();
             }

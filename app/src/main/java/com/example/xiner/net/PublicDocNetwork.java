@@ -29,7 +29,7 @@ public class PublicDocNetwork {
 
     public static final String TAG = "PublicDocNetwork";
     public static final String uploadInfo = HttpUtil.baseUrl + "/saveinfo";
-    public static final String uploadFile = HttpUtil.baseUrl ;
+    public static final String uploadFile = HttpUtil.baseUrl;
     Context context;
     ArrayList<String> file;
 
@@ -38,7 +38,7 @@ public class PublicDocNetwork {
     }
 
 
-    public void uploadshare(final ArrayList<String> file, String content, String subject) {
+    public void uploadshare(final ArrayList<String> file, String content, String subject, String username) {
         this.file = file;
 
         final Dialog dialog = LoadingDialog.createDialog(context, "正在上传，请稍后....");
@@ -47,6 +47,7 @@ public class PublicDocNetwork {
         RequestParams params = new RequestParams();
         params.put("content", content);
         params.put("subject", subject);
+        params.put("username", username);
 
 //        for (int i = 0; i < file.size(); i++) {
 //            try {
@@ -71,30 +72,45 @@ public class PublicDocNetwork {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                RequestParams params = new RequestParams();
-                for (int i = 0; i < file.size(); i++) {
-                    try {
+                if (file.size() != 0) {
+                    Log.v(TAG, file.size() + "filesizefilezie");
 
-                        params.put("file" + i, new File(new URI(file.get(i))), "multipart/form-data");
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (URISyntaxException e) {
-                        e.printStackTrace();
+
+                    RequestParams params = new RequestParams();
+                    for (int i = 0; i < file.size(); i++) {
+                        try {
+
+                            params.put("file" + i, new File(new URI(file.get(i))), "multipart/form-data");
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (URISyntaxException e) {
+                            e.printStackTrace();
+                        }
                     }
+                    HttpUtil.post(uploadFile + "/" + Long.parseLong(responseString) + "/savefile", params, new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                            dialog.dismiss();
+                            Toast.makeText(context, "上传成功", Toast.LENGTH_SHORT).show();
+                            File fileaudio = new File(file.get(file.size() - 1).substring(("file://").length() - 1));
+                            Log.v(TAG, file.get(file.size() - 1) + "sizesizesist");
+                            if (fileaudio.exists()) {
+                                Log.v(TAG, "sizesizesistyesyes");
+                                fileaudio.delete();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            error.printStackTrace();
+                        }
+                    });
+                }else{
+                    dialog.dismiss();
+                    Toast.makeText(context, "上传成功", Toast.LENGTH_SHORT).show();
+
                 }
-                HttpUtil.post(uploadFile+"/"+Long.parseLong(responseString)+"/savefile", params, new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-
-                        dialog.dismiss();
-                        Toast.makeText(context, "上传成功", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                       error.printStackTrace();
-                    }
-                });
 
 
             }

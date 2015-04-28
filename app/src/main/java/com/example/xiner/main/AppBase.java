@@ -56,7 +56,9 @@ public class AppBase extends Application {
             e.printStackTrace();
         }finally {
             try {
-                fis.close();
+                if (fis!=null) {
+                    fis.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

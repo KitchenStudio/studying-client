@@ -63,11 +63,22 @@
                 android:hint="请再次密码"
                 android:password="true" />
 
+            <EditText
+                android:textColor="@color/black_translucent"
+
+                android:id="@+id/nickname_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/passwordagain_register"
+                android:layout_marginTop="20dp"
+                android:hint="请输入昵称"
+                />
+
             <Button
                 android:id="@+id/register_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/passwordagain_register"
+                android:layout_below="@+id/nickname_register"
                 android:layout_marginTop="20dp"
                 android:background="@color/material_deep_teal_500"
                 android:text="注册"

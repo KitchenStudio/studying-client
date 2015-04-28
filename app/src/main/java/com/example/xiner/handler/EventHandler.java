@@ -507,7 +507,7 @@ public class EventHandler implements OnClickListener {
                 if (file.canRead() && file.list().length > 0)
                     mViewHolder.icon.setImageResource(R.drawable.folder_full);
                 else
-                    mViewHolder.icon.setImageResource(R.drawable.folder);
+                    mViewHolder.icon.setImageResource(R.drawable.folder_full);
             }
 
             String permission = getFilePermissions(file);

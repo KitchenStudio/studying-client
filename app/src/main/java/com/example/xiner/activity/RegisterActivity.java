@@ -30,7 +30,7 @@ public class RegisterActivity extends ActionBarActivity {
 
     Toolbar toolbar;
     Button registerButton;
-    EditText emailEdit,passwordEdit,passwordagainEdit;
+    EditText emailEdit,passwordEdit,passwordagainEdit,nicknameEdit;
     RegisterNetwork registerNetwork;
 
     @Override
@@ -47,6 +47,7 @@ public class RegisterActivity extends ActionBarActivity {
         registerButton=(Button)findViewById(R.id.register_button);
         emailEdit =(EditText)findViewById(R.id.email_register);
         passwordEdit=(EditText)findViewById(R.id.password_register);
+        nicknameEdit=(EditText)findViewById(R.id.nickname_register);
         passwordagainEdit=(EditText)findViewById(R.id.passwordagain_register);
         registerButton.setOnClickListener(new RegisterListener());
     }
@@ -55,7 +56,7 @@ public class RegisterActivity extends ActionBarActivity {
 
         @Override
         public void onClick(View v) {
-            if (emailEdit.getText().toString().equals("") && passwordEdit.getText().toString().equals("") && passwordagainEdit.getText().toString().equals("")) {
+            if (emailEdit.getText().toString().equals("") || passwordEdit.getText().toString().equals("") || passwordagainEdit.getText().toString().equals("")) {
                 Toast.makeText(RegisterActivity.this, "请将信息填写完整", Toast.LENGTH_SHORT).show();
             }
 //            else if (!emailFormat(emailEdit.getText().toString())) {
@@ -64,7 +65,7 @@ public class RegisterActivity extends ActionBarActivity {
             else if (!((passwordEdit.getText().toString()).equals(passwordagainEdit.getText().toString()))) {
                 Toast.makeText(RegisterActivity.this, "两次输入的密码不一致", Toast.LENGTH_SHORT).show();
             } else {
-                registerNetwork.uploadRegister(emailEdit.getText().toString(),passwordEdit.getText().toString());
+                registerNetwork.uploadRegister(emailEdit.getText().toString(),passwordEdit.getText().toString(),nicknameEdit.getText().toString());
             }
         }
     }

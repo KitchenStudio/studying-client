@@ -29,6 +29,7 @@ import android.widget.ViewSwitcher;
 import com.example.xiner.R;
 import com.example.xiner.adapter.GalleryAdapter;
 import com.example.xiner.adapter.UploadfileAdapter;
+import com.example.xiner.main.AppBase;
 import com.example.xiner.net.PublicDocNetwork;
 import com.example.xiner.util.Action;
 import com.example.xiner.entity.CustomGallery;
@@ -99,7 +100,7 @@ public class PublicItemActivity extends ActionBarActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
-                publicDocNetwork.uploadshare(getAlllist(), shareContentedit.getText().toString(), subjectEdit.getText().toString());
+                publicDocNetwork.uploadshare(getAlllist(), shareContentedit.getText().toString(), subjectEdit.getText().toString(), AppBase.getApp().getDataStore().getString("username","18366116016"));
                 return false;
             }
         });
@@ -423,7 +424,8 @@ public class PublicItemActivity extends ActionBarActivity {
         if (allPictures != null) {
             filenames.addAll(allPictures);
         }
-        if (mFileName != null) {
+        File file = new File(mFileName);
+        if (file.exists()) {
             filenames.add("file://" + mFileName);
         }
 

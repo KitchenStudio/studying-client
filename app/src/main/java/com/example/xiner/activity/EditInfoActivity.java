@@ -44,6 +44,7 @@ public class EditInfoActivity extends ActionBarActivity {
     String sexString;
     AppBase appBase;
     RadioButton manButton,womanButton;
+    int age;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +57,9 @@ public class EditInfoActivity extends ActionBarActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.backarrow);
         }
-        String nicknametext= AppBase.getApp().getDataStore().getString("nickname","昵称");
+        String nicknametext= AppBase.getApp().getDataStore().getString("nickname", "昵称");
         sexString=AppBase.getApp().getDataStore().getString("sex","男");
-        String academytext=AppBase.getApp().getDataStore().getString("academy","学院");
+        age=AppBase.getApp().getDataStore().getInt("age",0);
 
 
         sexgroup =(RadioGroup)findViewById(R.id.sex_group);
@@ -77,9 +78,18 @@ public class EditInfoActivity extends ActionBarActivity {
 
         editPhoto =(CircularImage)findViewById(R.id.edit_cover_user_photo);
         editPhoto.setOnClickListener(new headeditListener());
-        if(AppBase.getApp().getDataStore().getBoolean("ifeditphoto",false)){
-            editPhoto.setImageBitmap(AppBase.filetoBitmap("/sdcard/xueyou/myHead/head.jpg"));
+        Bitmap bitmap = AppBase.filetoBitmap("/sdcard/xueyou/myHead/head.jpg");
+        if (bitmap!=null){
+            editPhoto.setImageBitmap(bitmap);
+
+        }else{
+            editPhoto.setImageDrawable(getResources().getDrawable(R.drawable.faceimage));
         }
+//        if(AppBase.getApp().getDataStore().getBoolean("ifeditphoto",false)){
+//            editPhoto.setImageBitmap(AppBase.filetoBitmap("/sdcard/xueyou/myHead/head.jpg"));
+//        }else {
+//
+//        }
         saveButton=(Button)findViewById(R.id.save_button);
         saveButton.setOnClickListener(new saveListener());
         nickname=(EditText)findViewById(R.id.nickname_edit);
@@ -90,9 +100,8 @@ public class EditInfoActivity extends ActionBarActivity {
         if(nicknametext!=null){
             nickname.setText(nicknametext);
         }
-        if(academytext!=null){
-            academy.setText(academytext);
-        }
+            academy.setText(String.valueOf(age));
+
 
         if (sexString.equals("男")){
             manButton.setChecked(true);
@@ -115,15 +124,15 @@ public class EditInfoActivity extends ActionBarActivity {
                 AppBase.getApp().getDataStore().edit().putBoolean("ifeditphoto", true).commit();
                 AppBase.getApp().getDataStore().edit().putString("nickname", nickname.getText().toString()).commit();
                 AppBase.getApp().getDataStore().edit().putString("sex", sexString).commit();
-                AppBase.getApp().getDataStore().edit().putString("academy", academy.getText().toString()).commit();
+                AppBase.getApp().getDataStore().edit().putInt("age", Integer.parseInt(academy.getText().toString())).commit();
 
 
                 EditInfoNet editInfoNet = new EditInfoNet(EditInfoActivity.this);
-                editInfoNet.EditInfo(path+"head.jpg",nickname.getText().toString(),academy.getText().toString(),sexString);
+                editInfoNet.EditInfo(path+"head.jpg",nickname.getText().toString(),age,sexString);
 
             }
 
-           finish();
+//           finish();
         }
     }
 

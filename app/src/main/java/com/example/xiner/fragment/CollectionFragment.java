@@ -85,7 +85,8 @@ public class CollectionFragment extends Fragment{
 
         @Override
         public void onRefresh() {
-            HttpUtil.get(shareNetwork.getshareList+"/18366116016"+"/collectionlist", new JsonHttpResponseHandler() {
+            String username = AppBase.getApp().getDataStore().getString("username","18366116016");
+            HttpUtil.get(shareNetwork.getshareList+"/"+username+"/collectionlist", new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
 

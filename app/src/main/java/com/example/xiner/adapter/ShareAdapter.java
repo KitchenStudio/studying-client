@@ -86,7 +86,7 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
             viewHolder.nickname.setText(listItem.getNickname());
             viewHolder.detail.setText(listItem.getContent());
             viewHolder.collection.setText("("+listItem.getStars().toString()+")");
-            viewHolder.praise.setText("("+listItem.getUps().toString()+")");
+//            viewHolder.praise.setText("("+listItem.getUps().toString()+")");
             viewHolder.comment.setText("("+listItem.getComments().toString()+")");
 
 
@@ -162,7 +162,7 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
 
             collection = (TextView) v.findViewById(R.id.collection_num);
 
-            praise = (TextView) v.findViewById(R.id.praise_num);
+//            praise = (TextView) v.findViewById(R.id.praise_num);
 
             comment = (TextView) v.findViewById(R.id.comment_num);
             mCardview = (CardView) v.findViewById(R.id.card_view_share);

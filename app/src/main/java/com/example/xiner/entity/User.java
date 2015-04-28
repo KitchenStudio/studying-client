@@ -20,10 +20,29 @@ public class User implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
+	public FileFigure getFileFigure() {
+		return fileFigure;
+	}
 
+	public void setFileFigure(FileFigure fileFigure) {
+		this.fileFigure = fileFigure;
+	}
+
+	private FileFigure fileFigure;
 	private String username;
 
 	private String password;
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	int age;
+
 
 //	private boolean accountNonExpired;
 //

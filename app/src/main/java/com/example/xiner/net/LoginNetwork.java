@@ -3,11 +3,13 @@ package com.example.xiner.net;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.xiner.activity.LoginActivity;
 import com.example.xiner.activity.MainActivity;
 import com.example.xiner.entity.User;
+import com.example.xiner.main.AppBase;
 import com.example.xiner.util.HttpUtil;
 import com.example.xiner.util.LoadingDialog;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -23,25 +25,20 @@ import org.json.JSONObject;
 public class LoginNetwork {
 
     public static final String loginurl =HttpUtil.baseUserUrl+"/login";
+    private static final String TAG = "LoginNetwork";
 
     Context context;
     public LoginNetwork(Context context){
         this.context = context;
     }
 
-    public void loginUpload(String email,String password) {
+    public void loginUpload(final String email,final String password) {
 
+        HttpUtil.client.setBasicAuth(email,password);
         final Dialog dialog = LoadingDialog.createDialog(context, "正在上传，请稍后....");
         dialog.show();
 
-
-        RequestParams params = new RequestParams();
-        User user = new User();
-        user.setMail(email);
-        user.setPassword(password);
-        params.put("username", email);
-        params.put("password",password);
-        HttpUtil.post(loginurl, params, new AsyncHttpResponseHandler() {
+        HttpUtil.get(loginurl, new AsyncHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -52,6 +49,8 @@ public class LoginNetwork {
                     Intent intent = new Intent();
                     intent.setClass(context, MainActivity.class);
                     context.startActivity(intent);
+                    AppBase.getApp().getDataStore().edit().putString("username",email).commit();
+                    AppBase.getApp().getDataStore().edit().putString("password",password).commit();
                 }else if (result.equals("password error")){
                     Toast.makeText(context, "密码错误", Toast.LENGTH_SHORT).show();
 
@@ -64,6 +63,7 @@ public class LoginNetwork {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.v(TAG,"errorerrorerror"+error);
                 dialog.dismiss();
                 Toast.makeText(context, "登陆失败", Toast.LENGTH_SHORT).show();
 

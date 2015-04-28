@@ -34,26 +34,29 @@ public class RegisterNetwork {
 
     public static final String registerurl = HttpUtil.baseUserUrl+"/add";
 
-    public void uploadRegister(String email, String password) {
+    public void uploadRegister(String email, String password,String nickname) {
 
         final Dialog dialog = LoadingDialog.createDialog(context, "正在注册，请稍后....");
         dialog.show();
 
 
         RequestParams params = new RequestParams();
-        User user = new User();
+        final User user = new User();
         user.setMail(email);
         user.setPassword(password);
+        user.setNickname(nickname);
+        Log.v(TAG,user.getNickname()+"nickname");
         params.put("username", user.getMail());
         params.put("password",user.getPassword());
+        params.put("nickname",user.getNickname());
 
-        HttpUtil.post(registerurl, params, new AsyncHttpResponseHandler() {
+        HttpUtil.postregis(registerurl, params, new AsyncHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 dialog.dismiss();
                 String back = new String(responseBody);
-                if (back.equals("user has been registered")){
+                   if (back.equals("user has been registered")){
                     Toast.makeText(context, "该用户已经注册过", Toast.LENGTH_SHORT).show();
 
 
@@ -63,6 +66,8 @@ public class RegisterNetwork {
                     intent.setClass(context, LoginActivity.class);
                     context.startActivity(intent);
                     appBase.getDataStore().edit().putBoolean("ifregister",true).commit();
+                    appBase.getDataStore().edit().putString("username",user.getUsername()).commit();
+                    appBase.getDataStore().edit().putString("password",user.getPassword()).commit();
 
 
                 }
