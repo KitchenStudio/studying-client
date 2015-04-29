@@ -43,5 +43,6 @@
     <string name="title_activity_picture_detail">PictureDetailActivity</string>
     <string name="title_activity_splash">注册</string>
     <string name="title_activity_comment">评论</string>
+    <string name="title_activity_change_password">ChangePasswordActivity</string>
 
 </resources>

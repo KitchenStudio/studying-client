@@ -11,9 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.xiner.R;
+import com.example.xiner.activity.ChangePasswordActivity;
 import com.example.xiner.activity.EditInfoActivity;
 import com.example.xiner.entity.User;
 import com.example.xiner.main.AppBase;
@@ -45,6 +47,7 @@ public class PersonFragment extends Fragment {
     TextView nickname, ageText, grade;
     String username;
 ShareNetwork shareNetwork;
+    LinearLayout changepasswordLinear;
     public static PersonFragment newInstance(int position) {
         PersonFragment f = new PersonFragment();
         Bundle b = new Bundle();
@@ -75,12 +78,15 @@ ShareNetwork shareNetwork;
 //        headedit.setOnClickListener(new headeditListener());
         person_edit = (ImageView) view.findViewById(R.id.person_edit);
 //        Log.v(TAG, AppBase.getApp().getDataStore().getBoolean("ifeditphoto", false) + "getdatasote");
-        person_edit.setOnClickListener(new personEditListener());
+        ClickListener clickListener = new ClickListener();
+        person_edit.setOnClickListener(clickListener);
         faceImage = (CircularImage) view.findViewById(R.id.person_iv_head);
         nickname = (TextView) view.findViewById(R.id.individual_center_et_name);
         sexImage = (ImageView) view.findViewById(R.id.individual_center_iv_sex);
         ageText = (TextView) view.findViewById(R.id.individual_center_tv_age);
         grade = (TextView) view.findViewById(R.id.individual_center_et_grade);
+        changepasswordLinear =(LinearLayout)view.findViewById(R.id.changepassword_linear);
+        changepasswordLinear.setOnClickListener(clickListener);
 //        faceImage.setImageDrawable(getResources().getDrawable(R.drawable.faceimage));
         File file = new File(picpath);
         if (file.exists()) {
@@ -95,19 +101,7 @@ ShareNetwork shareNetwork;
             faceImage.setImageDrawable(getResources().getDrawable(R.drawable.faceimage));
 
         }
-//        Log.v(TAG, bitmap + "bitmapbitmap");
 
-//        if (bitmap!=null){
-//            faceImage.setImageBitmap(bitmap);
-//
-//        }
-////        else{
-//            Log.v(TAG,"here bitmap is");
-//            faceImage.setImageDrawable(getResources().getDrawable(R.drawable.faceimage));
-//        }
-//        if(AppBase.getApp().getDataStore().getBoolean("ifeditphoto",false)){
-//            faceImage.setImageBitmap(AppBase.filetoBitmap("/sdcard/xueyou/myHead/head.jpg"));
-//        }
         if (nicknametext != null) {
             nickname.setText(nicknametext);
         }
@@ -116,9 +110,7 @@ ShareNetwork shareNetwork;
         } else {
             sexImage.setBackgroundResource(R.drawable.woman);
         }
-//        if(academytext!=null){
             ageText.setText(String.valueOf(academytext));
-//        }
         if (gradetext != null) {
             grade.setText(username);
         }
@@ -127,13 +119,24 @@ ShareNetwork shareNetwork;
     }
 
 
-    class personEditListener implements View.OnClickListener {
+    class ClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent();
-            intent.setClass(getActivity(), EditInfoActivity.class);
-            getActivity().startActivity(intent);
+            Intent intent;
+            switch (v.getId()){
+
+                case R.id.changepassword_linear:
+                    intent =new Intent();
+                    intent.setClass(getActivity(), ChangePasswordActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.person_edit:
+                    intent = new Intent();
+                    intent.setClass(getActivity(),EditInfoActivity.class);
+                    startActivity(intent);
+                    break;
+            }
         }
     }
 
@@ -196,10 +199,7 @@ ShareNetwork shareNetwork;
         } else {
             sexImage.setBackgroundResource(R.drawable.woman);
         }
-//        if(academytext!=null){
-//            academy.setText(academytext);
-//        }
-//        ageText.setText(academytext);
+
         if (gradetext != null) {
             grade.setText(gradetext);
         }
