@@ -24,9 +24,13 @@ import java.io.InputStream;
 import java.lang.ref.WeakReference;
 
 public class HttpUtil {
-    public static final String baseUrl="http://211.87.226.164:8080/api/v1/item";
-    public static final String baseIp="http://211.87.226.164:8080";
-    public static final String baseUserUrl="http://211.87.226.164:8080/api/v1/user";
+//    public static final String baseUrl="http://211.87.226.141:8080/api/v1/item";
+//    public static final String baseIp="http://211.87.226.141:8080";
+//    public static final String baseUserUrl="http://211.87.226.141:8080/api/v1/user";
+
+    public static final String baseUrl="http://211.87.234.180:8080/studying/api/v1/item";
+    public static final String baseIp="http://211.87.234.180:8080";
+    public static final String baseUserUrl="http://211.87.234.180:8080/studying/api/v1/user";
 
     public static AsyncHttpClient client = new AsyncHttpClient();
 
@@ -62,10 +66,6 @@ public class HttpUtil {
     }
 
 
-    public static void post(String url, AsyncHttpResponseHandler responseHandler) {
-        client.post(url, responseHandler);
-
-    }
 
     public static void put(String url,RequestParams params,AsyncHttpResponseHandler responseHandler){
         client.put(url,params,responseHandler);
@@ -75,10 +75,7 @@ public class HttpUtil {
         client.get(URL,binaryHttpResponseHandler);
     }
 
-//    public static List<ListItem> post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler,ArrayList<ClipData.Item> list) {
-//        client.post(url, params, responseHandler);
-//        return list;
-//    }
+
 
 
 

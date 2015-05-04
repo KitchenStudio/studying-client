@@ -9,6 +9,8 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.xiner.main.AppBase;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -24,14 +26,18 @@ import java.io.OutputStream;
  * Created by xiner on 4/23/15.
  */
 public class DownloadFileUtil extends AsyncTask<String,Void,String> {
-    private static final String USERNAME = "18366116016";
-    private static final String PASSWORD = "..xiao";
+    private static  String USERNAME = "";
+    private static  String PASSWORD = "";
     private static final String TAG = "DownloadFileUtil";
     private File file;
     Context context;
+    AppBase app;
     public DownloadFileUtil(File file,Context context){
         this.file = file;
         this.context =context;
+        app = AppBase.getApp();
+        USERNAME = app.getDataStore().getString("username","1");
+        PASSWORD = app.getDataStore().getString("password","..xiao");
     }
     @Override
     protected String doInBackground(String... params) {
@@ -61,7 +67,7 @@ public class DownloadFileUtil extends AsyncTask<String,Void,String> {
                 InputStream inputStream = null;
                 try {
                     inputStream = entity.getContent();
-                   inputTofile(inputStream, file);
+                    inputTofile(inputStream, file);
                     Toast.makeText(context,"文件所在位置"+file.getPath(),Toast.LENGTH_LONG).show();
                     return file.getPath();
                 } finally {

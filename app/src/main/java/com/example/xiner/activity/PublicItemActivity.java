@@ -22,11 +22,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.example.xiner.R;
+import com.example.xiner.adapter.FileAdapter;
+import com.example.xiner.adapter.FileLocalAdapter;
 import com.example.xiner.adapter.GalleryAdapter;
 import com.example.xiner.adapter.UploadfileAdapter;
 import com.example.xiner.main.AppBase;
@@ -53,12 +56,10 @@ public class PublicItemActivity extends ActionBarActivity {
     Handler handler;
     GalleryAdapter adapter;
     ViewSwitcher viewSwitcher;
-    RecyclerView recyclerView;
+//    RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
     ImageView imgSinglePick;
-    UploadfileAdapter uploadfileAdapter;
-
-
+//    UploadfileAdapter uploadfileAdapter;
     ArrayList<String> listfilename;
     ImageView uploadfileimage, recordsoundimage, takepictureimage, uploadpictureimage;
     ImageView recordImageView, recordstart, recordover;
@@ -72,6 +73,8 @@ public class PublicItemActivity extends ActionBarActivity {
     ArrayList<String> allPictures = new ArrayList<>();
     private String single_path;
     Toolbar toolbar;
+    ListView filelistview;
+    FileLocalAdapter fileLocalAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +83,6 @@ public class PublicItemActivity extends ActionBarActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-//            toolbar.setNavigationIcon(R.drawable.backarrow);
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.backarrow);
@@ -99,9 +101,12 @@ public class PublicItemActivity extends ActionBarActivity {
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-
-                publicDocNetwork.uploadshare(getAlllist(), shareContentedit.getText().toString(), subjectEdit.getText().toString(), AppBase.getApp().getDataStore().getString("username","18366116016"));
-                return false;
+                if (shareContentedit.getText().toString().equals("")||subjectEdit.getText().toString().equals("")){
+                    Toast.makeText(PublicItemActivity.this,"请将信息填写完整",Toast.LENGTH_SHORT).show();
+                }else {
+                    publicDocNetwork.uploadshare(getAlllist(), shareContentedit.getText().toString(), subjectEdit.getText().toString(), AppBase.getApp().getDataStore().getString("username", "18366116016"));
+                }
+                    return false;
             }
         });
         return super.onCreateOptionsMenu(menu);
@@ -122,15 +127,12 @@ public class PublicItemActivity extends ActionBarActivity {
     * */
 
     private void init() {
+        listfilename = new ArrayList<>();
         handler = new Handler();
         ClickListener clickListener = new ClickListener();
         shareContentedit = (EditText) findViewById(R.id.sharecontent_edit);
         subjectEdit = (EditText) findViewById(R.id.subject_edit);
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView_uploadfile);
-        linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        uploadfileAdapter = new UploadfileAdapter();
-        recyclerView.setAdapter(uploadfileAdapter);
+
         viewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher);
         viewSwitcher.setDisplayedChild(1);
         imgSinglePick = (ImageView) findViewById(R.id.imgSinglePick);
@@ -141,6 +143,11 @@ public class PublicItemActivity extends ActionBarActivity {
         recordImageView = (ImageView) findViewById(R.id.record_press);
         recordstart = (ImageView) findViewById(R.id.record_pressstart);
         recordover = (ImageView) findViewById(R.id.record_pressover);
+
+        filelistview =(ListView)findViewById(R.id.uploadfile_list);
+        fileLocalAdapter = new FileLocalAdapter(this,listfilename);
+        filelistview.setAdapter(fileLocalAdapter);
+
         uploadfileimage.setOnClickListener(clickListener);
         takepictureimage.setOnClickListener(clickListener);
         recordsoundimage.setOnClickListener(clickListener);
@@ -247,9 +254,10 @@ public class PublicItemActivity extends ActionBarActivity {
             case 1:
                 //返回的选择的文件的结果
                 if (resultCode == RESULT_OK) {
-                    recyclerView.setVisibility(View.VISIBLE);
                     listfilename = data.getExtras().getStringArrayList("urilist");
-                    uploadfileAdapter.addAll(listfilename);
+                    fileLocalAdapter.addAll(listfilename);
+                    fileLocalAdapter.notifyDataSetChanged();
+
                 }
                 break;
             case 2:

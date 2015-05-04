@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -72,7 +73,25 @@ public class CollectionFragment extends Fragment{
         recyclerView.setAdapter(collectionAdapter);
         shareNetwork = new ShareNetwork(getActivity(), collectionAdapter, shareItemlist, swipeRefreshLayout);
 
+        swipeRefreshLayout.setProgressViewOffset(false, 0,
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
+        swipeRefreshLayout.setRefreshing(true);
+        LoadInfo();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        swipeRefreshLayout.setProgressViewOffset(false, 0,
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
+        swipeRefreshLayout.setRefreshing(true);
+        LoadInfo();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     @Override
@@ -85,32 +104,38 @@ public class CollectionFragment extends Fragment{
 
         @Override
         public void onRefresh() {
-            String username = AppBase.getApp().getDataStore().getString("username","18366116016");
-            HttpUtil.get(shareNetwork.getshareList+"/"+username+"/collectionlist", new JsonHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-
-                    super.onSuccess(statusCode, headers, response);
-                    shareItemlist.clear();
-                    shareItemlist.addAll(shareNetwork.ParseNet(response));
-                    collectionAdapter.notifyDataSetChanged();
-                    swipeRefreshLayout.setRefreshing(false);
-                    AppBase.getApp().getDataStore().edit().putInt("contentpage", 0).commit();
-                }
-
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    super.onFailure(statusCode, headers, responseString, throwable);
-                    Log.v(TAG, statusCode + "codefailer");
-                    throwable.printStackTrace(System.out);
-                }
-            });
-
-
+            LoadInfo();
         }
 
-    }    @Override
+    }
+
+    private void LoadInfo(){
+        String username = AppBase.getApp().getDataStore().getString("username","18366116016");
+        HttpUtil.get(shareNetwork.getshareList+"/"+username+"/collectionlist", new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+
+                super.onSuccess(statusCode, headers, response);
+                shareItemlist.clear();
+                shareItemlist.addAll(shareNetwork.ParseNet(response));
+                collectionAdapter.notifyDataSetChanged();
+                swipeRefreshLayout.setRefreshing(false);
+                AppBase.getApp().getDataStore().edit().putInt("contentpage", 0).commit();
+            }
+
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                Log.v(TAG, statusCode + "codefailer");
+                throwable.printStackTrace(System.out);
+            }
+        });
+
+
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);

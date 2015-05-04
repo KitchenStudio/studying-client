@@ -21,14 +21,14 @@ public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	public FileFigure getFileFigure() {
-		return fileFigure;
+		return figure;
 	}
 
 	public void setFileFigure(FileFigure fileFigure) {
-		this.fileFigure = fileFigure;
+		this.figure = fileFigure;
 	}
 
-	private FileFigure fileFigure;
+	private FileFigure figure;
 	private String username;
 
 	private String password;

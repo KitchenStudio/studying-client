@@ -31,9 +31,9 @@ import java.lang.ref.WeakReference;
  * Created by xiner on 15-3-25.
  */
 public class DownloadPicUtil extends AsyncTask<String, Void, Bitmap> {
-    private static final String TAG = "DownloadPicUtil";
-    private static final String USERNAME = "18366116016";
-    private static final String PASSWORD = "..xiao";
+    private static  final String TAG = "DownloadPicUtil";
+    private static  String USERNAME = "";
+    private static  String PASSWORD = "";
     private final WeakReference imageViewReference;
     AppBase app;
 
@@ -45,6 +45,8 @@ public class DownloadPicUtil extends AsyncTask<String, Void, Bitmap> {
         this.width =width;
         this.height = height;
         app = AppBase.getApp();
+        USERNAME = app.getDataStore().getString("username","1");
+        PASSWORD = app.getDataStore().getString("password","..xiao");
     }
 
     @Override

@@ -32,7 +32,7 @@ public class SplashActivity extends ActionBarActivity {
 //                            LoginActivity.class);
 //                } else {
 
-                    intent.setClass(SplashActivity.this, RegisterActivity.class);
+                    intent.setClass(SplashActivity.this, LoginActivity.class);
 //                }
                 startActivity(intent);
                 finish();

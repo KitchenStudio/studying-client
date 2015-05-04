@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +24,9 @@ import java.util.ArrayList;
  * Created by xiner on 4/23/15.
  */
 public class FileAdapter extends BaseAdapter {
+    private static final String TAG = "FileAdapter";
     Context context;
-    ArrayList<String> files;
+    public ArrayList<String> files;
     private static final String path = Environment.getExternalStorageDirectory()+"/xueyou/other/upload";
     private static final String filepath = Environment.getExternalStorageDirectory()+"/xueyou/other/";
 
@@ -34,6 +36,7 @@ public class FileAdapter extends BaseAdapter {
     }
     @Override
     public int getCount() {
+        Log.v(TAG,files.size()+"filesizefilesize");
         return files.size();
     }
 

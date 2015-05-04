@@ -21,7 +21,7 @@ public class PictureDetailActivity extends ActionBarActivity {
 
     private static final String TAG = "PictureDetailActivity";
     String path = Environment.getExternalStorageDirectory()+"/xueyou/originpic/upload";
-    String picpath = Environment.getExternalStorageDirectory()+"/xueyou/originpic";
+    String picpath = Environment.getExternalStorageDirectory()+"/xueyou/originpic/upload";
     ImageView imageView;
     AppBase app;
 
@@ -30,12 +30,18 @@ public class PictureDetailActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picture_detail);
         app = AppBase.getApp();
+
         String  picture = (String)getIntent().getExtras().get("picturepath");
+        String pureName = picture.substring(picture.toString().lastIndexOf("/"));
+
+        String oriname = picpath+pureName;
+
         imageView=(ImageView)findViewById(R.id.picturedetail);
         int screenWidth  = getWindowManager().getDefaultDisplay().getWidth();
         int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
-        File file = new File(picpath+picture);
+        File file = new File(oriname);
         if (file.exists()){
+            //防止内存溢出，对图片进行处理
             BitmapFactory.Options opts = new BitmapFactory.Options();
             opts.inJustDecodeBounds = true;// 设置成了true,不占用内存，只获取bitmap宽高
 
@@ -49,36 +55,11 @@ public class PictureDetailActivity extends ActionBarActivity {
         }else {
             File file1 = new File(path);
             file1.mkdirs();
-            DownloadPicUtil downloadPicUtil = new DownloadPicUtil(imageView, new File(picpath + picture), screenWidth, screenHeight);
+            DownloadPicUtil downloadPicUtil = new DownloadPicUtil(imageView, new File(oriname), screenWidth, screenHeight);
             downloadPicUtil.execute(HttpUtil.baseIp + picture);
         }
     }
 
-//    public static int calculateInSampleSize(
-//            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-//
-//        // Raw height and width of image
-//        final int height = options.outHeight;
-//        final int width = options.outWidth;
-//
-//        Log.v(TAG, reqWidth + "requestwaa" + reqHeight + "requestHaaa" + height + "height" + width + "width");
-//        int inSampleSize = 1;
-//
-//        if (height > reqHeight || width > reqWidth) {
-//
-//            final int halfHeight = height / 2;
-//            final int halfWidth = width / 2;
-//
-//            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-//            // height and width larger than the requested height and width.
-//            while ((halfHeight / inSampleSize) > reqHeight
-//                    && (halfWidth / inSampleSize) > reqWidth) {
-//                inSampleSize *= 2;
-//            }
-//        }
-//        Log.v(TAG,inSampleSize+"sample");
-//        return inSampleSize;
-//    }
 
 
     @Override

@@ -23,7 +23,6 @@ ArrayList<String>filesupload = new ArrayList<String>();
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_uploadfile, parent, false);
-       // CardView cardView =(CardView) view.findViewById(R.id.uploadfile_card);
         ViewHolder vh = new ViewHolder(view);
 
         return vh;

@@ -152,41 +152,42 @@ public class ShareNetwork {
                                     String content = commentObject.getString("content");
                                     comment.setContent(content);
 
-                                }else if (keycomment.equals("files")){
-                                    Log.v(TAG,"haha9");
-                                    List<FileItem> commentfileItems = new ArrayList<>();
-                                    try {
-                                        JSONArray array = jsonObject.getJSONArray("files");
-                                        if (array!=null){
-                                            for (int i =0;i< array.length();i++){
-                                                Log.v(TAG,"haha10");
-                                                JSONObject object = array.getJSONObject(i);
-                                                FileItem fileItem = new FileItem();
-                                                for (Iterator iter = object.keys();iter.hasNext();){
-                                                    if (iter.equals("filename")){
-                                                        Log.v(TAG,"haha11");
-                                                        String filename = object.getString("filename");
-                                                        fileItem.setFilename(filename);
-                                                    }else if (iter.equals("url")){
-                                                        Log.v(TAG,"haha12");
-                                                        String url = object.getString("url");
-                                                        fileItem.setUrl(url);
-                                                    }else if (iter.equals("type")){
-                                                        Log.v(TAG,"haha13");
-                                                        String type = object.getString("type");
-                                                        fileItem.setType(type);
-                                                    }
-
-                                                }
-                                                commentfileItems.add(fileItem);
-                                            }
-
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    comment.setFiles(commentfileItems);
                                 }
+//                                else if (keycomment.equals("files")){
+//                                    Log.v(TAG,"haha9");
+//                                    List<FileItem> commentfileItems = new ArrayList<>();
+//                                    try {
+//                                        JSONArray array = jsonObject.getJSONArray("files");
+//                                        if (array!=null){
+//                                            for (int i =0;i< array.length();i++){
+//                                                Log.v(TAG,"haha10");
+//                                                JSONObject object = array.getJSONObject(i);
+//                                                FileItem fileItem = new FileItem();
+//                                                for (Iterator iter = object.keys();iter.hasNext();){
+//                                                    if (iter.equals("filename")){
+//                                                        Log.v(TAG,"haha11");
+//                                                        String filename = object.getString("filename");
+//                                                        fileItem.setFilename(filename);
+//                                                    }else if (iter.equals("url")){
+//                                                        Log.v(TAG,"haha12");
+//                                                        String url = object.getString("url");
+//                                                        fileItem.setUrl(url);
+//                                                    }else if (iter.equals("type")){
+//                                                        Log.v(TAG,"haha13");
+//                                                        String type = object.getString("type");
+//                                                        fileItem.setType(type);
+//                                                    }
+//
+//                                                }
+//                                                commentfileItems.add(fileItem);
+//                                            }
+//
+//                                        }
+//                                    } catch (JSONException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                    comment.setFiles(commentfileItems);
+//                                }
                             }
                             commentList.add(comment);
 
@@ -208,7 +209,7 @@ public class ShareNetwork {
         for (Iterator iterator = jsonObject.keys(); iterator.hasNext(); ) {
             String key = (String) iterator.next();
             if (key.equals("nickname")) {
-
+                Log.v(TAG,"userha");
                 try {
                     String nickname = jsonObject.getString("nickname");
                     if (nickname != null) {
@@ -219,6 +220,8 @@ public class ShareNetwork {
                     e.printStackTrace();
                 }
             } else if (key.equals("age")) {
+                Log.v(TAG,"userha1");
+
                 try {
                     int age = jsonObject.getInt("age");
 //                    if (nickname != null) {
@@ -230,6 +233,8 @@ public class ShareNetwork {
                 }
 
             } else if (key.equals("username")) {
+                Log.v(TAG,"userha2");
+
                 try {
                     String username = jsonObject.getString("username");
                     if (username != null) {
@@ -241,43 +246,89 @@ public class ShareNetwork {
                 }
 
             }
-//                List<FileItem> fileItems = new ArrayList<>();
-            try {
-                JSONArray array = jsonObject.getJSONArray("fileFigure");
-                if (array.length() != 0) {
+            else if (key.equals("figure")){
+                try {
+                    JSONObject jsonObject1 = jsonObject.getJSONObject("figure");
+                    FileFigure fileItem = new FileFigure();
+                    for (Iterator iter = jsonObject1.keys(); iter.hasNext(); ) {
 
-                    for (int i = 0; i < array.length(); i++) {
+                        String keyyy = (String) iter.next();
+                        if (keyyy.equals("filename")) {
+                            Log.v(TAG,"userhaf");
 
-                        JSONObject object = array.getJSONObject(i);
-                        FileFigure fileItem = new FileFigure();
-                        for (Iterator iter = object.keys(); iter.hasNext(); ) {
-
-                            String keyyy = (String) iter.next();
-                            if (keyyy.equals("filename")) {
-
-                                String filename = object.getString("filename");
+                            String filename = jsonObject1.getString("filename");
+                            if (filename!=null) {
                                 fileItem.setFilename(filename);
-                            } else if (keyyy.equals("url")) {
-
-                                String url = object.getString("url");
-                                fileItem.setUrl(url);
-                            } else if (keyyy.equals("type")) {
-
-                                String type = object.getString("type");
-                                fileItem.setType(type);
-                                Log.v(TAG, fileItem.getType());
                             }
+                        } else if (keyyy.equals("url")) {
+                            Log.v(TAG,"userhaf1");
 
+                            String url = jsonObject1.getString("url");
+                            if (url!=null) {
+                                fileItem.setUrl(url);
+                            }
+                        } else if (keyyy.equals("type")) {
+
+                            String type = jsonObject1.getString("type");
+                            if (type!=null) {
+                                fileItem.setType(type);
+                            }
+                            Log.v(TAG, fileItem.getType());
                         }
-                        user.setFileFigure(fileItem);
-//                            fileItems.add(fileItem);
+
                     }
+                    user.setFileFigure(fileItem);
+//                            fileItems.add(fileItem);
 
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
+//                List<FileItem> fileItems = new ArrayList<>();
+//            try {
+//                JSONArray array = jsonObject.getJSONArray("figure");
+//                if (array.length() != 0) {
+//
+//                    for (int i = 0; i < array.length(); i++) {
+//
+//                        JSONObject object = array.getJSONObject(i);
+//                        FileFigure fileItem = new FileFigure();
+//                        for (Iterator iter = object.keys(); iter.hasNext(); ) {
+//
+//                            String keyyy = (String) iter.next();
+//                            if (keyyy.equals("filename")) {
+//                                Log.v(TAG,"userhaf");
+//
+//                                String filename = object.getString("filename");
+//                                if (filename!=null) {
+//                                    fileItem.setFilename(filename);
+//                                }
+//                            } else if (keyyy.equals("url")) {
+//                                Log.v(TAG,"userhaf1");
+//
+//                                String url = object.getString("url");
+//                                if (url!=null) {
+//                                    fileItem.setUrl(url);
+//                                }
+//                            } else if (keyyy.equals("type")) {
+//
+//                                String type = object.getString("type");
+//                                if (type!=null) {
+//                                    fileItem.setType(type);
+//                                }
+//                                Log.v(TAG, fileItem.getType());
+//                            }
+//
+//                        }
+//                        user.setFileFigure(fileItem);
+////                            fileItems.add(fileItem);
+//                    }
+//
+//                }
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
 
         }
         return user;

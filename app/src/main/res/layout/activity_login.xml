@@ -68,6 +68,16 @@
             android:text="登  录"
             android:textSize="20sp"
             android:textColor="@android:color/white" />
+        <TextView
+            android:id="@+id/register_text"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/material_deep_teal_500"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="没有账号？点击注册"
+            android:layout_gravity="center_horizontal"
+
+            />
 
 
     </LinearLayout>

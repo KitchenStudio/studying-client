@@ -59,9 +59,9 @@ public class RegisterActivity extends ActionBarActivity {
             if (emailEdit.getText().toString().equals("") || passwordEdit.getText().toString().equals("") || passwordagainEdit.getText().toString().equals("")) {
                 Toast.makeText(RegisterActivity.this, "请将信息填写完整", Toast.LENGTH_SHORT).show();
             }
-//            else if (!emailFormat(emailEdit.getText().toString())) {
-//                Toast.makeText(RegisterActivity.this, "邮箱格式不正确", Toast.LENGTH_SHORT).show();
-//            }
+            else if (!emailFormat(emailEdit.getText().toString())) {
+                Toast.makeText(RegisterActivity.this, "邮箱格式不正确", Toast.LENGTH_SHORT).show();
+            }
             else if (!((passwordEdit.getText().toString()).equals(passwordagainEdit.getText().toString()))) {
                 Toast.makeText(RegisterActivity.this, "两次输入的密码不一致", Toast.LENGTH_SHORT).show();
             } else {

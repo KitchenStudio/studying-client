@@ -32,7 +32,7 @@ public class PictureAdapter extends BaseAdapter {
     LayoutInflater layoutInflater;
     private static final String TAG="PictureAdapter";
     String path = Environment.getExternalStorageDirectory()+"/xueyou/thumbnail/upload";
-    String picpath = Environment.getExternalStorageDirectory()+"/xueyou/thumbnail";
+    String picpath = Environment.getExternalStorageDirectory()+"/xueyou/thumbnail/upload";
     AppBase app;
 
     public PictureAdapter(Context context, ArrayList<String> items) {
@@ -70,8 +70,16 @@ public class PictureAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        String nameFile = items.get(position).split("\\.")[0]+"resizecut."+items.get(position).split("\\.")[1];
-        File file = new File(picpath+nameFile);
+
+
+        String pureName = items.get(position).substring(items.get(position).toString().lastIndexOf("/"));
+
+        String oriname = picpath+pureName;
+        String qianzhui =oriname.substring(0, oriname.lastIndexOf("."));
+        String houzhui = oriname.substring(oriname.lastIndexOf(".")+1);
+        String nameFile = qianzhui+"resizecut."+houzhui;
+        Log.v(TAG,pureName+"  "+oriname+" "+qianzhui+" "+houzhui+" "+nameFile);
+        File file = new File(nameFile);
         if (file.exists()) {
             BitmapFactory.Options opts = new BitmapFactory.Options();
             opts.inJustDecodeBounds = true;// 设置成了true,不占用内存，只获取bitmap宽高
@@ -87,8 +95,8 @@ public class PictureAdapter extends BaseAdapter {
             File file1 = new File(path);
             file1.mkdirs();
             //下载图片
-            DownloadPicUtil downloadPicUtil = new DownloadPicUtil(holder.imageView, new File(picpath + nameFile), 100, 100);
-            downloadPicUtil.execute(HttpUtil.baseIp + items.get(position).split("\\.")[0] + "resizecut." + items.get(position).split("\\.")[1]);
+            DownloadPicUtil downloadPicUtil = new DownloadPicUtil(holder.imageView, new File(nameFile), 100, 100);
+            downloadPicUtil.execute(HttpUtil.baseIp + items.get(position).substring(0,items.get(position).lastIndexOf(".")) + "resizecut." + houzhui);
         }
 //        convertView.setLayoutParams(new GridView.LayoutParams(gridwidth, gridheight));
 //        holder.imageView.setGravity(Gravity.CENTER);

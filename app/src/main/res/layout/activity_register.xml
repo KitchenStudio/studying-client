@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/face_registerimg"
                 android:layout_marginTop="20dp"
-                android:hint="请输入电话号码" />
+                android:hint="请输入邮箱" />
 
             <EditText
                 android:textColor="@color/black_translucent"

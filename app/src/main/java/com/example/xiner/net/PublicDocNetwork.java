@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.xiner.activity.PublicItemActivity;
 import com.example.xiner.util.HttpUtil;
 import com.example.xiner.util.LoadingDialog;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -38,7 +39,7 @@ public class PublicDocNetwork {
     }
 
 
-    public void uploadshare(final ArrayList<String> file, String content, String subject, String username) {
+    public void uploadshare(final ArrayList<String> file, final String content, String subject, String username) {
         this.file = file;
 
         final Dialog dialog = LoadingDialog.createDialog(context, "正在上传，请稍后....");
@@ -93,6 +94,7 @@ public class PublicDocNetwork {
 
                             dialog.dismiss();
                             Toast.makeText(context, "上传成功", Toast.LENGTH_SHORT).show();
+
                             File fileaudio = new File(file.get(file.size() - 1).substring(("file://").length() - 1));
                             Log.v(TAG, file.get(file.size() - 1) + "sizesizesist");
                             if (fileaudio.exists()) {

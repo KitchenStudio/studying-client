@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.xiner.R;
+import com.example.xiner.main.AppBase;
 import com.example.xiner.util.HttpUtil;
 import com.example.xiner.util.LoadingDialog;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -47,32 +48,44 @@ public class ChangePasswordActivity extends ActionBarActivity {
 
         @Override
         public void onClick(View v) {
+            final Dialog dialog = LoadingDialog.createDialog(ChangePasswordActivity.this, "正在修改");
+
             switch (v.getId()){
                 case R.id.savepasswordbutton:
-                    final Dialog dialog = LoadingDialog.createDialog(ChangePasswordActivity.this,"正在修改");
-                    dialog.show();
-                    RequestParams params = new RequestParams();
-                    params.put("rawpassword",rawpassword.getText().toString());
-                    params.put("newpassword",newpassword.getText().toString());
-//                    params.put("newpasswordagain",newpasswordagain.getText().toString());
-                    HttpUtil.post(changepasswordurl,params, new AsyncHttpResponseHandler(){
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                            String str = new String(responseBody);
-                            if (str.equals("change success")){
-                                dialog.dismiss();
-                                Toast.makeText(ChangePasswordActivity.this,"修改成功 ",Toast.LENGTH_SHORT).show();
-                            }else if (str.equals("raw password is wrong")){
-                                Toast.makeText(ChangePasswordActivity.this,"原密码不正确",Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                    if (rawpassword.getText().toString().equals("")||newpassword.getText().toString().equals("") || newpasswordagain.getText().toString().equals("")){
+                        Toast.makeText(ChangePasswordActivity.this,"请将信息填写完整",Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
 
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                            dialog.dismiss();
-                            Toast.makeText(ChangePasswordActivity.this,"修改失败",Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    }else if (!newpassword.getText().toString().equals(newpasswordagain.getText().toString())){
+                        Toast.makeText(ChangePasswordActivity.this,"两次填写的密码不正确",Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        dialog.show();
+                        RequestParams params = new RequestParams();
+                        params.put("rawpassword", rawpassword.getText().toString());
+                        params.put("newpassword", newpassword.getText().toString());
+                        HttpUtil.post(changepasswordurl, params, new AsyncHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                String str = new String(responseBody);
+                                if (str.equals("change success")) {
+                                    AppBase.getApp().getDataStore().edit().putString("password",newpassword.getText().toString()).commit();
+                                    dialog.dismiss();
+                                    Toast.makeText(ChangePasswordActivity.this, "修改成功 ", Toast.LENGTH_SHORT).show();
+                                } else if (str.equals("raw password is wrong")) {
+                                    Toast.makeText(ChangePasswordActivity.this, "原密码不正确", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                dialog.dismiss();
+                                Toast.makeText(ChangePasswordActivity.this, "修改失败", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                     break;
             }
         }

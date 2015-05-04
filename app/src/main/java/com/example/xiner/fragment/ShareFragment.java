@@ -2,6 +2,7 @@ package com.example.xiner.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -11,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -50,6 +52,7 @@ public class ShareFragment extends Fragment {
     RecyclerView mRecyclerView;
 
 
+
     public static ShareFragment newInstance(int position) {
         ShareFragment f = new ShareFragment();
         Bundle b = new Bundle();
@@ -69,6 +72,7 @@ public class ShareFragment extends Fragment {
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_red_light, android.R.color.holo_green_light,
                 android.R.color.holo_blue_bright, android.R.color.holo_orange_light);
 
+
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -76,9 +80,30 @@ public class ShareFragment extends Fragment {
         mRecyclerView.setAdapter(shareAdapter);
         shareNetwork = new ShareNetwork(getActivity(), shareAdapter, shareItemlist, swipeRefreshLayout);
 
+
+
+
+        swipeRefreshLayout.setProgressViewOffset(false, 0,
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
+        swipeRefreshLayout.setRefreshing(true);
+        LoadInfo();
         return view;
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        swipeRefreshLayout.setProgressViewOffset(false, 0,
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
+        swipeRefreshLayout.setRefreshing(true);
+        LoadInfo();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,31 +117,36 @@ public class ShareFragment extends Fragment {
 
         @Override
         public void onRefresh() {
-            HttpUtil.get(shareNetwork.getshareList, new JsonHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-
-                    super.onSuccess(statusCode, headers, response);
-                    shareItemlist.clear();
-                    shareItemlist.addAll(shareNetwork.ParseNet(response));
-                    shareAdapter.notifyDataSetChanged();
-                    swipeRefreshLayout.setRefreshing(false);
-                    AppBase.getApp().getDataStore().edit().putInt("contentpage", 0).commit();
-                }
-
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    super.onFailure(statusCode, headers, responseString, throwable);
-                    Log.v(TAG, statusCode + "codefailer");
-                    throwable.printStackTrace(System.out);
-                }
-            });
-
-
+            Log.v(TAG,"refreshingrefreshing");
+            LoadInfo();
         }
 
     }
+
+    private void LoadInfo(){
+        HttpUtil.get(shareNetwork.getshareList, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+
+                super.onSuccess(statusCode, headers, response);
+                shareItemlist.clear();
+                shareItemlist.addAll(shareNetwork.ParseNet(response));
+                shareAdapter.notifyDataSetChanged();
+                swipeRefreshLayout.setRefreshing(false);
+                AppBase.getApp().getDataStore().edit().putInt("contentpage", 0).commit();
+            }
+
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                Log.v(TAG, statusCode + "codefailer");
+                throwable.printStackTrace(System.out);
+            }
+        });
+
+    }
+
 
     public void LoadMore() {
 
@@ -154,7 +184,7 @@ public class ShareFragment extends Fragment {
 
 
         MenuItem item1 = menu.add("Search");
-        item1.setIcon(android.R.drawable.ic_menu_search);
+        item1.setIcon(R.drawable.ic_menu_search);
         MenuItemCompat.setShowAsAction(item1, MenuItemCompat.SHOW_AS_ACTION_ALWAYS
                 | MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 

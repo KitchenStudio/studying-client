@@ -41,7 +41,7 @@ public class EditInfoNet {
         appBase = AppBase.getApp();
     }
 
-    public void EditInfo(String filename, String nickname, int age, String sex) {
+    public void EditInfo(String filename, final String nickname, final int age, final String sex) {
         username = appBase.getDataStore().getString("username", "18366116016");
         Log.v(TAG,"usename"+username+"username");
         final Dialog dialog = LoadingDialog.createDialog(context, "正在上传，请稍后....");
@@ -72,6 +72,8 @@ public class EditInfoNet {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                AppBase.getApp().getDataStore().edit().putInt("age",age).commit();
+                AppBase.getApp().getDataStore().edit().putString("nickname",nickname).commit();
                 Log.v("PublicDocA", statusCode + "codesuccess");
                 RequestParams params = new RequestParams();
                 try {

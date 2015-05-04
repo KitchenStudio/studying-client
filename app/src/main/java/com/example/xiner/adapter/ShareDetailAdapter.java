@@ -56,7 +56,7 @@ public class ShareDetailAdapter extends RecyclerView.Adapter<ShareDetailAdapter.
     int praiseNum;
     ListItem listItem;
     AppBase app;
-    String picpath = Environment.getExternalStorageDirectory() + "/xueyou/thumbnail";
+    String picpath = Environment.getExternalStorageDirectory() + "/xueyou/thumbnail/userFigure";
     String path = Environment.getExternalStorageDirectory() + "/xueyou/thumbnail/userFigure";
 
 
@@ -116,27 +116,36 @@ public class ShareDetailAdapter extends RecyclerView.Adapter<ShareDetailAdapter.
 
             datainit(holder);
 
+            String Figure = detailItem.getUserFigure();
+            if (!Figure.equals("null")) {
+                Log.v(TAG,detailItem.getUserFigure()+"detailitemuser");
+                String nameFile = detailItem.getUserFigure().substring(detailItem.getUserFigure().lastIndexOf("/"));
+                Log.v(TAG,nameFile+"namefilenamefile");
 
-            String nameFile = detailItem.getUserFigure();
-            Log.v(TAG, nameFile + "nameFilenameFile");
-            File file = new File(picpath + nameFile);
-            if (file.exists()) {
-                BitmapFactory.Options opts = new BitmapFactory.Options();
-                opts.inJustDecodeBounds = true;// 设置成了true,不占用内存，只获取bitmap宽高
+                File file = new File(picpath + nameFile);
+                if (file.exists()) {
+                    Log.v(TAG,"fileexistsfileexists");
+                    BitmapFactory.Options opts = new BitmapFactory.Options();
+                    opts.inJustDecodeBounds = true;// 设置成了true,不占用内存，只获取bitmap宽高
 
-                BitmapFactory.decodeFile(file.getPath(), opts);
+                    BitmapFactory.decodeFile(file.getPath(), opts);
 
-                opts.inJustDecodeBounds = false;
+                    opts.inJustDecodeBounds = false;
 
-                opts.inSampleSize = app.calculateInSampleSize(opts, 50, 50);
-                Bitmap bitmap = BitmapFactory.decodeFile(file.getPath(), opts);
-                holder.head.setImageBitmap(bitmap);
-            } else {
-                File file1 = new File(path);
-                file1.mkdirs();
-                //下载图片
-                DownloadPicUtil downloadPicUtil = new DownloadPicUtil(holder.head, new File(picpath + nameFile), 50, 50);
-                downloadPicUtil.execute(HttpUtil.baseIp + detailItem.getUserFigure());
+                    opts.inSampleSize = app.calculateInSampleSize(opts, 50, 50);
+                    Log.v(TAG, file.getPath() + "file.getPath");
+                    Bitmap bitmap = BitmapFactory.decodeFile(file.getPath(), opts);
+
+                    holder.head.setImageBitmap(bitmap);
+                } else {
+                    Log.v(TAG,"fileexistsfileexistsnot");
+
+                    File file1 = new File(path);
+                    file1.mkdirs();
+                    //下载图片
+                    DownloadPicUtil downloadPicUtil = new DownloadPicUtil(holder.head, new File(picpath + nameFile), 50, 50);
+                    downloadPicUtil.execute(HttpUtil.baseIp + detailItem.getUserFigure());
+                }
             }
         } else if (position == commentList.size() + 1) {
 
@@ -150,11 +159,15 @@ public class ShareDetailAdapter extends RecyclerView.Adapter<ShareDetailAdapter.
             if (holder.commenttext != null) {
                 holder.commenttext.setText(commentList.get(position - 1).getContent());
             }
-            String nameFile = commentList.get(position - 1).getUserFigure();
-            if (nameFile != null) {
+            String userFigure = commentList.get(position-1).getUserFigure();
+
+            if (!userFigure.equals("null")) {
+                String nameFile = userFigure.substring(userFigure.lastIndexOf("/"));
                 Log.v(TAG, picpath + nameFile + "picturepathnamefile");
                 File file = new File(picpath + nameFile);
                 if (file.exists()) {
+                    Log.v(TAG,"commentfileexistsfileexists");
+
                     BitmapFactory.Options opts = new BitmapFactory.Options();
                     opts.inJustDecodeBounds = true;// 设置成了true,不占用内存，只获取bitmap宽高
 
@@ -169,6 +182,8 @@ public class ShareDetailAdapter extends RecyclerView.Adapter<ShareDetailAdapter.
                         holder.headComment.setImageBitmap(bitmap);
                     }
                 } else {
+                    Log.v(TAG,"commentfileexistsfileexistsnot");
+
                     File file1 = new File(path);
                     file1.mkdirs();
                     Log.v(TAG, "picturepath2");
@@ -320,7 +335,7 @@ public class ShareDetailAdapter extends RecyclerView.Adapter<ShareDetailAdapter.
             timetextdetail = (TextView) itemView.findViewById(R.id.time_text);
             subjecttext = (TextView) itemView.findViewById(R.id.subject_text);
             detailtext = (TextView) itemView.findViewById(R.id.detail_text);
-            zan = (ImageView) itemView.findViewById(R.id.idima_praise);
+//            zan = (ImageView) itemView.findViewById(R.id.idima_praise);
             collection = (ImageView) itemView.findViewById(R.id.idima_collection);
             comment = (ImageView) itemView.findViewById(R.id.idima_comment);
             commentnum = (TextView) itemView.findViewById(R.id.pinglun_numtext);
