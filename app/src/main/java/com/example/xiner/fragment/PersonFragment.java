@@ -157,7 +157,8 @@ public class PersonFragment extends Fragment {
                 super.onSuccess(statusCode, headers, response);
                 User user = shareNetwork.ParseUser(response);
                 swipeRefreshLayout.setRefreshing(false);
-                Log.v(TAG,user+"useruseruser");
+                Log.v(TAG,user.getNickname()+"useruseruser");
+
                 if (user!=null) {
 
                     if (user.getNickname() != null) {

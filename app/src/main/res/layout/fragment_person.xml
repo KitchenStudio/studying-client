@@ -149,7 +149,7 @@
                             android:layout_height="20dp"
                             android:layout_alignParentLeft="true"
                             android:layout_margin="10dp"
-                            android:src="@drawable/chpassicon" />
+                            android:src="@drawable/editpassword" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -186,7 +186,7 @@
                             android:layout_height="20dp"
                             android:layout_alignParentLeft="true"
                             android:layout_margin="10dp"
-                            android:src="@drawable/chpassicon" />
+                            android:src="@drawable/editperson" />
 
                         <TextView
                             android:layout_width="wrap_content"

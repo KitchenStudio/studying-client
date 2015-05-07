@@ -56,7 +56,7 @@ public class ChangePasswordActivity extends ActionBarActivity {
                         Toast.makeText(ChangePasswordActivity.this,"请将信息填写完整",Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
 
-                    }else if (!newpassword.getText().toString().equals(newpasswordagain.getText().toString())){
+                    }else if (!(newpassword.getText().toString()).equals(newpasswordagain.getText().toString())){
                         Toast.makeText(ChangePasswordActivity.this,"两次填写的密码不正确",Toast.LENGTH_SHORT).show();
                     }
                     else {
